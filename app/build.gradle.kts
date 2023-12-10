@@ -69,4 +69,5 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
     implementation(project(":feature:actions"))
+    implementation(project(":feature:addword"))
 }

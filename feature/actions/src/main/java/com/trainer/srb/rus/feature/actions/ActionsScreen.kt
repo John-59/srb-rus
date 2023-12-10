@@ -13,7 +13,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
-fun ActionsScreen() {
+fun ActionsScreen(
+    navigateToAddWord: () -> Unit
+) {
     Scaffold(
         topBar = {
             ActionsTopBar()
@@ -32,7 +34,7 @@ fun ActionsScreen() {
                 Text("Искать")
             }
             Button(
-                onClick = {}
+                onClick = navigateToAddWord
             ) {
                 Text("Добавить")
             }
@@ -47,6 +49,8 @@ fun ActionsScreen() {
 
 @Composable
 @Preview(apiLevel = 33)
-fun ActionsScreenPreview() {
-    ActionsScreen()
+private fun ActionsScreenPreview() {
+    ActionsScreen(
+        navigateToAddWord = {}
+    )
 }

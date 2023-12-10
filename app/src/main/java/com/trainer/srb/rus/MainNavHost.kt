@@ -6,6 +6,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.trainer.srb.rus.feature.actions.ActionsScreen
 import com.trainer.srb.rus.feature.actions.navigation.ActionsDestination
+import com.trainer.srb.rus.feature.addword.AddWordScreen
+import com.trainer.srb.rus.feature.addword.navigation.AddWordDestination
+import com.trainer.srb.rus.feature.addword.navigation.navigateToAddWord
 
 @Composable
 fun MainNavHost(
@@ -16,7 +19,12 @@ fun MainNavHost(
         startDestination = ActionsDestination.route
     ) {
         composable(ActionsDestination.route) {
-            ActionsScreen()
+            ActionsScreen(
+                navigateToAddWord = navController::navigateToAddWord
+            )
+        }
+        composable(AddWordDestination.route) {
+            AddWordScreen()
         }
     }
 }
