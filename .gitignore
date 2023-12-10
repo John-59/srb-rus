@@ -31,3 +31,5 @@ google-services.json
 
 # Android Profiling
 *.hprof
+/.$Concept.drawio.dtmp
+/.$Concept.drawio.bkp
