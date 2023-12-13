@@ -9,6 +9,8 @@ import com.trainer.srb.rus.feature.actions.navigation.ActionsDestination
 import com.trainer.srb.rus.feature.addword.AddWordScreen
 import com.trainer.srb.rus.feature.addword.navigation.AddWordDestination
 import com.trainer.srb.rus.feature.addword.navigation.navigateToAddWord
+import com.trainer.srb.rus.feature.admin.AdminDestination
+import com.trainer.srb.rus.feature.admin.AdminScreen
 
 @Composable
 fun MainNavHost(
@@ -25,6 +27,9 @@ fun MainNavHost(
         }
         composable(AddWordDestination.route) {
             AddWordScreen()
+        }
+        composable(AdminDestination.route) {
+            AdminScreen()
         }
     }
 }

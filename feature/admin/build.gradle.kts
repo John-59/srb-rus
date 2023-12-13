@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.trainer.srb.rus.feature.actions"
+    namespace = "com.trainer.srb.rus.feature.admin"
     compileSdk = 34
 
     defaultConfig {
