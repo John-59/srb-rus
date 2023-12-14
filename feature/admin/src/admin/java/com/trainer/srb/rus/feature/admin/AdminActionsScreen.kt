@@ -15,7 +15,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 fun AdminActionsScreen(
     viewModel: AdminActionsViewModel = hiltViewModel(),
     navigateToAddSrbRusTranslation: () -> Unit,
-    navigateToAddRusSrbTranslation: () -> Unit
+    navigateToAddRusSrbTranslation: () -> Unit,
+    navigateToPredefinedDictionaryEditor: () -> Unit
 ) {
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -32,6 +33,11 @@ fun AdminActionsScreen(
         ) {
             Text(text = "Добавить перевод RUS -> SRB")
         }
+        Button(
+            onClick = navigateToPredefinedDictionaryEditor
+        ) {
+            Text("Редактировать словарь")
+        }
     }
 }
 
@@ -41,6 +47,7 @@ private fun AdminActionsScreenPreview() {
     AdminActionsScreen(
         viewModel = AdminActionsViewModel(),
         navigateToAddRusSrbTranslation = {},
-        navigateToAddSrbRusTranslation = {}
+        navigateToAddSrbRusTranslation = {},
+        navigateToPredefinedDictionaryEditor = {}
     )
 }

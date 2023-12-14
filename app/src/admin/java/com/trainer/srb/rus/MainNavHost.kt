@@ -13,11 +13,14 @@ import com.trainer.srb.rus.feature.admin.AddRusSrbTranslationScreen
 import com.trainer.srb.rus.feature.admin.AdminActionsScreen
 import com.trainer.srb.rus.feature.admin.navigation.AddSrbRusTranslationDestination
 import com.trainer.srb.rus.feature.admin.AddSrbRusTranslationScreen
+import com.trainer.srb.rus.feature.admin.PredefinedDictionaryEditorScreen
 import com.trainer.srb.rus.feature.admin.navigation.AddRusSrbTranslationDestination
 import com.trainer.srb.rus.feature.admin.navigation.AdminActionsDestination
+import com.trainer.srb.rus.feature.admin.navigation.PredefinedDictionaryEditorDestination
 import com.trainer.srb.rus.feature.admin.navigation.navigateToAddRusSrbTranslation
 import com.trainer.srb.rus.feature.admin.navigation.navigateToAddSrbRusTranslation
 import com.trainer.srb.rus.feature.admin.navigation.navigateToAdminActions
+import com.trainer.srb.rus.feature.admin.navigation.navigateToPredefinedDictionaryEditor
 
 @Composable
 fun MainNavHost(
@@ -39,7 +42,8 @@ fun MainNavHost(
         composable(AdminActionsDestination.route) {
             AdminActionsScreen(
                 navigateToAddSrbRusTranslation = navController::navigateToAddSrbRusTranslation,
-                navigateToAddRusSrbTranslation = navController::navigateToAddRusSrbTranslation
+                navigateToAddRusSrbTranslation = navController::navigateToAddRusSrbTranslation,
+                navigateToPredefinedDictionaryEditor = navController::navigateToPredefinedDictionaryEditor
             )
         }
         composable(AddSrbRusTranslationDestination.route) {
@@ -47,6 +51,9 @@ fun MainNavHost(
         }
         composable(AddRusSrbTranslationDestination.route) {
             AddRusSrbTranslationScreen()
+        }
+        composable(PredefinedDictionaryEditorDestination.route) {
+            PredefinedDictionaryEditorScreen()
         }
     }
 }

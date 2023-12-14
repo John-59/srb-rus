@@ -6,6 +6,8 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import com.trainer.srb.rus.core.dictionary.Translation
+import com.trainer.srb.rus.core.dictionary.Word
 import com.trainer.srb.rus.core.repository.IPredefinedRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -47,13 +49,20 @@ class AddSrbRusTranslationViewModel @Inject constructor(
     }
 
     fun add() {
-        predefinedRepo.add(
-            wordSerbianLatin = srbLatinText,
-            wordSerbianCyrillic = srbCyrillicText,
-            wordsRussian = rusWords.filter {
+        val translation = Translation(
+            id = -1,
+            source = Word.Serbian(
+                latinValue = srbLatinText.trim(),
+                cyrillicValue = srbCyrillicText.trim()
+            ),
+            translations = rusWords.filter {
                 it.isNotBlank()
+            }.map {
+                Word.Russian(it.trim())
             }
         )
+        predefinedRepo.addSrbToRusTranslation(translation)
+
         srbLatinText = ""
         srbCyrillicText = ""
         if (rusWords.size > 2) {

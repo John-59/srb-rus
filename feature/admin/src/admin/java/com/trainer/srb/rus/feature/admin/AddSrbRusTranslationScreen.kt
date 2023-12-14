@@ -11,7 +11,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.trainer.srb.rus.core.dictionary.Translation
+import com.trainer.srb.rus.core.dictionary.Word
 import com.trainer.srb.rus.core.repository.IPredefinedRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
 
 @Composable
 fun AddSrbRusTranslationScreen(
@@ -86,11 +90,13 @@ private fun AddSrbRusTranslationScreenPreview() {
     AddSrbRusTranslationScreen(
         viewModel = AddSrbRusTranslationViewModel(
             predefinedRepo = object: IPredefinedRepository {
-                override fun add(
-                    wordSerbianLatin: String,
-                    wordSerbianCyrillic: String,
-                    wordsRussian: List<String>
-                ) {
+                override val srbToRusTranslations: Flow<List<Translation<Word.Serbian, Word.Russian>>>
+                    get() = emptyFlow()
+
+                override fun addSrbToRusTranslation(srbToRusTranslation: Translation<Word.Serbian, Word.Russian>) {
+                }
+
+                override fun removeSrbToRusTranslation(srbToRusTranslation: Translation<Word.Serbian, Word.Russian>) {
                 }
             }
         )

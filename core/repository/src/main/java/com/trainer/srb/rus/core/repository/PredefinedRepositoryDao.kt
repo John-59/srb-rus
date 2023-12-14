@@ -1,9 +1,11 @@
 package com.trainer.srb.rus.core.repository
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 abstract class PredefinedRepositoryDao {
@@ -19,6 +21,21 @@ abstract class PredefinedRepositoryDao {
 
     @Insert
     protected abstract fun insert(crossRefTable: SerbianRussianCrossRefTable)
+
+    @Delete
+    protected abstract fun remove(word: SerbianLatinWord)
+
+    @Delete
+    protected abstract fun remove(word: SerbianCyrillicWord)
+
+    @Delete
+    protected abstract fun remove(words: List<RussianWord>)
+
+    @Delete
+    protected abstract fun removeCrossRefs(crossRefTable: List<SerbianRussianCrossRefTable>)
+
+    @Query("SELECT * FROM srb_lat WHERE id = :srbLatWordId")
+    protected abstract fun getWord(srbLatWordId: Long): SerbianToRussianWord?
 
     @Transaction
     open fun insert(translationToRussian: TranslationToRussian) {
@@ -37,13 +54,27 @@ abstract class PredefinedRepositoryDao {
         }
     }
 
-//    @Insert
-//    fun insert(word: SerbianCyrillicWord): Long
+    @Transaction
+    open fun remove(srbLatWordId: Long) {
+        val word = getWord(srbLatWordId)
+        if (word == null) {
+            return
+        }
+        if (word.serbianCyr != null) {
+            remove(word.serbianCyr)
+        }
+        val crossRefs = word.russians.map {
+            SerbianRussianCrossRefTable(
+                srbLatWordId = word.serbianLat.id,
+                rusWordId = it.id
+            )
+        }
+        removeCrossRefs(crossRefs)
+        remove(word.russians)
+        remove(word.serbianLat)
+    }
 
-//    @Transaction
-//    @Query("SELECT * FROM srb_lat")
-//    fun get(): List<SerbianWord>
-
-//    @Query("SELECT * FROM rus")
-//    fun getAllRus(): List<RussianWord>
+    @Transaction
+    @Query("SELECT * FROM srb_lat")
+    abstract fun get(): Flow<List<SerbianToRussianWord>>
 }

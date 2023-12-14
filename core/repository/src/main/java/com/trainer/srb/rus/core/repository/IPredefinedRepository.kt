@@ -1,5 +1,14 @@
 package com.trainer.srb.rus.core.repository
 
+import com.trainer.srb.rus.core.dictionary.Translation
+import com.trainer.srb.rus.core.dictionary.Word
+import kotlinx.coroutines.flow.Flow
+
 interface IPredefinedRepository {
-    fun add(wordSerbianLatin: String, wordSerbianCyrillic: String, wordsRussian: List<String>)
+
+    val srbToRusTranslations: Flow<List<Translation<Word.Serbian, Word.Russian>>>
+
+    fun addSrbToRusTranslation(srbToRusTranslation: Translation<Word.Serbian, Word.Russian>)
+
+    fun removeSrbToRusTranslation(srbToRusTranslation: Translation<Word.Serbian, Word.Russian>)
 }

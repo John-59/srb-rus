@@ -11,11 +11,15 @@ data class SerbianToRussianWord(
         parentColumn = "id",
         entityColumn = "latId"
     )
-    val serbianCyr: SerbianCyrillicWord,
+    val serbianCyr: SerbianCyrillicWord?,
     @Relation(
-        parentColumn = "srbLatWordId",
-        entityColumn = "rusWordId",
-        associateBy = Junction(SerbianRussianCrossRefTable::class)
+        parentColumn = "id",
+        entityColumn = "id",
+        associateBy = Junction(
+            value = SerbianRussianCrossRefTable::class,
+            parentColumn = "srbLatWordId",
+            entityColumn = "rusWordId"
+        )
     )
     val russians: List<RussianWord>
 )
