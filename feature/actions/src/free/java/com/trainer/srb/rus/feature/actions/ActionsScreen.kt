@@ -14,7 +14,8 @@ import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 fun ActionsScreen(
-    navigateToAddWord: () -> Unit
+    navigateToAddWord: () -> Unit,
+    navigateToDictionary: () -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -43,6 +44,11 @@ fun ActionsScreen(
             ) {
                 Text("Учить")
             }
+            Button(
+                onClick = navigateToDictionary
+            ) {
+                Text("Словарь")
+            }
         }
     }
 }
@@ -51,6 +57,7 @@ fun ActionsScreen(
 @Preview(apiLevel = 33)
 private fun ActionsScreenPreview() {
     ActionsScreen(
-        navigateToAddWord = {}
+        navigateToAddWord = {},
+        navigateToDictionary = {}
     )
 }
