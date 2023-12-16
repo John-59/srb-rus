@@ -48,7 +48,7 @@ private fun Body(
         Column(
             modifier = Modifier.border(
                 shape = RoundedCornerShape(10.dp),
-                border = BorderStroke(2.dp, MainTheme.colors.Border)
+                border = BorderStroke(3.dp, MainTheme.colors.Border)
             ),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
