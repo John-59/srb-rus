@@ -1,4 +1,4 @@
-package com.trainer.srb.rus.ui.theme
+package com.trainer.srb.rus.core.design
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
@@ -8,12 +8,17 @@ import androidx.compose.ui.unit.sp
 
 // Set of Material typography styles to start with
 val Typography = Typography(
-    bodyLarge = TextStyle(
-        fontFamily = FontFamily.Default,
+//    bodyLarge = TextStyle(
+//        fontFamily = Poppins,
+//        fontWeight = FontWeight.Normal,
+//        fontSize = 16.sp,
+//        lineHeight = 24.sp,
+//        letterSpacing = 0.5.sp
+//    ),
+    displayMedium = TextStyle(
+        fontFamily = Poppins,
         fontWeight = FontWeight.Normal,
-        fontSize = 16.sp,
-        lineHeight = 24.sp,
-        letterSpacing = 0.5.sp
+        fontSize = 16.sp
     )
     /* Other default text styles to override
     titleLarge = TextStyle(

@@ -1,4 +1,4 @@
-package com.trainer.srb.rus.ui.theme
+package com.trainer.srb.rus.core.design
 
 import android.app.Activity
 import android.os.Build
@@ -9,6 +9,7 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
@@ -16,15 +17,15 @@ import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
+    primary = Colors.Purple80,
+    secondary = Colors.PurpleGrey80,
+    tertiary = Colors.Pink80
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
+    primary =  Colors.White,//Purple40,
+    secondary = Colors.PurpleGrey40,
+    tertiary = Colors.Pink40
 
     /* Other default colors to override
     background = Color(0xFFFFFBFE),
@@ -38,7 +39,7 @@ private val LightColorScheme = lightColorScheme(
 )
 
 @Composable
-fun SrbrusTheme(
+fun MainTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = true,
@@ -58,7 +59,7 @@ fun SrbrusTheme(
         SideEffect {
             val window = (view.context as Activity).window
             window.statusBarColor = colorScheme.primary.toArgb()
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
+            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !darkTheme
         }
     }
 
@@ -67,4 +68,12 @@ fun SrbrusTheme(
         typography = Typography,
         content = content
     )
+}
+
+object MainTheme {
+    val colors = Colors
+
+    val typography = Typography
+
+    val sizes = Sizes
 }

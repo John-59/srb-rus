@@ -21,6 +21,8 @@ import com.trainer.srb.rus.feature.admin.navigation.navigateToAddRusSrbTranslati
 import com.trainer.srb.rus.feature.admin.navigation.navigateToAddSrbRusTranslation
 import com.trainer.srb.rus.feature.admin.navigation.navigateToAdminActions
 import com.trainer.srb.rus.feature.admin.navigation.navigateToPredefinedDictionaryEditor
+import com.trainer.srb.rus.feature.home.HomeScreen
+import com.trainer.srb.rus.feature.home.navigation.HomeScreenDestination
 
 @Composable
 fun MainNavHost(
@@ -28,8 +30,12 @@ fun MainNavHost(
 ) {
     NavHost(
         navController = navController,
-        startDestination = ActionsDestination.route
+        startDestination = HomeScreenDestination.route
     ) {
+        composable(HomeScreenDestination.route) {
+            HomeScreen()
+        }
+
         composable(ActionsDestination.route) {
             ActionsScreen(
                 navigateToAddWord = navController::navigateToAddWord,
