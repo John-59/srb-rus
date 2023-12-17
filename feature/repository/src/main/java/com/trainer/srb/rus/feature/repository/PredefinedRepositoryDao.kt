@@ -76,10 +76,15 @@ abstract class PredefinedRepositoryDao {
         remove(word.serbianLat)
     }
 
-    @Transaction
     @Query("SELECT * FROM srb_lat")
-    abstract fun get(): Flow<List<SerbianToRussianWord>>
+    abstract fun getAll(): Flow<List<SerbianToRussianWord>>
+
+    @Query("SELECT * FROM srb_lat ORDER BY word")
+    abstract fun getAllByAlphabet(): List<SerbianToRussianWord>
 
     @RawQuery
     abstract fun checkpoint(supportSQLiteQuery: SupportSQLiteQuery): Int
+
+    @Query("SELECT * FROM srb_lat WHERE word LIKE :value||'%'")
+    abstract suspend fun searchInSrbLat(value: String): List<SerbianToRussianWord>
 }

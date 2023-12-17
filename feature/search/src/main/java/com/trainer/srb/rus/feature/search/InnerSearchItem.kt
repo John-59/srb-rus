@@ -1,0 +1,136 @@
+package com.trainer.srb.rus.feature.search
+
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.trainer.srb.rus.core.design.MainTheme
+import com.trainer.srb.rus.core.dictionary.Translation
+import com.trainer.srb.rus.core.dictionary.Word
+import com.trainer.srb.rus.core.design.R as DesignRes
+
+@Composable
+fun InnerSearchItem(
+    translation: Translation<Word.Serbian, Word.Russian>,
+    modifier: Modifier = Modifier
+) {
+    val serbian = listOf(
+        translation.source.value,
+        translation.source.cyrillicValue
+    ).filter {
+        it.isNotBlank()
+    }.joinToString(" / ")
+
+    val russian = translation.translations.joinToString(", ") {
+        it.value
+    }
+
+    Row(
+        modifier = modifier
+            .border(
+                shape = RoundedCornerShape(10.dp),
+                border = BorderStroke(2.dp, MainTheme.colors.Border)
+            ),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Column(
+            modifier = Modifier
+                .padding(horizontal = 10.dp, vertical = 5.dp)
+                .weight(2.0f)
+        ) {
+            Text(
+                text = serbian,
+                style = MainTheme.typography.displayMedium
+            )
+            Text(
+                text = russian,
+                style = MainTheme.typography.displaySmall
+            )
+        }
+        Image(
+            painter = painterResource(id = DesignRes.drawable.wordindict),
+            contentDescription = null,
+            modifier = Modifier.padding(end = 5.dp)
+        )
+    }
+
+}
+
+@Preview(apiLevel = 33)
+@Composable
+private fun InnerSearchItemPreviewOne() {
+    InnerSearchItem(
+        translation = Translation(
+            id = 4,
+            source = Word.Serbian(
+                latinValue = "kiša",
+                cyrillicValue = "киша"
+            ),
+            translations = listOf(
+                Word.Russian("дождь")
+            )
+        )
+    )
+}
+
+@Preview(apiLevel = 33)
+@Composable
+private fun InnerSearchItemPreviewTwo() {
+    InnerSearchItem(
+        translation = Translation(
+            id = 4,
+            source = Word.Serbian(
+                latinValue = "već",
+                cyrillicValue = "већ"
+            ),
+            translations = listOf(
+                Word.Russian("уже"),
+                Word.Russian("а")
+            )
+        )
+    )
+}
+
+@Preview(apiLevel = 33)
+@Composable
+private fun InnerSearchItemPreviewThree() {
+    InnerSearchItem(
+        translation = Translation(
+            id = 4,
+            source = Word.Serbian(
+                latinValue = "šargarepa",
+                cyrillicValue = ""
+            ),
+            translations = listOf(
+                Word.Russian("морковь"),
+            )
+        )
+    )
+}
+
+@Preview(apiLevel = 33)
+@Composable
+private fun InnerSearchItemPreviewFour() {
+    InnerSearchItem(
+        translation = Translation(
+            id = 4,
+            source = Word.Serbian(
+                latinValue = "",
+                cyrillicValue = "књига"
+            ),
+            translations = listOf(
+                Word.Russian("книга"),
+            )
+        )
+    )
+}

@@ -75,10 +75,12 @@ dependencies {
 
     // DI
     implementation(project(":feature:repository"))
+    implementation(project(":feature:dictionary"))
 
     implementation(project(":core:design"))
 
     implementation(project(":feature:home"))
+    implementation(project(":feature:search"))
     implementation(project(":feature:actions"))
     implementation(project(":feature:addword"))
     implementation(project(":feature:admin"))

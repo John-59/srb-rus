@@ -3,6 +3,7 @@ package com.trainer.srb.rus.feature.home
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,6 +14,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -21,18 +23,29 @@ import com.trainer.srb.rus.core.design.R as DesignRes
 
 @Composable
 fun HomeScreen(
+    navigateToSearch: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier.fillMaxSize()
     ) {
         Search(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .padding(20.dp)
+                .fillMaxWidth()
+                .onFocusChanged {
+                    if (it.isFocused)
+                        navigateToSearch()
+                }
+                .clickable {
+                    navigateToSearch()
+                },
+            value = "",
+            onValueChange = {}
         )
         Body(
             modifier = Modifier.fillMaxSize()
         )
-
     }
 }
 
@@ -69,5 +82,7 @@ private fun Body(
 @Preview(apiLevel = 33)
 @Composable
 private fun HomeScreenPreview() {
-    HomeScreen()
+    HomeScreen(
+        navigateToSearch = {}
+    )
 }

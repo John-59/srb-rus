@@ -15,6 +15,11 @@ val Typography = Typography(
 //        lineHeight = 24.sp,
 //        letterSpacing = 0.5.sp
 //    ),
+    displaySmall = TextStyle(
+        fontFamily = Poppins,
+        fontWeight = FontWeight.Normal,
+        fontSize = 12.sp
+    ),
     displayMedium = TextStyle(
         fontFamily = Poppins,
         fontWeight = FontWeight.Normal,

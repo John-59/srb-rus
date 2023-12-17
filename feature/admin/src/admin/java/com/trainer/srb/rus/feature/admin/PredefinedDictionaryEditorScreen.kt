@@ -175,6 +175,14 @@ fun PredefinedDictionaryEditorScreenPreview() {
                 override fun removeSrbToRusTranslation(srbToRusTranslation: Translation<Word.Serbian, Word.Russian>) {
                 }
 
+                override suspend fun search(value: String): List<Translation<Word.Serbian, Word.Russian>> {
+                    return emptyList()
+                }
+
+                override suspend fun getAllByAlphabet(): List<Translation<Word.Serbian, Word.Russian>> {
+                    return emptyList()
+                }
+
             }
         )
     )

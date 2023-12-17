@@ -1,9 +1,10 @@
-package com.trainer.srb.rus.feature.home
+package com.trainer.srb.rus.feature.search
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
@@ -20,7 +21,7 @@ import com.trainer.srb.rus.core.ui.CustomTextField
 import com.trainer.srb.rus.core.design.R as DesignRes
 
 @Composable
-fun Search(
+fun SearchAndAdd(
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
@@ -42,7 +43,8 @@ fun Search(
             )
             CustomTextField(
                 modifier = Modifier
-                    .padding(start = 10.dp),
+                    .padding(start = 10.dp)
+                    .weight(2.0f),
                 colors = TextFieldDefaults.outlinedTextFieldColors(),
                 placeholder = {
                     Text(
@@ -59,15 +61,24 @@ fun Search(
                 value = value,
                 onValueChange = onValueChange
             )
+            Image(
+                painter = if (value.isBlank()) {
+                    painterResource(DesignRes.drawable.addtodictgray)
+                } else {
+                    painterResource(DesignRes.drawable.addtodict)
+                },
+                contentDescription = null
+            )
         }
     }
 }
 
 @Preview(apiLevel = 33)
 @Composable
-fun SearchPreview() {
-    Search(
+fun SearchAndAddPreview() {
+    SearchAndAdd(
         value = "",
-        onValueChange = {}
+        onValueChange = {},
+        modifier = Modifier.fillMaxWidth()
     )
 }

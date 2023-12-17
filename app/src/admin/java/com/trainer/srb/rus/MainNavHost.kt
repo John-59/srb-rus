@@ -23,6 +23,9 @@ import com.trainer.srb.rus.feature.admin.navigation.navigateToAdminActions
 import com.trainer.srb.rus.feature.admin.navigation.navigateToPredefinedDictionaryEditor
 import com.trainer.srb.rus.feature.home.HomeScreen
 import com.trainer.srb.rus.feature.home.navigation.HomeScreenDestination
+import com.trainer.srb.rus.feature.search.SearchScreen
+import com.trainer.srb.rus.feature.search.navigation.SearchScreenDestination
+import com.trainer.srb.rus.feature.search.navigation.navigateToSearch
 
 @Composable
 fun MainNavHost(
@@ -33,7 +36,12 @@ fun MainNavHost(
         startDestination = HomeScreenDestination.route
     ) {
         composable(HomeScreenDestination.route) {
-            HomeScreen()
+            HomeScreen(
+                navigateToSearch = navController::navigateToSearch
+            )
+        }
+        composable(SearchScreenDestination.route) {
+            SearchScreen()
         }
 
         composable(ActionsDestination.route) {
