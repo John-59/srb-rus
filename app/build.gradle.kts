@@ -78,6 +78,7 @@ dependencies {
     implementation(project(":feature:dictionary"))
 
     implementation(project(":core:design"))
+    implementation(project(":core:dictionary"))
 
     implementation(project(":feature:home"))
     implementation(project(":feature:search"))

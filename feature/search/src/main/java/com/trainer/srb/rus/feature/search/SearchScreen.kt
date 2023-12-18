@@ -22,6 +22,7 @@ import com.trainer.srb.rus.core.dictionary.Word
 
 @Composable
 fun SearchScreen(
+    navigateToAddWord: (Word) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: SearchViewModel = hiltViewModel(),
 ) {
@@ -37,6 +38,7 @@ fun SearchScreen(
                 .focusRequester(focusRequester),
             value = viewModel.searchingWord,
             onValueChange = viewModel::searchingWordChange,
+            onAddClicked = navigateToAddWord
         )
         SearchResult(
             innerWords = innerWords,
@@ -72,6 +74,7 @@ private fun SearchScreenPreview() {
                 }
 
             }
-        )
+        ),
+        navigateToAddWord = {}
     )
 }

@@ -41,18 +41,24 @@ fun MainNavHost(
             )
         }
         composable(SearchScreenDestination.route) {
-            SearchScreen()
-        }
-
-        composable(ActionsDestination.route) {
-            ActionsScreen(
-                navigateToAddWord = navController::navigateToAddWord,
-                navigateToAdmin = navController::navigateToAdminActions
+            SearchScreen(
+                navigateToAddWord = navController::navigateToAddWord
             )
         }
-        composable(AddWordDestination.route) {
+
+//        composable(ActionsDestination.route) {
+//            ActionsScreen(
+//                navigateToAddWord = navController::navigateToAddWord,
+//                navigateToAdmin = navController::navigateToAdminActions
+//            )
+//        }
+        composable(
+            route = AddWordDestination.routeWithArgs,
+            arguments = AddWordDestination.arguments
+        ) {
             AddWordScreen()
         }
+
         composable(AdminActionsDestination.route) {
             AdminActionsScreen(
                 navigateToAddSrbRusTranslation = navController::navigateToAddSrbRusTranslation,

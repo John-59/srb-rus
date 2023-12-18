@@ -15,4 +15,5 @@ object Colors {
     val Border = Color(0xFF55CCFF)
     val Tips = Color(0xFF55CCFF)
     val Icons = Color(0xFF4200FF)
+    val Buttons = Color(0xFF4200FF)
 }

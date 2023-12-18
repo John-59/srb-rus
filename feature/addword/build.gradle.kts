@@ -46,6 +46,10 @@ kapt {
 
 dependencies {
 
+    implementation(project(":core:ui"))
+    implementation(project(":core:dictionary"))
+    implementation(project(":core:design"))
+
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.10.0")
@@ -61,6 +65,7 @@ dependencies {
     implementation(platform("androidx.compose:compose-bom:2023.08.00"))
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.material:material")
+    implementation("androidx.compose.material3:material3")
     implementation("androidx.compose.ui:ui-tooling")
     implementation("androidx.compose.ui:ui-tooling-preview")
 }
