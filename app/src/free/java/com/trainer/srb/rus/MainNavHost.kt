@@ -12,6 +12,11 @@ import com.trainer.srb.rus.feature.addword.navigation.navigateToAddWord
 import com.trainer.srb.rus.feature.dictionary.DictionaryScreen
 import com.trainer.srb.rus.feature.dictionary.navigation.DictionaryDestination
 import com.trainer.srb.rus.feature.dictionary.navigation.navigateToDictionary
+import com.trainer.srb.rus.feature.home.HomeScreen
+import com.trainer.srb.rus.feature.home.navigation.HomeScreenDestination
+import com.trainer.srb.rus.feature.search.SearchScreen
+import com.trainer.srb.rus.feature.search.navigation.SearchScreenDestination
+import com.trainer.srb.rus.feature.search.navigation.navigateToSearch
 
 @Composable
 fun MainNavHost(
@@ -19,8 +24,17 @@ fun MainNavHost(
 ) {
     NavHost(
         navController = navController,
-        startDestination = ActionsDestination.route
+        startDestination = HomeScreenDestination.route
     ) {
+        composable(HomeScreenDestination.route) {
+            HomeScreen(
+                navigateToSearch = navController::navigateToSearch
+            )
+        }
+        composable(SearchScreenDestination.route) {
+            SearchScreen()
+        }
+
         composable(ActionsDestination.route) {
             ActionsScreen(
                 navigateToAddWord = navController::navigateToAddWord,
