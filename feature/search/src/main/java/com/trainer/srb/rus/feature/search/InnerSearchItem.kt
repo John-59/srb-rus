@@ -25,7 +25,7 @@ fun InnerSearchItem(
     modifier: Modifier = Modifier
 ) {
     val serbian = listOf(
-        translation.source.value,
+        translation.source.latinValue,
         translation.source.cyrillicValue
     ).filter {
         it.isNotBlank()

@@ -24,7 +24,7 @@ fun DictionaryScreen(
         items(
             items = words
         ) { translation ->
-            Text(translation.source.value)
+            Text(translation.source.latinValue)
             Text(translation.source.cyrillicValue)
             translation.translations.forEach {
                 Text(it.value)

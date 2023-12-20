@@ -1,10 +1,12 @@
 package com.trainer.srb.rus.feature.addword
 
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import com.trainer.srb.rus.core.dictionary.Word
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -15,25 +17,40 @@ class AddWordViewModel @Inject constructor(
 
     private val args = AddWordArgs(savedStateHandle)
 
-    var srbLatValue by mutableStateOf(args.srbLatValue)
-        private set
+    val rusWords = mutableStateListOf(
+        Word.Russian(args.rusValue),
+        Word.Russian("")
+    )
 
-    var srbCyrValue by mutableStateOf(args.srbCyrValue)
-        private set
-
-    var rusValue by mutableStateOf(args.rusValue)
+    var srbWord by mutableStateOf(
+        Word.Serbian(
+            latinValue = args.srbLatValue,
+            cyrillicValue = args.srbCyrValue
+        )
+    )
         private set
 
     fun srbLatinChange(word: String) {
-        srbLatValue = word
+        srbWord = srbWord.copy(
+            latinValue = word
+        )
     }
 
     fun srbCyrillicChange(word: String) {
-        srbCyrValue = word
+        srbWord = srbWord.copy(
+            cyrillicValue = word
+        )
     }
 
-    fun rusChange(word: String) {
-        rusValue = word
+    fun rusChange(index: Int, word: String) {
+        if (index in rusWords.indices) {
+            rusWords[index] = Word.Russian(word)
+        }
+    }
+
+    fun addRusWord(word: String) {
+        rusWords[rusWords.lastIndex] = Word.Russian(word)
+        rusWords.add(Word.Russian(""))
     }
 
     fun add() {

@@ -75,7 +75,7 @@ private fun TranslationItem(
         Row(
             modifier = Modifier.padding(10.dp)
         ) {
-            Text(text = translation.source.value)
+            Text(text = translation.source.latinValue)
             if (translation.source.cyrillicValue.isNotBlank()) {
                 Text(
                     modifier = Modifier.padding(start = 5.dp),

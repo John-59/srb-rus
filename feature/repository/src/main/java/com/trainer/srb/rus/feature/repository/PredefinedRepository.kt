@@ -7,7 +7,6 @@ import com.trainer.srb.rus.core.repository.IPredefinedRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -28,7 +27,7 @@ class PredefinedRepository @Inject constructor(
         srbToRusTranslation: Translation<Word.Serbian, Word.Russian>
     ) {
         val translationToRussian = TranslationToRussian(
-            srbLatWord = srbToRusTranslation.source.value,
+            srbLatWord = srbToRusTranslation.source.latinValue,
             srbCyrWord = srbToRusTranslation.source.cyrillicValue,
             rusWords = srbToRusTranslation.translations.map {
                 it.value

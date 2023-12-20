@@ -4,17 +4,14 @@ import androidx.annotation.DrawableRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
-import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -27,6 +24,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.SavedStateHandle
 import com.trainer.srb.rus.core.design.MainTheme
+import com.trainer.srb.rus.core.dictionary.Word
 import com.trainer.srb.rus.core.ui.CustomTextField
 import com.trainer.srb.rus.core.design.R as DesignRes
 
@@ -37,46 +35,30 @@ fun AddWordScreen(
 ) {
     Column(
         modifier = modifier.padding(20.dp),
-//        verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Words(
-            value = viewModel.srbLatValue,
-            onValueChange = viewModel::srbLatinChange,
-            placeholder = "Сербский (латиница)",
-            iconId = DesignRes.drawable.srblat
+
+        SerbianWord(
+            serbianWord = viewModel.srbWord,
+            onSrbLatChange = viewModel::srbLatinChange,
+            onSrbCyrChange = viewModel::srbCyrillicChange,
+            modifier = Modifier.padding(bottom = 10.dp)
         )
 
-        Words(
-            value = viewModel.srbCyrValue,
-            onValueChange = viewModel::srbCyrillicChange,
-            placeholder = "Сербский (кириллица)",
-            iconId = DesignRes.drawable.srbcyr,
-            modifier = Modifier.padding(vertical = 10.dp)
-        )
-
-        Words(
-            value = viewModel.rusValue,
+        RussiansWords(
+            russianWords = viewModel.rusWords,
             onValueChange = viewModel::rusChange,
-            placeholder = "Русский",
-            iconId = DesignRes.drawable.rus,
+            onAddRusWord = viewModel::addRusWord,
             modifier = Modifier.padding(bottom = 20.dp)
         )
-
 
         Button(
             onClick = viewModel::add,
             shape = RoundedCornerShape(10.dp),
             colors = ButtonDefaults.buttonColors(
                 backgroundColor = MainTheme.colors.Buttons,
-                contentColor = MainTheme.colors.White
-            )
-//            border = BorderStroke(1.dp, MainTheme.colors.Border),
-//            modifier = Modifier
-//                .border(
-//                    shape = RoundedCornerShape(10.dp),
-//                    border = BorderStroke(2.dp, MainTheme.colors.Border)
-//                )
+                contentColor = MainTheme.colors.White,
+            ),
         ) {
             Image(
                 painter = painterResource(id = DesignRes.drawable.plusforbtn),
@@ -94,7 +76,68 @@ fun AddWordScreen(
 }
 
 @Composable
-private fun Words(
+private fun RussiansWords(
+    russianWords: List<Word.Russian>,
+    onValueChange: (index: Int, value: String) -> Unit,
+    onAddRusWord: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier
+    ) {
+        russianWords.forEachIndexed { index, word ->
+            WordItem(
+                value = word.value,
+                onValueChange = {
+                    if (index == russianWords.lastIndex) {
+                        onAddRusWord(it)
+                    } else {
+                        onValueChange(index, it)
+                    }
+                },
+                iconId = DesignRes.drawable.rus,
+                placeholder = if (index == russianWords.lastIndex) {
+                    "Добавить синоним"
+                } else {
+                    "Русский"
+                },
+                modifier = Modifier.padding(bottom = 5.dp)
+            )
+        }
+    }
+}
+
+@Composable
+private fun SerbianWord(
+    serbianWord: Word.Serbian,
+    onSrbLatChange: (String) -> Unit,
+    onSrbCyrChange: (String) -> Unit,
+//    onAddLatinSerbianWord: (String) -> Unit,
+//    onAddCyrillicSerbianWord: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier
+    ) {
+        WordItem(
+            value = serbianWord.latinValue,
+            onValueChange = onSrbLatChange,
+            placeholder = "Сербский (латиница)",
+            iconId = DesignRes.drawable.srblat
+        )
+
+        WordItem(
+            value = serbianWord.cyrillicValue,
+            onValueChange = onSrbCyrChange,
+            placeholder = "Сербский (кириллица)",
+            iconId = DesignRes.drawable.srbcyr,
+            modifier = Modifier.padding(vertical = 5.dp)
+        )
+    }
+}
+
+@Composable
+private fun WordItem(
     value: String,
     onValueChange: (String) -> Unit,
     @DrawableRes iconId: Int,

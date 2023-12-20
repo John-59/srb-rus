@@ -1,9 +1,7 @@
 package com.trainer.srb.rus.core.dictionary
 
-sealed class Word(
-    val value: String
-) {
-    class Serbian(latinValue: String, val cyrillicValue: String): Word(latinValue)
+sealed class Word {
+    data class Serbian(val latinValue: String, val cyrillicValue: String): Word()
 
-    class Russian(value: String): Word(value)
+    class Russian(val value: String): Word()
 }

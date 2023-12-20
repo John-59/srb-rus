@@ -10,7 +10,7 @@ fun NavHostController.navigateToAddWord(word: Word) {
             Triple("", "", Uri.encode(word.value))
         }
         is Word.Serbian -> {
-            Triple(Uri.encode(word.value), Uri.encode(word.cyrillicValue), "")
+            Triple(Uri.encode(word.latinValue), Uri.encode(word.cyrillicValue), "")
         }
     }
     val route = "${AddWordDestination.route}?$srbLatValue?$srbCyrValue?$rusValue"
