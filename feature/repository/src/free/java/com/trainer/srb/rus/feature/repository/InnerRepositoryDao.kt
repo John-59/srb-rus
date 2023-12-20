@@ -1,16 +1,12 @@
 package com.trainer.srb.rus.feature.repository
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
-import androidx.room.RawQuery
 import androidx.room.Transaction
-import androidx.sqlite.db.SupportSQLiteQuery
-import kotlinx.coroutines.flow.Flow
 
 @Dao
-abstract class PredefinedRepositoryDao {
+abstract class InnerRepositoryDao {
 
     @Insert
     protected abstract suspend fun insert(word: SerbianLatinWord): Long
@@ -23,21 +19,6 @@ abstract class PredefinedRepositoryDao {
 
     @Insert
     protected abstract suspend fun insert(crossRefTable: SerbianRussianCrossRefTable)
-
-    @Delete
-    protected abstract suspend fun remove(word: SerbianLatinWord)
-
-    @Delete
-    protected abstract suspend fun remove(word: SerbianCyrillicWord)
-
-    @Delete
-    protected abstract suspend fun remove(words: List<RussianWord>)
-
-    @Delete
-    protected abstract suspend fun removeCrossRefs(crossRefTable: List<SerbianRussianCrossRefTable>)
-
-    @Query("SELECT * FROM srb_lat WHERE id = :srbLatWordId")
-    protected abstract suspend fun getWord(srbLatWordId: Long): SerbianToRussianWord?
 
     @Transaction
     open suspend fun insert(translationToRussian: TranslationToRussian) {
@@ -56,34 +37,8 @@ abstract class PredefinedRepositoryDao {
         }
     }
 
-    @Transaction
-    open suspend fun remove(srbLatWordId: Long) {
-        val word = getWord(srbLatWordId)
-        if (word == null) {
-            return
-        }
-        if (word.serbianCyr != null) {
-            remove(word.serbianCyr)
-        }
-        val crossRefs = word.russians.map {
-            SerbianRussianCrossRefTable(
-                srbLatWordId = word.serbianLat.id,
-                rusWordId = it.id
-            )
-        }
-        removeCrossRefs(crossRefs)
-        remove(word.russians)
-        remove(word.serbianLat)
-    }
-
-    @Query("SELECT * FROM srb_lat")
-    abstract fun getAll(): Flow<List<SerbianToRussianWord>>
-
     @Query("SELECT * FROM srb_lat ORDER BY word")
     abstract suspend fun getAllByAlphabet(): List<SerbianToRussianWord>
-
-    @RawQuery
-    abstract suspend fun checkpoint(supportSQLiteQuery: SupportSQLiteQuery): Int
 
     @Query("SELECT * FROM srb_lat WHERE word LIKE :value||'%'")
     abstract suspend fun searchInSrbLat(value: String): List<SerbianToRussianWord>

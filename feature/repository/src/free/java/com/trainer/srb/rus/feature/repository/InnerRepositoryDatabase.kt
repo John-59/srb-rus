@@ -4,7 +4,7 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 
 @Database(
-    version = 4,
+    version = 1,
     exportSchema = true,
     entities = [
         SerbianLatinWord::class,
@@ -13,11 +13,11 @@ import androidx.room.RoomDatabase
         SerbianRussianCrossRefTable::class
     ]
 )
-abstract class PredefinedRepositoryDatabase: RoomDatabase() {
+abstract class InnerRepositoryDatabase: RoomDatabase() {
 
-    abstract val dao: PredefinedRepositoryDao
+    abstract val dao: InnerRepositoryDao
 
     companion object {
-        const val NAME = "predefined_database"
+        const val NAME = "inner_database"
     }
 }

@@ -24,6 +24,8 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.SavedStateHandle
 import com.trainer.srb.rus.core.design.MainTheme
+import com.trainer.srb.rus.core.dictionary.IDictionary
+import com.trainer.srb.rus.core.dictionary.Translation
 import com.trainer.srb.rus.core.dictionary.Word
 import com.trainer.srb.rus.core.ui.CustomTextField
 import com.trainer.srb.rus.core.design.R as DesignRes
@@ -32,6 +34,7 @@ import com.trainer.srb.rus.core.design.R as DesignRes
 fun AddWordScreen(
     modifier: Modifier = Modifier,
     viewModel: AddWordViewModel = hiltViewModel(),
+    onBack: () -> Unit
 ) {
     Column(
         modifier = modifier.padding(20.dp),
@@ -53,7 +56,10 @@ fun AddWordScreen(
         )
 
         Button(
-            onClick = viewModel::add,
+            onClick = {
+                viewModel.add()
+                onBack()
+            },
             shape = RoundedCornerShape(10.dp),
             colors = ButtonDefaults.buttonColors(
                 backgroundColor = MainTheme.colors.Buttons,
@@ -188,7 +194,21 @@ private fun WordItem(
 private fun AddWordScreenPreview() {
     AddWordScreen(
         viewModel = AddWordViewModel(
-            savedStateHandle = SavedStateHandle()
-        )
+            savedStateHandle = SavedStateHandle(),
+            dictionary = object : IDictionary {
+                override suspend fun search(value: String): List<Translation<Word.Serbian, Word.Russian>> {
+                    return emptyList()
+                }
+
+                override suspend fun getAllByAlphabet(): List<Translation<Word.Serbian, Word.Russian>> {
+                    return emptyList()
+                }
+
+                override suspend fun add(translation: Translation<Word.Serbian, Word.Russian>) {
+                }
+
+            }
+        ),
+        onBack = {}
     )
 }

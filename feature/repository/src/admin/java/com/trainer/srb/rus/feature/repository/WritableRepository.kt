@@ -3,47 +3,24 @@ package com.trainer.srb.rus.feature.repository
 import androidx.sqlite.db.SimpleSQLiteQuery
 import com.trainer.srb.rus.core.dictionary.Translation
 import com.trainer.srb.rus.core.dictionary.Word
-import com.trainer.srb.rus.core.repository.IPredefinedRepository
+import com.trainer.srb.rus.core.repository.IWritableRepository
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class PredefinedRepository @Inject constructor(
+class WritableRepository @Inject constructor(
     private val predefinedRepositoryDao: PredefinedRepositoryDao
-): IPredefinedRepository {
-
-    override val srbToRusTranslations: Flow<List<Translation<Word.Serbian, Word.Russian>>> = flow {
-        predefinedRepositoryDao.getAll().collect {
-            val translations = it.map {
-                convertToTranslation(it)
-            }
-            emit(translations)
-        }
-    }
-
-    override suspend fun addSrbToRusTranslation(
-        srbToRusTranslation: Translation<Word.Serbian, Word.Russian>
-    ) {
+): IWritableRepository {
+    override suspend fun add(translation: Translation<Word.Serbian, Word.Russian>) {
         withContext(Dispatchers.IO) {
             val translationToRussian = TranslationToRussian(
-                srbLatWord = srbToRusTranslation.source.latinValue,
-                srbCyrWord = srbToRusTranslation.source.cyrillicValue,
-                rusWords = srbToRusTranslation.translations.map {
+                srbLatWord = translation.source.latinValue,
+                srbCyrWord = translation.source.cyrillicValue,
+                rusWords = translation.translations.map {
                     it.value
                 }
             )
             predefinedRepositoryDao.insert(translationToRussian)
-            makeCheckpoint()
-        }
-    }
-
-    override suspend fun removeSrbToRusTranslation(
-        srbToRusTranslation: Translation<Word.Serbian, Word.Russian>
-    ) {
-        withContext(Dispatchers.IO) {
-            predefinedRepositoryDao.remove(srbToRusTranslation.id)
             makeCheckpoint()
         }
     }

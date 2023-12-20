@@ -17,7 +17,6 @@ rootProject.name = "srbrus"
 include(":app")
 include(":feature:actions")
 include(":feature:addword")
-include(":feature:admin")
 include(":core:repository")
 include(":core:dictionary")
 include(":feature:repository")

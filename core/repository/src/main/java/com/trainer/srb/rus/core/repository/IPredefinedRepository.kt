@@ -8,9 +8,9 @@ interface IPredefinedRepository {
 
     val srbToRusTranslations: Flow<List<Translation<Word.Serbian, Word.Russian>>>
 
-    fun addSrbToRusTranslation(srbToRusTranslation: Translation<Word.Serbian, Word.Russian>)
+    suspend fun addSrbToRusTranslation(srbToRusTranslation: Translation<Word.Serbian, Word.Russian>)
 
-    fun removeSrbToRusTranslation(srbToRusTranslation: Translation<Word.Serbian, Word.Russian>)
+    suspend fun removeSrbToRusTranslation(srbToRusTranslation: Translation<Word.Serbian, Word.Russian>)
 
     suspend fun search(value: String): List<Translation<Word.Serbian, Word.Russian>>
 

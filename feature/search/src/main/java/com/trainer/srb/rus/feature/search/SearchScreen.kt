@@ -15,7 +15,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.trainer.srb.rus.core.dictionary.IInnerDictionary
+import com.trainer.srb.rus.core.dictionary.IDictionary
 import com.trainer.srb.rus.core.dictionary.IRemoteDictionary
 import com.trainer.srb.rus.core.dictionary.Translation
 import com.trainer.srb.rus.core.dictionary.Word
@@ -58,13 +58,16 @@ fun SearchScreen(
 private fun SearchScreenPreview() {
     SearchScreen(
         viewModel = SearchViewModel(
-            innerDictionary = object : IInnerDictionary {
+            innerDictionary = object : IDictionary {
                 override suspend fun search(value: String): List<Translation<Word.Serbian, Word.Russian>> {
                     return emptyList()
                 }
 
                 override suspend fun getAllByAlphabet(): List<Translation<Word.Serbian, Word.Russian>> {
                     return emptyList()
+                }
+
+                override suspend fun add(translation: Translation<Word.Serbian, Word.Russian>) {
                 }
 
             },

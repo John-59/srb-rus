@@ -84,7 +84,6 @@ dependencies {
     implementation(project(":feature:search"))
     implementation(project(":feature:actions"))
     implementation(project(":feature:addword"))
-    implementation(project(":feature:admin"))
     implementation(project(":feature:dictionary"))
 
     implementation("androidx.core:core-ktx:1.12.0")

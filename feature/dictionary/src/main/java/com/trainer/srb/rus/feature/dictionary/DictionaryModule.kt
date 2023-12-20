@@ -1,10 +1,9 @@
 package com.trainer.srb.rus.feature.dictionary
 
-import com.trainer.srb.rus.core.dictionary.IInnerDictionary
+import com.trainer.srb.rus.core.dictionary.IDictionary
 import com.trainer.srb.rus.core.dictionary.IRemoteDictionary
 import dagger.Binds
 import dagger.Module
-import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
@@ -14,7 +13,7 @@ import javax.inject.Singleton
 interface DictionaryModule {
     @Binds
     @Singleton
-    fun bindInnerDictionary(instance: InnerDictionary): IInnerDictionary
+    fun bindInnerDictionary(instance: Dictionary): IDictionary
 
     @Binds
     @Singleton

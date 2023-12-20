@@ -72,7 +72,9 @@ fun SearchAndAdd(
                 },
                 contentDescription = null,
                 modifier = Modifier.clickable {
-                    onAddClicked(Word.Serbian(latinValue = value, cyrillicValue = ""))
+                    if (value.isNotBlank()) {
+                        onAddClicked(Word.Serbian(latinValue = value, cyrillicValue = ""))
+                    }
                 }
             )
         }
