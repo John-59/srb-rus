@@ -29,7 +29,7 @@ class WritableRepository @Inject constructor(
         return withContext(Dispatchers.IO) {
             val found = predefinedRepositoryDao.searchInSrbLat(value)
             found.map {
-                convertToTranslation(it)
+                it.toTranslation()
             }
         }
     }
@@ -37,25 +37,12 @@ class WritableRepository @Inject constructor(
     override suspend fun getAllByAlphabet(): List<Translation<Word.Serbian, Word.Russian>> {
         return withContext(Dispatchers.IO) {
             predefinedRepositoryDao.getAllByAlphabet().map {
-                convertToTranslation(it)
+                it.toTranslation()
             }
         }
     }
 
     private suspend fun makeCheckpoint() {
         predefinedRepositoryDao.checkpoint(SimpleSQLiteQuery("pragma wal_checkpoint(full)"))
-    }
-
-    private fun convertToTranslation(word: SerbianToRussianWord): Translation<Word.Serbian, Word.Russian> {
-        return Translation(
-            id = word.serbianLat.id,
-            source = Word.Serbian(
-                latinValue = word.serbianLat.word,
-                cyrillicValue = word.serbianCyr?.word.orEmpty()
-            ),
-            translations = word.russians.map {
-                Word.Russian(it.word)
-            }
-        )
     }
 }

@@ -23,8 +23,8 @@ class AddWordViewModel @Inject constructor(
     private val args = AddWordArgs(savedStateHandle)
 
     val rusWords = mutableStateListOf(
-        Word.Russian(args.rusValue),
-        Word.Russian("")
+        Word.Russian(value = args.rusValue),
+        Word.Russian()
     )
 
     var srbWord by mutableStateOf(
@@ -49,19 +49,18 @@ class AddWordViewModel @Inject constructor(
 
     fun rusChange(index: Int, word: String) {
         if (index in rusWords.indices) {
-            rusWords[index] = Word.Russian(word)
+            rusWords[index] = rusWords[index].copy(value = word)
         }
     }
 
     fun addRusWord(word: String) {
-        rusWords[rusWords.lastIndex] = Word.Russian(word)
-        rusWords.add(Word.Russian(""))
+        rusWords[rusWords.lastIndex] = rusWords[rusWords.lastIndex].copy(value = word)
+        rusWords.add(Word.Russian())
     }
 
     fun add() {
         viewModelScope.launch {
             val translation = Translation(
-                id = 0,
                 source = srbWord,
                 translations = rusWords.filter {
                     it.value.isNotBlank()

@@ -22,7 +22,7 @@ fun SearchResult(
         items(
             items = innerWords,
             key = {
-                it.id
+                it.uuid
             }
         ) {
             InnerSearchItem(
@@ -39,48 +39,44 @@ private fun SearchResultPreview() {
     SearchResult(
         innerWords = listOf(
             Translation(
-                id = 1,
                 source = Word.Serbian(
                     latinValue = "već",
                     cyrillicValue = "већ"
                 ),
                 translations = listOf(
-                    Word.Russian("а"),
-                    Word.Russian("уже")
+                    Word.Russian(value = "а"),
+                    Word.Russian(value = "уже")
                 )
             ),
             Translation(
-                id = 2,
                 source = Word.Serbian(
                     latinValue = "šargarepa",
                     cyrillicValue = "шаргарепа"
                 ),
                 translations = listOf(
-                    Word.Russian("морковь")
+                    Word.Russian(value = "морковь")
                 )
             ),
             Translation(
-                id = 3,
                 source = Word.Serbian(
                     latinValue = "someWord",
                     cyrillicValue = ""
                 ),
                 translations = listOf(
-                    Word.Russian("перевод 1"),
-                    Word.Russian("перевод 2"),
-                    Word.Russian("перевод 3"),
-                    Word.Russian("перевод 4"),
-                    Word.Russian("перевод 5")
+                    Word.Russian(value = "перевод 1"),
+                    Word.Russian(value = "перевод 2"),
+                    Word.Russian(value = "перевод 3"),
+                    Word.Russian(value = "перевод 4"),
+                    Word.Russian(value = "перевод 5")
                 )
             ),
             Translation(
-                id = 4,
                 source = Word.Serbian(
                     latinValue = "kiša",
                     cyrillicValue = ""
                 ),
                 translations = listOf(
-                    Word.Russian("дождь")
+                    Word.Russian(value = "дождь")
                 )
             )
         )

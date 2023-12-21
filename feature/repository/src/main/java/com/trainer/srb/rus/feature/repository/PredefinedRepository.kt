@@ -17,7 +17,7 @@ class PredefinedRepository @Inject constructor(
     override val srbToRusTranslations: Flow<List<Translation<Word.Serbian, Word.Russian>>> = flow {
         predefinedRepositoryDao.getAll().collect {
             val translations = it.map {
-                convertToTranslation(it)
+                it.toTranslation()
             }
             emit(translations)
         }
@@ -43,7 +43,7 @@ class PredefinedRepository @Inject constructor(
         srbToRusTranslation: Translation<Word.Serbian, Word.Russian>
     ) {
         withContext(Dispatchers.IO) {
-            predefinedRepositoryDao.remove(srbToRusTranslation.id)
+            predefinedRepositoryDao.remove(srbToRusTranslation.source.latinId)
             makeCheckpoint()
         }
     }
@@ -52,7 +52,7 @@ class PredefinedRepository @Inject constructor(
         return withContext(Dispatchers.IO) {
             val found = predefinedRepositoryDao.searchInSrbLat(value)
             found.map {
-                convertToTranslation(it)
+                it.toTranslation()
             }
         }
     }
@@ -60,25 +60,12 @@ class PredefinedRepository @Inject constructor(
     override suspend fun getAllByAlphabet(): List<Translation<Word.Serbian, Word.Russian>> {
         return withContext(Dispatchers.IO) {
             predefinedRepositoryDao.getAllByAlphabet().map {
-                convertToTranslation(it)
+                it.toTranslation()
             }
         }
     }
 
     private suspend fun makeCheckpoint() {
         predefinedRepositoryDao.checkpoint(SimpleSQLiteQuery("pragma wal_checkpoint(full)"))
-    }
-
-    private fun convertToTranslation(word: SerbianToRussianWord): Translation<Word.Serbian, Word.Russian> {
-        return Translation(
-            id = word.serbianLat.id,
-            source = Word.Serbian(
-                latinValue = word.serbianLat.word,
-                cyrillicValue = word.serbianCyr?.word.orEmpty()
-            ),
-            translations = word.russians.map {
-                Word.Russian(it.word)
-            }
-        )
     }
 }

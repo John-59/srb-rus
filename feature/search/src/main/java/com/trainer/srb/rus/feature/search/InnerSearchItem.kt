@@ -71,13 +71,12 @@ fun InnerSearchItem(
 private fun InnerSearchItemPreviewOne() {
     InnerSearchItem(
         translation = Translation(
-            id = 4,
             source = Word.Serbian(
                 latinValue = "kiša",
                 cyrillicValue = "киша"
             ),
             translations = listOf(
-                Word.Russian("дождь")
+                Word.Russian(value = "дождь")
             )
         )
     )
@@ -88,14 +87,13 @@ private fun InnerSearchItemPreviewOne() {
 private fun InnerSearchItemPreviewTwo() {
     InnerSearchItem(
         translation = Translation(
-            id = 4,
             source = Word.Serbian(
                 latinValue = "već",
                 cyrillicValue = "већ"
             ),
             translations = listOf(
-                Word.Russian("уже"),
-                Word.Russian("а")
+                Word.Russian(value = "уже"),
+                Word.Russian(value = "а")
             )
         )
     )
@@ -106,13 +104,12 @@ private fun InnerSearchItemPreviewTwo() {
 private fun InnerSearchItemPreviewThree() {
     InnerSearchItem(
         translation = Translation(
-            id = 4,
             source = Word.Serbian(
                 latinValue = "šargarepa",
                 cyrillicValue = ""
             ),
             translations = listOf(
-                Word.Russian("морковь"),
+                Word.Russian(value = "морковь"),
             )
         )
     )
@@ -123,13 +120,12 @@ private fun InnerSearchItemPreviewThree() {
 private fun InnerSearchItemPreviewFour() {
     InnerSearchItem(
         translation = Translation(
-            id = 4,
             source = Word.Serbian(
                 latinValue = "",
                 cyrillicValue = "књига"
             ),
             translations = listOf(
-                Word.Russian("книга"),
+                Word.Russian(value = "книга"),
             )
         )
     )
