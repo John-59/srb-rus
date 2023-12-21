@@ -56,4 +56,11 @@ class SearchViewModel @Inject constructor(
 //            _foundRemoteWords = remoteDictionary.search(value)
 //        }
     }
+
+    fun removeTranslation(translation: Translation<Word.Serbian, Word.Russian>) {
+        viewModelScope.launch {
+            innerDictionary.remove(translation)
+            _innerWords.value = innerDictionary.getAllByAlphabet()
+        }
+    }
 }

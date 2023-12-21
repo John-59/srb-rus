@@ -6,4 +6,6 @@ interface IDictionary {
     suspend fun getAllByAlphabet(): List<Translation<Word.Serbian, Word.Russian>>
 
     suspend fun add(translation: Translation<Word.Serbian, Word.Russian>)
+
+    suspend fun remove(translation: Translation<Word.Serbian, Word.Russian>)
 }

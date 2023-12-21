@@ -207,6 +207,9 @@ private fun AddWordScreenPreview() {
                 override suspend fun add(translation: Translation<Word.Serbian, Word.Russian>) {
                 }
 
+                override suspend fun remove(translation: Translation<Word.Serbian, Word.Russian>) {
+                }
+
             }
         ),
         onBack = {}

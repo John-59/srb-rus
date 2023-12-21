@@ -16,4 +16,5 @@ object Colors {
     val Tips = Color(0xFF55CCFF)
     val Icons = Color(0xFF4200FF)
     val Buttons = Color(0xFF4200FF)
+    val Delete = Color(0xFFE14E4E)
 }

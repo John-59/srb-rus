@@ -20,4 +20,8 @@ class Dictionary @Inject constructor(
     override suspend fun add(translation: Translation<Word.Serbian, Word.Russian>) {
         writableRepository.add(translation)
     }
+
+    override suspend fun remove(translation: Translation<Word.Serbian, Word.Russian>) {
+        writableRepository.remove(translation)
+    }
 }

@@ -42,6 +42,7 @@ fun SearchScreen(
         )
         SearchResult(
             innerWords = innerWords,
+            onRemoveTranslation = viewModel::removeTranslation,
             modifier = Modifier
                 .padding(horizontal = 20.dp)
 
@@ -68,6 +69,9 @@ private fun SearchScreenPreview() {
                 }
 
                 override suspend fun add(translation: Translation<Word.Serbian, Word.Russian>) {
+                }
+
+                override suspend fun remove(translation: Translation<Word.Serbian, Word.Russian>) {
                 }
 
             },

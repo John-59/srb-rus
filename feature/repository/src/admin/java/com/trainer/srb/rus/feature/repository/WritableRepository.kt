@@ -25,6 +25,12 @@ class WritableRepository @Inject constructor(
         }
     }
 
+    override suspend fun remove(translation: Translation<Word.Serbian, Word.Russian>) {
+        withContext(Dispatchers.IO) {
+            predefinedRepositoryDao.remove(translation.source.latinId)
+        }
+    }
+
     override suspend fun search(value: String): List<Translation<Word.Serbian, Word.Russian>> {
         return withContext(Dispatchers.IO) {
             val found = predefinedRepositoryDao.searchInSrbLat(value)
