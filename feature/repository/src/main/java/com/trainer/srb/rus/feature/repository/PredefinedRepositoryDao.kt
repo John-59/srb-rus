@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.RawQuery
 import androidx.room.Transaction
+import androidx.room.Update
 import androidx.sqlite.db.SupportSQLiteQuery
 import kotlinx.coroutines.flow.Flow
 
@@ -76,8 +77,14 @@ abstract class PredefinedRepositoryDao {
         remove(word.serbianLat)
     }
 
+    @Update
+    abstract suspend fun update(srbLatinWord: SerbianLatinWord)
+
     @Query("SELECT * FROM srb_lat")
     abstract fun getAll(): Flow<List<SerbianToRussianWord>>
+
+//    @Query("SELECT * FROM srb_lat WHERE NOT unused")
+//    abstract fun getUsed(): Flow<List<SerbianToRussianWord>>
 
     @Query("SELECT * FROM srb_lat ORDER BY word")
     abstract suspend fun getAllByAlphabet(): List<SerbianToRussianWord>

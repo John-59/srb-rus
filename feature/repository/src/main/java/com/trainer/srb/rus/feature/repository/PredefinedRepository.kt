@@ -14,7 +14,7 @@ class PredefinedRepository @Inject constructor(
     private val predefinedRepositoryDao: PredefinedRepositoryDao
 ): IPredefinedRepository {
 
-    override val srbToRusTranslations: Flow<List<Translation<Word.Serbian, Word.Russian>>> = flow {
+    override val translations: Flow<List<Translation<Word.Serbian, Word.Russian>>> = flow {
         predefinedRepositoryDao.getAll().collect {
             val translations = it.map {
                 it.toTranslation()
@@ -23,14 +23,14 @@ class PredefinedRepository @Inject constructor(
         }
     }
 
-    override suspend fun addSrbToRusTranslation(
-        srbToRusTranslation: Translation<Word.Serbian, Word.Russian>
+    override suspend fun add(
+        translation: Translation<Word.Serbian, Word.Russian>
     ) {
         withContext(Dispatchers.IO) {
             val translationToRussian = TranslationToRussian(
-                srbLatWord = srbToRusTranslation.source.latinValue,
-                srbCyrWord = srbToRusTranslation.source.cyrillicValue,
-                rusWords = srbToRusTranslation.translations.map {
+                srbLatWord = translation.source.latinValue,
+                srbCyrWord = translation.source.cyrillicValue,
+                rusWords = translation.translations.map {
                     it.value
                 }
             )
@@ -39,12 +39,23 @@ class PredefinedRepository @Inject constructor(
         }
     }
 
-    override suspend fun removeSrbToRusTranslation(
-        srbToRusTranslation: Translation<Word.Serbian, Word.Russian>
+    override suspend fun remove(
+        translation: Translation<Word.Serbian, Word.Russian>
     ) {
         withContext(Dispatchers.IO) {
-            predefinedRepositoryDao.remove(srbToRusTranslation.source.latinId)
+            predefinedRepositoryDao.remove(translation.source.latinId)
             makeCheckpoint()
+        }
+    }
+
+    override suspend fun markAsUnused(translation: Translation<Word.Serbian, Word.Russian>) {
+        withContext(Dispatchers.IO) {
+            val srbLatinWord = SerbianLatinWord(
+                id = translation.source.latinId,
+                word = translation.source.latinValue,
+                unused = true
+            )
+            predefinedRepositoryDao.update(srbLatinWord)
         }
     }
 

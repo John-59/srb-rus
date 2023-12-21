@@ -11,14 +11,22 @@ class WritableRepository @Inject constructor(
     private val innerRepositoryDao: InnerRepositoryDao
 ): IWritableRepository {
     override suspend fun add(translation: Translation<Word.Serbian, Word.Russian>) {
-        val translationToRussian = TranslationToRussian(
-            srbLatWord = translation.source.latinValue,
-            srbCyrWord = translation.source.cyrillicValue,
-            rusWords = translation.translations.map {
-                it.value
-            }
-        )
-        innerRepositoryDao.insert(translationToRussian)
+        withContext(Dispatchers.IO) {
+            val translationToRussian = TranslationToRussian(
+                srbLatWord = translation.source.latinValue,
+                srbCyrWord = translation.source.cyrillicValue,
+                rusWords = translation.translations.map {
+                    it.value
+                }
+            )
+            innerRepositoryDao.insert(translationToRussian)
+        }
+    }
+
+    override suspend fun remove(translation: Translation<Word.Serbian, Word.Russian>) {
+        withContext(Dispatchers.IO) {
+            innerRepositoryDao.remove(translation.source.latinId)
+        }
     }
 
     override suspend fun search(value: String): List<Translation<Word.Serbian, Word.Russian>> {

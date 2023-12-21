@@ -1,6 +1,7 @@
 package com.trainer.srb.rus.feature.repository
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
@@ -20,6 +21,21 @@ abstract class InnerRepositoryDao {
     @Insert
     protected abstract suspend fun insert(crossRefTable: SerbianRussianCrossRefTable)
 
+    @Delete
+    protected abstract suspend fun remove(word: SerbianLatinWord)
+
+    @Delete
+    protected abstract suspend fun remove(word: SerbianCyrillicWord)
+
+    @Delete
+    protected abstract suspend fun remove(words: List<RussianWord>)
+
+    @Delete
+    protected abstract suspend fun removeCrossRefs(crossRefTable: List<SerbianRussianCrossRefTable>)
+
+    @Query("SELECT * FROM srb_lat WHERE id = :srbLatWordId")
+    protected abstract suspend fun getWord(srbLatWordId: Long): SerbianToRussianWord?
+
     @Transaction
     open suspend fun insert(translationToRussian: TranslationToRussian) {
         val srbLatinWord = SerbianLatinWord(word = translationToRussian.srbLatWord)
@@ -35,6 +51,26 @@ abstract class InnerRepositoryDao {
             val crossRefTable = SerbianRussianCrossRefTable(srbLatWordId = srbLatId, rusWordId = rusWordId)
             insert(crossRefTable)
         }
+    }
+
+    @Transaction
+    open suspend fun remove(srbLatWordId: Long) {
+        val word = getWord(srbLatWordId)
+        if (word == null) {
+            return
+        }
+        if (word.serbianCyr != null) {
+            remove(word.serbianCyr)
+        }
+        val crossRefs = word.russians.map {
+            SerbianRussianCrossRefTable(
+                srbLatWordId = word.serbianLat.id,
+                rusWordId = it.id
+            )
+        }
+        removeCrossRefs(crossRefs)
+        remove(word.russians)
+        remove(word.serbianLat)
     }
 
     @Query("SELECT * FROM srb_lat ORDER BY word")

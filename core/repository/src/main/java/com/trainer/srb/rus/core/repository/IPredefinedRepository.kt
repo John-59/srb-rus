@@ -6,11 +6,13 @@ import kotlinx.coroutines.flow.Flow
 
 interface IPredefinedRepository {
 
-    val srbToRusTranslations: Flow<List<Translation<Word.Serbian, Word.Russian>>>
+    val translations: Flow<List<Translation<Word.Serbian, Word.Russian>>>
 
-    suspend fun addSrbToRusTranslation(srbToRusTranslation: Translation<Word.Serbian, Word.Russian>)
+    suspend fun add(translation: Translation<Word.Serbian, Word.Russian>)
 
-    suspend fun removeSrbToRusTranslation(srbToRusTranslation: Translation<Word.Serbian, Word.Russian>)
+    suspend fun remove(translation: Translation<Word.Serbian, Word.Russian>)
+
+    suspend fun markAsUnused(translation: Translation<Word.Serbian, Word.Russian>)
 
     suspend fun search(value: String): List<Translation<Word.Serbian, Word.Russian>>
 
