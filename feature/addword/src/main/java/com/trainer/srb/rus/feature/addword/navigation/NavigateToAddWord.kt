@@ -4,7 +4,7 @@ import android.net.Uri
 import androidx.navigation.NavHostController
 import com.trainer.srb.rus.core.dictionary.Word
 
-fun NavHostController.navigateToAddWord(word: Word) {
+fun NavHostController.navigateToAddWord(word: Word, previousDestination: String) {
     val (srbLatValue, srbCyrValue, rusValue) = when (word) {
         is Word.Russian -> {
             Triple("", "", Uri.encode(word.value))
@@ -14,5 +14,10 @@ fun NavHostController.navigateToAddWord(word: Word) {
         }
     }
     val route = "${AddWordDestination.route}?$srbLatValue?$srbCyrValue?$rusValue"
-    this.navigate(route)
+    this.navigate(route) {
+        launchSingleTop = true
+        popUpTo(
+            previousDestination
+        )
+    }
 }

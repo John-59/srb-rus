@@ -23,12 +23,16 @@ fun MainNavHost(
     ) {
         composable(HomeScreenDestination.route) {
             HomeScreen(
-                navigateToSearch = navController::navigateToSearch
+                navigateToSearch = {
+                    navController.navigateToSearch(HomeScreenDestination.route)
+                }
             )
         }
         composable(SearchScreenDestination.route) {
             SearchScreen(
-                navigateToAddWord = navController::navigateToAddWord
+                navigateToAddWord = {
+                    navController.navigateToAddWord(it, SearchScreenDestination.route)
+                }
             )
         }
         composable(
@@ -36,7 +40,9 @@ fun MainNavHost(
             arguments = AddWordDestination.arguments
         ) {
             AddWordScreen(
-                onBack = navController::navigateToSearch
+                onBack = {
+                    navController.navigateToSearch(HomeScreenDestination.route)
+                }
             )
         }
     }
