@@ -59,10 +59,7 @@ abstract class PredefinedRepositoryDao {
 
     @Transaction
     open suspend fun remove(srbLatWordId: Long) {
-        val word = getWord(srbLatWordId)
-        if (word == null) {
-            return
-        }
+        val word = getWord(srbLatWordId) ?: return
         if (word.serbianCyr != null) {
             remove(word.serbianCyr)
         }
@@ -83,11 +80,8 @@ abstract class PredefinedRepositoryDao {
     @Query("SELECT * FROM srb_lat")
     abstract fun getAll(): Flow<List<SerbianToRussianWord>>
 
-//    @Query("SELECT * FROM srb_lat WHERE NOT unused")
-//    abstract fun getUsed(): Flow<List<SerbianToRussianWord>>
-
-    @Query("SELECT * FROM srb_lat ORDER BY word")
-    abstract suspend fun getAllByAlphabet(): List<SerbianToRussianWord>
+    @Query("SELECT * FROM srb_lat WHERE NOT unused")
+    abstract fun getUsed(): Flow<List<SerbianToRussianWord>>
 
     @RawQuery
     abstract suspend fun checkpoint(supportSQLiteQuery: SupportSQLiteQuery): Int

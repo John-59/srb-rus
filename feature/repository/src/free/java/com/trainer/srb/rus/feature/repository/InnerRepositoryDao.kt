@@ -5,6 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 abstract class InnerRepositoryDao {
@@ -73,8 +74,8 @@ abstract class InnerRepositoryDao {
         remove(word.serbianLat)
     }
 
-    @Query("SELECT * FROM srb_lat ORDER BY word")
-    abstract suspend fun getAllByAlphabet(): List<SerbianToRussianWord>
+    @Query("SELECT * FROM srb_lat")
+    abstract fun getAll(): Flow<List<SerbianToRussianWord>>
 
     @Query("SELECT * FROM srb_lat WHERE word LIKE :value||'%'")
     abstract suspend fun searchInSrbLat(value: String): List<SerbianToRussianWord>

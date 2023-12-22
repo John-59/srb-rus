@@ -28,6 +28,8 @@ import com.trainer.srb.rus.core.dictionary.IDictionary
 import com.trainer.srb.rus.core.dictionary.Translation
 import com.trainer.srb.rus.core.dictionary.Word
 import com.trainer.srb.rus.core.ui.CustomTextField
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
 import com.trainer.srb.rus.core.design.R as DesignRes
 
 @Composable
@@ -118,8 +120,6 @@ private fun SerbianWord(
     serbianWord: Word.Serbian,
     onSrbLatChange: (String) -> Unit,
     onSrbCyrChange: (String) -> Unit,
-//    onAddLatinSerbianWord: (String) -> Unit,
-//    onAddCyrillicSerbianWord: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -196,11 +196,10 @@ private fun AddWordScreenPreview() {
         viewModel = AddWordViewModel(
             savedStateHandle = SavedStateHandle(),
             dictionary = object : IDictionary {
-                override suspend fun search(value: String): List<Translation<Word.Serbian, Word.Russian>> {
-                    return emptyList()
-                }
+                override val translations: Flow<List<Translation<Word.Serbian, Word.Russian>>>
+                    get() = emptyFlow()
 
-                override suspend fun getAllByAlphabet(): List<Translation<Word.Serbian, Word.Russian>> {
+                override suspend fun search(value: String): List<Translation<Word.Serbian, Word.Russian>> {
                     return emptyList()
                 }
 
@@ -209,7 +208,6 @@ private fun AddWordScreenPreview() {
 
                 override suspend fun remove(translation: Translation<Word.Serbian, Word.Russian>) {
                 }
-
             }
         ),
         onBack = {}

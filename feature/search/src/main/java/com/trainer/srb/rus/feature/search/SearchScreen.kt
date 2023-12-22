@@ -19,6 +19,8 @@ import com.trainer.srb.rus.core.dictionary.IDictionary
 import com.trainer.srb.rus.core.dictionary.IRemoteDictionary
 import com.trainer.srb.rus.core.dictionary.Translation
 import com.trainer.srb.rus.core.dictionary.Word
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
 
 @Composable
 fun SearchScreen(
@@ -26,7 +28,8 @@ fun SearchScreen(
     modifier: Modifier = Modifier,
     viewModel: SearchViewModel = hiltViewModel(),
 ) {
-    val innerWords by viewModel.innerWords.collectAsState()
+    val visibleWords by viewModel.visibleWords.collectAsState()
+    val searchingWord by viewModel.searchingWord.collectAsState()
     val focusRequester = remember{ FocusRequester() }
     Column(
         modifier = modifier.fillMaxSize(),
@@ -36,12 +39,12 @@ fun SearchScreen(
             modifier = Modifier
                 .padding(20.dp)
                 .focusRequester(focusRequester),
-            value = viewModel.searchingWord,
+            value = searchingWord,
             onValueChange = viewModel::searchingWordChange,
             onAddClicked = navigateToAddWord
         )
         SearchResult(
-            innerWords = innerWords,
+            innerWords = visibleWords,
             onRemoveTranslation = viewModel::removeTranslation,
             modifier = Modifier
                 .padding(horizontal = 20.dp)
@@ -60,11 +63,10 @@ private fun SearchScreenPreview() {
     SearchScreen(
         viewModel = SearchViewModel(
             innerDictionary = object : IDictionary {
-                override suspend fun search(value: String): List<Translation<Word.Serbian, Word.Russian>> {
-                    return emptyList()
-                }
+                override val translations: Flow<List<Translation<Word.Serbian, Word.Russian>>>
+                    get() = emptyFlow()
 
-                override suspend fun getAllByAlphabet(): List<Translation<Word.Serbian, Word.Russian>> {
+                override suspend fun search(value: String): List<Translation<Word.Serbian, Word.Russian>> {
                     return emptyList()
                 }
 
@@ -73,13 +75,11 @@ private fun SearchScreenPreview() {
 
                 override suspend fun remove(translation: Translation<Word.Serbian, Word.Russian>) {
                 }
-
             },
             remoteDictionary = object : IRemoteDictionary {
                 override fun search(value: String): List<Translation<Word.Serbian, Word.Russian>> {
                     return emptyList()
                 }
-
             }
         ),
         navigateToAddWord = {}
