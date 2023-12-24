@@ -23,4 +23,8 @@ class Dictionary @Inject constructor(
     override suspend fun remove(translation: Translation<Word.Serbian, Word.Russian>) {
         writableRepository.remove(translation)
     }
+
+    override suspend fun getRandom(randomTranslationsCount: Int): List<Translation<Word.Serbian, Word.Russian>> {
+        return writableRepository.getRandom(randomTranslationsCount)
+    }
 }

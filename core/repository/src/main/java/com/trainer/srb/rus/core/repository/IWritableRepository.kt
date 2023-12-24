@@ -13,4 +13,6 @@ interface IWritableRepository {
     suspend fun remove(translation: Translation<Word.Serbian, Word.Russian>)
 
     suspend fun search(value: String): List<Translation<Word.Serbian, Word.Russian>>
+
+    suspend fun getRandom(randomTranslationsCount: Int): List<Translation<Word.Serbian, Word.Russian>>
 }

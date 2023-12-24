@@ -53,6 +53,15 @@ class WritableRepository @Inject constructor(
         }
     }
 
+    override suspend fun getRandom(randomTranslationsCount: Int): List<Translation<Word.Serbian, Word.Russian>> {
+        return withContext(Dispatchers.IO) {
+            val randoms = predefinedRepositoryDao.getRandom(randomTranslationsCount)
+            randoms.map {
+                it.toTranslation()
+            }
+        }
+    }
+
     private suspend fun makeCheckpoint() {
         predefinedRepositoryDao.checkpoint(SimpleSQLiteQuery("pragma wal_checkpoint(full)"))
     }

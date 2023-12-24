@@ -41,4 +41,13 @@ class PredefinedRepository @Inject constructor(
             }
         }
     }
+
+    override suspend fun getRandom(randomTranslationsCount: Int): List<Translation<Word.Serbian, Word.Russian>> {
+        return withContext(Dispatchers.IO) {
+            val random = predefinedRepositoryDao.getRandom(randomTranslationsCount)
+            random.map {
+                it.toTranslation()
+            }
+        }
+    }
 }

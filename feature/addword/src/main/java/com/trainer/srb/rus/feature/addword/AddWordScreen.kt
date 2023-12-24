@@ -216,6 +216,10 @@ private fun AddWordScreenPreview() {
 
                 override suspend fun remove(translation: Translation<Word.Serbian, Word.Russian>) {
                 }
+
+                override suspend fun getRandom(randomTranslationsCount: Int): List<Translation<Word.Serbian, Word.Russian>> {
+                    return emptyList()
+                }
             }
         ),
         onBack = {}
