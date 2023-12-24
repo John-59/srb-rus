@@ -82,7 +82,6 @@ dependencies {
 
     implementation(project(":feature:home"))
     implementation(project(":feature:search"))
-    implementation(project(":feature:actions"))
     implementation(project(":feature:addword"))
     implementation(project(":feature:dictionary"))
 
