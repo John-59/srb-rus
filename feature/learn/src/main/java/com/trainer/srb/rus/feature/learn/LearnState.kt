@@ -55,11 +55,39 @@ sealed class LearnState {
         }
     }
 
+    class ShowInSerbianAndSelectRussianVariants: LearnState()
+
     class ShowInRussianAndConstructFromPredefinedLetters(
         val translation: Translation<Word.Serbian, Word.Russian>
     ): LearnState()
 
     class ShowInRussianAndWriteInSerbian(
         val translation: Translation<Word.Serbian, Word.Russian>
-    ): LearnState()
+    ): LearnState() {
+
+        enum class Validity {
+            UNDEFINED,
+            VALID,
+            INVALID
+        }
+
+        var userInput by mutableStateOf("")
+            private set
+
+        var userInputValidity by mutableStateOf(Validity.UNDEFINED)
+            private set
+
+        fun userInputChanged(value: String) {
+            userInput = value
+            userInputValidity = Validity.UNDEFINED
+        }
+
+        fun checkUserInput() {
+            userInputValidity = when (userInput.trim().lowercase()) {
+                translation.source.latinValue.lowercase() -> Validity.VALID
+                translation.source.cyrillicValue.lowercase() -> Validity.VALID
+                else -> Validity.INVALID
+            }
+        }
+    }
 }

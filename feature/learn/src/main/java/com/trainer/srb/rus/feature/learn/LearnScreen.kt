@@ -55,9 +55,17 @@ private fun Body(
             )
         }
 
+        is LearnState.ShowInSerbianAndSelectRussianVariants -> {
+            ShowInSerbianAndSelectRussianVariantsBody(
+                state = state,
+                onNext = onNext,
+                modifier = Modifier.padding(20.dp)
+            )
+        }
+
         is LearnState.ShowInRussianAndWriteInSerbian -> {
             ShowInRussianAndWriteInSerbianBody(
-                translation = state.translation,
+                state = state,
                 onNext = onNext,
                 modifier = Modifier.padding(20.dp)
             )

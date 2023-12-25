@@ -23,7 +23,8 @@ class LearnViewModel @Inject constructor(
     private val learningSteps = listOf(
         LearningStep.ShowTranslation,
         LearningStep.ChoosingFromSerbianVariants(variantsCount = 4),
-        LearningStep.WriteInSerbianFromPredefinedLetters,
+//        LearningStep.ChoosingFromRussianVariants(variantsCount = 4),
+//        LearningStep.WriteInSerbianFromPredefinedLetters,
         LearningStep.WriteInSerbian
     )
 
@@ -73,6 +74,10 @@ class LearnViewModel @Inject constructor(
                             others = others
                         )
                     }
+                }
+
+                is LearningStep.ChoosingFromRussianVariants -> {
+                    _state.value = LearnState.ShowInSerbianAndSelectRussianVariants()
                 }
 
                 LearningStep.ShowTranslation -> {

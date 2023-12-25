@@ -24,16 +24,21 @@ val Typography = Typography(
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp
     ),
+    titleSmall = TextStyle(
+        fontFamily = Poppins,
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 18.sp
+    ),
     titleMedium = TextStyle(
         fontFamily = Poppins,
         fontWeight = FontWeight.SemiBold,
         fontSize = 20.sp
     ),
-    titleSmall = TextStyle(
+    titleLarge = TextStyle(
         fontFamily = Poppins,
-        fontWeight = FontWeight.SemiBold,
-        fontSize = 18.sp
-    )
+        fontWeight = FontWeight.Bold,
+        fontSize = 24.sp
+    ),
     /* Other default text styles to override
     titleLarge = TextStyle(
         fontFamily = FontFamily.Default,
