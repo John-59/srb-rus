@@ -18,7 +18,14 @@ class LearnViewModel @Inject constructor(
     private val dictionary: IDictionary
 ): ViewModel() {
 
-    private val learningWordsCount = 1 // 7
+    private val learningWordsCount = 7
+
+    private val learningSteps = listOf(
+        LearningStep.ShowTranslation,
+        LearningStep.ChoosingFromSerbianVariants(variantsCount = 4),
+        LearningStep.WriteInSerbianFromPredefinedLetters,
+        LearningStep.WriteInSerbian
+    )
 
     private val _state = MutableStateFlow<LearnState>(LearnState.Initialize)
     val state: StateFlow<LearnState> = _state.stateIn(
@@ -27,44 +34,75 @@ class LearnViewModel @Inject constructor(
         initialValue = LearnState.Initialize
     )
 
-//    private var translations = emptyList<Translation<Word.Serbian, Word.Russian>>()
-    private var currentTranslation: Translation<Word.Serbian, Word.Russian>? = null
+    private val wordToLearningStep = mutableMapOf<Translation<Word.Serbian, Word.Russian>, ArrayDeque<LearningStep>>()
 
     init {
         viewModelScope.launch {
-//            translations = dictionary.getRandom(learningWordsCount)
-//            val firstTranslation = translations.firstOrNull()
-            val firstTranslation = dictionary.getRandom(learningWordsCount).firstOrNull()
-            if (firstTranslation == null) {
-                _state.value = LearnState.Error("Словарь пуст.")
-            } else {
-                currentTranslation = firstTranslation
-                _state.value = LearnState.ShowInSerbianWithTranslation(firstTranslation)
+            dictionary.getRandom(learningWordsCount).forEach {
+                wordToLearningStep[it] = ArrayDeque(learningSteps)
             }
+            next()
         }
     }
 
     fun next() {
-//        var random = translations.random()
-//        while (random == currentTranslation) {
-//            random = translations.random()
-//        }
-//        currentTranslation = random
-//        _state.value = LearnState.ShowInSerbianWithTranslation(random)
+        getNextWord().let {
+            val (word, stepQueue) = it ?: (null to null)
+            step(word, stepQueue)
+        }
+    }
 
-        viewModelScope.launch {
-            var random = dictionary.getRandom(1).firstOrNull()
-            if (random == null) {
-                _state.value = LearnState.Error("Словарь пуст.")
-            } else {
-                while (random == currentTranslation) {
-                    random = dictionary.getRandom(1).firstOrNull()
+    private fun step(
+        word: Translation<Word.Serbian, Word.Russian>?,
+        stepQueue: ArrayDeque<LearningStep>?
+    ) {
+        val step = stepQueue?.removeFirstOrNull()
+        if (word == null) {
+            _state.value = LearnState.ExerciseFinished
+        } else {
+            when (step) {
+                is LearningStep.ChoosingFromSerbianVariants -> {
+                    viewModelScope.launch {
+                        val others = dictionary
+                            .getRandom(step.variantsCount)
+                            .filter {
+                                !it.source.latinValue.equals(word.source.latinValue, true)
+                            }.take(step.variantsCount - 1)
+                        _state.value = LearnState.ShowInRussianAndSelectSerbianVariants(
+                            translation = word,
+                            others = others
+                        )
+                    }
                 }
-                currentTranslation = random
-                if (random != null) {
-                    _state.value = LearnState.ShowInSerbianWithTranslation(random)
+
+                LearningStep.ShowTranslation -> {
+                    _state.value = LearnState.ShowInSerbianWithTranslation(word)
+                }
+
+                LearningStep.WriteInSerbian -> {
+                    _state.value = LearnState.ShowInRussianAndWriteInSerbian(word)
+                }
+
+                LearningStep.WriteInSerbianFromPredefinedLetters -> {
+                    _state.value = LearnState.ShowInRussianAndConstructFromPredefinedLetters(word)
+                }
+
+                null -> {
+                    _state.value = LearnState.ExerciseFinished
                 }
             }
+        }
+    }
+
+    private fun getNextWord(): Pair<Translation<Word.Serbian, Word.Russian>, ArrayDeque<LearningStep>>? {
+        val randomWord = wordToLearningStep.filter {
+            !it.value.isEmpty()
+        }.keys.randomOrNull()
+        if (randomWord == null) {
+            return null
+        } else {
+            val learningStepQueue = wordToLearningStep[randomWord] ?: return null
+            return randomWord to learningStepQueue
         }
     }
 }

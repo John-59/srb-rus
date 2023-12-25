@@ -17,19 +17,22 @@ import kotlinx.coroutines.flow.emptyFlow
 
 @Composable
 fun LearnScreen(
-     viewModel: LearnViewModel = hiltViewModel()
+    onFinished: () -> Unit,
+    viewModel: LearnViewModel = hiltViewModel()
 ) {
     val learnState by viewModel.state.collectAsState()
     Body(
         state = learnState,
-        onNext = viewModel::next
+        onNext = viewModel::next,
+        onFinished = onFinished
     )
 }
 
 @Composable
 private fun Body(
     state: LearnState,
-    onNext: () -> Unit
+    onNext: () -> Unit,
+    onFinished: () -> Unit
 ) {
     when (state) {
         LearnState.Initialize -> {
@@ -37,15 +40,27 @@ private fun Body(
         }
 
         is LearnState.ShowInRussianAndConstructFromPredefinedLetters -> {
-            ShowInRussianAndConstructFromPredefinedLettersBody()
+            ShowInRussianAndConstructFromPredefinedLettersBody(
+                translation = state.translation,
+                onNext = onNext,
+                modifier = Modifier.padding(20.dp)
+            )
         }
 
         is LearnState.ShowInRussianAndSelectSerbianVariants -> {
-            ShowInRussianAndSelectSerbianVariantsBody()
+            ShowInRussianAndSelectSerbianVariantsBody(
+                state = state,
+                onNext = onNext,
+                modifier = Modifier.padding(20.dp)
+            )
         }
 
         is LearnState.ShowInRussianAndWriteInSerbian -> {
-            ShowInRussianAndWriteInSerbianBody()
+            ShowInRussianAndWriteInSerbianBody(
+                translation = state.translation,
+                onNext = onNext,
+                modifier = Modifier.padding(20.dp)
+            )
         }
 
         is LearnState.ShowInSerbianWithTranslation -> {
@@ -62,6 +77,13 @@ private fun Body(
                 modifier = Modifier.fillMaxSize().padding(20.dp)
             )
         }
+
+        LearnState.ExerciseFinished -> {
+            ExerciseFinishedBody(
+                onNext = onFinished,
+                modifier = Modifier.fillMaxSize().padding(20.dp)
+            )
+        }
     }
 }
 
@@ -69,6 +91,7 @@ private fun Body(
 @Composable
 fun LearnScreenPreview() {
     LearnScreen(
+        onFinished = {},
         viewModel = LearnViewModel(
             dictionary = object : IDictionary {
                 override val translations: Flow<List<Translation<Word.Serbian, Word.Russian>>>

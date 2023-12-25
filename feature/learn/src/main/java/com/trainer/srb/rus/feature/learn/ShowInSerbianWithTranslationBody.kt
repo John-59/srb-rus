@@ -17,6 +17,8 @@ import androidx.compose.ui.unit.dp
 import com.trainer.srb.rus.core.design.MainTheme
 import com.trainer.srb.rus.core.dictionary.Translation
 import com.trainer.srb.rus.core.dictionary.Word
+import com.trainer.srb.rus.core.dictionary.russianAsString
+import com.trainer.srb.rus.core.dictionary.serbianAsString
 
 @Composable
 fun ShowInSerbianWithTranslationBody(
@@ -91,13 +93,11 @@ private fun Word(
     ) {
         Column {
             Text(
-                text = "${translation.source.latinValue} / ${translation.source.cyrillicValue}",
+                text = translation.serbianAsString(),
                 style = MainTheme.typography.titleMedium
             )
             Text(
-                text = translation.translations.joinToString(", ") {
-                    it.value
-                },
+                text = translation.russianAsString(),
                 style = MainTheme.typography.titleSmall
             )
         }
