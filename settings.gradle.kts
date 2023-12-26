@@ -15,7 +15,6 @@ dependencyResolutionManagement {
 
 rootProject.name = "srbrus"
 include(":app")
-include(":feature:actions")
 include(":feature:addword")
 include(":core:repository")
 include(":core:dictionary")
@@ -25,3 +24,4 @@ include(":feature:home")
 include(":core:design")
 include(":core:ui")
 include(":feature:search")
+include(":feature:learn")

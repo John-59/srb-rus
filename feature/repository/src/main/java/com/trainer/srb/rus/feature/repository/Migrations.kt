@@ -11,6 +11,7 @@ fun <T: RoomDatabase> RoomDatabase.Builder<T>.applyMigrations(): RoomDatabase.Bu
         .addMigrations(MIGRATION_ASSETS_3_4)
         .addMigrations(MIGRATION_ASSETS_4_5)
         .addMigrations(MIGRATION_ASSETS_5_6)
+        .addMigrations(MIGRATION_ASSETS_6_7)
 }
 
 val MIGRATION_ASSETS_1_2 = object : Migration(1, 2) {
@@ -35,6 +36,11 @@ val MIGRATION_ASSETS_4_5 = object : Migration(4, 5) {
 }
 
 val MIGRATION_ASSETS_5_6 = object : Migration(5, 6) {
+    override fun migrate(db: SupportSQLiteDatabase) {
+    }
+}
+
+val MIGRATION_ASSETS_6_7 = object : Migration(6, 7) {
     override fun migrate(db: SupportSQLiteDatabase) {
     }
 }

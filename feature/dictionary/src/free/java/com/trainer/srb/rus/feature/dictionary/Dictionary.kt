@@ -43,4 +43,31 @@ class Dictionary @Inject constructor(
             writableRepository.remove(translation)
         }
     }
+
+    override suspend fun getRandom(randomTranslationsCount: Int): List<Translation<Word.Serbian, Word.Russian>> {
+        return when {
+            randomTranslationsCount <= 0 -> {
+                emptyList()
+            }
+
+            randomTranslationsCount == 1 -> {
+                val random = listOfNotNull(
+                    predefinedRepository.getRandom(1).firstOrNull(),
+                    writableRepository.getRandom(1).firstOrNull()
+                ).randomOrNull()
+                listOfNotNull(random)
+            }
+
+            else -> {
+                val fromPredefined = predefinedRepository.getRandom(randomTranslationsCount)
+                val fromWritable = writableRepository.getRandom(randomTranslationsCount)
+                (0 until randomTranslationsCount).mapNotNull {
+                    when (it % 2) {
+                        0 -> fromPredefined.getOrNull(it) ?: fromWritable.getOrNull(it)
+                        else -> fromWritable.getOrNull(it) ?: fromPredefined.getOrNull(it)
+                    }
+                }
+            }
+        }
+    }
 }

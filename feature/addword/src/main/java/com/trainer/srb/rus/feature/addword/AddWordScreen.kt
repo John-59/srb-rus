@@ -3,6 +3,7 @@ package com.trainer.srb.rus.feature.addword
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,6 +17,7 @@ import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.BaselineShift
 import androidx.compose.ui.tooling.preview.Preview
@@ -156,36 +158,42 @@ private fun WordItem(
                 shape = RoundedCornerShape(10.dp),
                 border = BorderStroke(2.dp, MainTheme.colors.Border)
             )
+            .background(
+                color = MainTheme.colors.White,
+                shape = RoundedCornerShape(10.dp)
+            )
+            .clip(
+                shape = RoundedCornerShape(10.dp)
+            )
             .fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        Row(
-            modifier = Modifier.padding(5.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Image(
-                painter = painterResource(iconId),
-                contentDescription = null
-            )
-            CustomTextField(
-                modifier = Modifier
-                    .padding(horizontal = 10.dp),
-                colors = TextFieldDefaults.outlinedTextFieldColors(),
-                textStyle = MainTheme.typography.displayMedium.copy(
-                    baselineShift = BaselineShift(-0.2f)
-                ),
-                value = value,
-                placeholder = {
-                    Text(
-                        text = placeholder,
-                        style = MainTheme.typography.displayMedium.copy(
-                            baselineShift = BaselineShift(-0.2f)
-                        ),
-                        color = MainTheme.colors.Tips,
-                    )
-                },
-                onValueChange = onValueChange
-            )
-        }
+        Image(
+            painter = painterResource(iconId),
+            contentDescription = null,
+            modifier = Modifier.padding(5.dp)
+        )
+        CustomTextField(
+            modifier = Modifier
+                .padding(end = 5.dp)
+                .fillMaxWidth()
+            ,
+            colors = TextFieldDefaults.outlinedTextFieldColors(),
+            textStyle = MainTheme.typography.displayMedium.copy(
+                baselineShift = BaselineShift(-0.2f)
+            ),
+            value = value,
+            placeholder = {
+                Text(
+                    text = placeholder,
+                    style = MainTheme.typography.displayMedium.copy(
+                        baselineShift = BaselineShift(-0.2f)
+                    ),
+                    color = MainTheme.colors.Tips,
+                )
+            },
+            onValueChange = onValueChange
+        )
     }
 }
 
@@ -207,6 +215,10 @@ private fun AddWordScreenPreview() {
                 }
 
                 override suspend fun remove(translation: Translation<Word.Serbian, Word.Russian>) {
+                }
+
+                override suspend fun getRandom(randomTranslationsCount: Int): List<Translation<Word.Serbian, Word.Russian>> {
+                    return emptyList()
                 }
             }
         ),

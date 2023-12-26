@@ -9,6 +9,10 @@ import com.trainer.srb.rus.feature.addword.navigation.AddWordDestination
 import com.trainer.srb.rus.feature.addword.navigation.navigateToAddWord
 import com.trainer.srb.rus.feature.home.HomeScreen
 import com.trainer.srb.rus.feature.home.navigation.HomeScreenDestination
+import com.trainer.srb.rus.feature.home.navigation.navigateToHome
+import com.trainer.srb.rus.feature.learn.LearnScreen
+import com.trainer.srb.rus.feature.learn.navigation.LearnDestination
+import com.trainer.srb.rus.feature.learn.navigation.navigateToLearn
 import com.trainer.srb.rus.feature.search.SearchScreen
 import com.trainer.srb.rus.feature.search.navigation.SearchScreenDestination
 import com.trainer.srb.rus.feature.search.navigation.navigateToSearch
@@ -25,7 +29,15 @@ fun MainNavHost(
             HomeScreen(
                 navigateToSearch = {
                     navController.navigateToSearch(HomeScreenDestination.route)
+                },
+                navigateToLearn = {
+                    navController.navigateToLearn(HomeScreenDestination.route)
                 }
+            )
+        }
+        composable(LearnDestination.route) {
+            LearnScreen(
+                onFinished = navController::navigateToHome
             )
         }
         composable(SearchScreenDestination.route) {

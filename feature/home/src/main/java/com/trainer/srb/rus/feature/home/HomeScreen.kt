@@ -24,6 +24,7 @@ import com.trainer.srb.rus.core.design.R as DesignRes
 @Composable
 fun HomeScreen(
     navigateToSearch: () -> Unit,
+    navigateToLearn: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -44,6 +45,7 @@ fun HomeScreen(
             onValueChange = {}
         )
         Body(
+            navigateToLearn = navigateToLearn,
             modifier = Modifier.fillMaxSize()
         )
     }
@@ -51,6 +53,7 @@ fun HomeScreen(
 
 @Composable
 private fun Body(
+    navigateToLearn: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -62,19 +65,30 @@ private fun Body(
             modifier = Modifier.border(
                 shape = RoundedCornerShape(10.dp),
                 border = BorderStroke(3.dp, MainTheme.colors.Border)
-            ),
+            ).clickable {
+                navigateToLearn()
+            },
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Image(
                 painter = painterResource(id = DesignRes.drawable.learn),
                 contentDescription = null,
-                modifier = Modifier.padding(10.dp)
+                modifier = Modifier.padding(
+                    top = 10.dp,
+                    bottom = 10.dp,
+                    start = 10.dp,
+                    end = 3.dp
+                )
             )
+
         }
         Text(
             text = "Учить слова",
             style = MainTheme.typography.displayMedium,
-            color = MainTheme.colors.Tips
+            color = MainTheme.colors.Tips,
+            modifier = Modifier.clickable {
+                navigateToLearn()
+            }
         )
     }
 }
@@ -83,6 +97,7 @@ private fun Body(
 @Composable
 private fun HomeScreenPreview() {
     HomeScreen(
-        navigateToSearch = {}
+        navigateToSearch = {},
+        navigateToLearn = {}
     )
 }

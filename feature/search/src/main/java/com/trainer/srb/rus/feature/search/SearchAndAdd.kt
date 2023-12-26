@@ -81,7 +81,7 @@ fun SearchAndAdd(
                 if (value.isNotBlank()) {
                     onAddClicked(Word.Serbian(latinValue = value, cyrillicValue = ""))
                 }
-            }
+            }.padding(5.dp)
         )
     }
 }
