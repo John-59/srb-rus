@@ -74,7 +74,7 @@ abstract class InnerRepositoryDao {
         remove(word.serbianLat)
     }
 
-    @Query("SELECT * FROM srb_lat")
+    @Query("SELECT * FROM srb_lat ORDER BY id DESC")
     abstract fun getAll(): Flow<List<SerbianToRussianWord>>
 
     @Query("SELECT * FROM srb_lat WHERE NOT unused ORDER BY RANDOM() LIMIT :randomTranslationsCount")

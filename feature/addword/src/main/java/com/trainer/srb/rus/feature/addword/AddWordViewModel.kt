@@ -61,9 +61,16 @@ class AddWordViewModel @Inject constructor(
     fun add() {
         viewModelScope.launch {
             val translation = Translation(
-                source = srbWord,
+                source = Word.Serbian(
+                    latinValue = srbWord.latinValue.trim(),
+                    cyrillicValue = srbWord.cyrillicValue.trim()
+                ),
                 translations = rusWords.filter {
                     it.value.isNotBlank()
+                }.map {
+                    Word.Russian(
+                        value = it.value.trim()
+                    )
                 }
             )
             dictionary.add(translation)
