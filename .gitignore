@@ -33,3 +33,4 @@ google-services.json
 *.hprof
 /.$Concept.drawio.dtmp
 /.$Concept.drawio.bkp
+/app/free/release/output-metadata.json
