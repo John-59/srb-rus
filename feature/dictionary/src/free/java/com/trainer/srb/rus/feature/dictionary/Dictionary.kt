@@ -39,6 +39,7 @@ class Dictionary @Inject constructor(
     override suspend fun remove(translation: Translation<Word.Serbian, Word.Russian>) {
         if (readonlyUuids.contains(translation.uuid)) {
             predefinedRepository.markAsUnused(translation)
+            writableRepository.markAsUnused(translation)
         } else {
             writableRepository.remove(translation)
         }

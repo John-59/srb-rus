@@ -79,6 +79,7 @@ dependencies {
 
     implementation(project(":core:design"))
     implementation(project(":core:dictionary"))
+    implementation(project(":core:repository"))
 
     implementation(project(":feature:home"))
     implementation(project(":feature:search"))
@@ -110,4 +111,6 @@ dependencies {
     implementation("com.google.dagger:hilt-android:2.48")
     kapt("com.google.dagger:hilt-android-compiler:2.48")
     implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
+
+    implementation("androidx.core:core-splashscreen:1.0.1")
 }

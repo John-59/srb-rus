@@ -32,14 +32,10 @@ abstract class RepositoryModule {
                 PredefinedRepositoryDatabase::class.java,
                 PredefinedRepositoryDatabase.NAME
             )
-                .applyMigrations()
+                .applyPredefinedMigrations()
                 .build()
         }
     }
-
-//    @Binds
-//    @Singleton
-//    abstract fun bindPredefinedRepository(instance: PredefinedRepository): IPredefinedRepository
 
     @Binds
     @Singleton

@@ -74,6 +74,12 @@ abstract class InnerRepositoryDao {
         remove(word.serbianLat)
     }
 
+    @Insert
+    abstract suspend fun addLinkToUnused(unused: UnusedPredefined)
+
+    @Query("SELECT * FROM unused_predefined")
+    abstract fun getUnusedLinks(): Flow<List<UnusedPredefined>>
+
     @Query("SELECT * FROM srb_lat ORDER BY id DESC")
     abstract fun getAll(): Flow<List<SerbianToRussianWord>>
 

@@ -6,6 +6,7 @@ import com.trainer.srb.rus.core.repository.IWritableRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -19,6 +20,11 @@ class WritableRepository @Inject constructor(
                 serbianRussianWord.toTranslation()
             }
             emit(translations)
+        }
+    }
+    override val unusedLinks: Flow<List<Long>> = innerRepositoryDao.getUnusedLinks().map {
+        it.map { unused ->
+            unused.predefinedLatinId
         }
     }
 
@@ -38,6 +44,16 @@ class WritableRepository @Inject constructor(
     override suspend fun remove(translation: Translation<Word.Serbian, Word.Russian>) {
         withContext(Dispatchers.IO) {
             innerRepositoryDao.remove(translation.source.latinId)
+        }
+    }
+
+    override suspend fun markAsUnused(translation: Translation<Word.Serbian, Word.Russian>) {
+        withContext(Dispatchers.IO) {
+            innerRepositoryDao.addLinkToUnused(
+                UnusedPredefined(
+                    predefinedLatinId =  translation.source.latinId
+                )
+            )
         }
     }
 

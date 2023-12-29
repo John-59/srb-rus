@@ -80,8 +80,14 @@ abstract class PredefinedRepositoryDao {
     @Query("SELECT * FROM srb_lat ORDER BY id DESC")
     abstract fun getAll(): Flow<List<SerbianToRussianWord>>
 
+    @Query("SELECT * FROM srb_lat WHERE id = :latinId")
+    abstract suspend fun getSerbianLatinWord(latinId: Long): SerbianLatinWord?
+
     @Query("SELECT * FROM srb_lat WHERE NOT unused ORDER BY id DESC")
     abstract fun getUsed(): Flow<List<SerbianToRussianWord>>
+
+    @Query("SELECT * FROM srb_lat WHERE unused")
+    abstract fun getUnused(): Flow<List<SerbianToRussianWord>>
 
     @Query("SELECT * FROM srb_lat WHERE NOT unused ORDER BY RANDOM() LIMIT :randomTranslationsCount")
     abstract suspend fun getRandom(randomTranslationsCount: Int): List<SerbianToRussianWord>

@@ -10,6 +10,8 @@ interface IPredefinedRepository {
 
     suspend fun markAsUnused(translation: Translation<Word.Serbian, Word.Russian>)
 
+    suspend fun markAsUnusedById(latinId: Long)
+
     suspend fun search(value: String): List<Translation<Word.Serbian, Word.Russian>>
 
     suspend fun getRandom(randomTranslationsCount: Int): List<Translation<Word.Serbian, Word.Russian>>

@@ -54,6 +54,7 @@ abstract class RepositoryModule {
                 InnerRepositoryDatabase::class.java,
                 InnerRepositoryDatabase.NAME
             )
+                .applyInnerMigrations()
                 .build()
         }
     }

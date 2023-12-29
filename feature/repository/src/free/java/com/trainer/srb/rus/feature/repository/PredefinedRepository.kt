@@ -15,8 +15,8 @@ class PredefinedRepository @Inject constructor(
 
     override val usedTranslations: Flow<List<Translation<Word.Serbian, Word.Russian>>> = flow {
         predefinedRepositoryDao.getUsed().collect {
-            val translations = it.map {
-                it.toTranslation()
+            val translations = it.map { serbianToRussianWord ->
+                serbianToRussianWord.toTranslation()
             }
             emit(translations)
         }
@@ -30,6 +30,17 @@ class PredefinedRepository @Inject constructor(
                 unused = true
             )
             predefinedRepositoryDao.update(srbLatinWord)
+        }
+    }
+
+    override suspend fun markAsUnusedById(latinId: Long) {
+        withContext(Dispatchers.IO) {
+            predefinedRepositoryDao.getSerbianLatinWord(latinId)?.let {
+                val unused = it.copy(
+                    unused = true
+                )
+                predefinedRepositoryDao.update(unused)
+            }
         }
     }
 
