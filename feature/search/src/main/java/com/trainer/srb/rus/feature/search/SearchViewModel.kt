@@ -28,7 +28,7 @@ class SearchViewModel @Inject constructor(
             words
         } else {
             words.filter {
-                it.source.latinValue.startsWith(word, true)
+                it.contains(word)
             }
         }
     }.stateIn(
