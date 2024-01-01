@@ -78,16 +78,16 @@ private fun WordAndVariants(
                             ButtonDefaults.buttonColors(
                                 backgroundColor = MainTheme.colors.Right,
                                 disabledBackgroundColor = MainTheme.colors.Right,
-                                contentColor = MainTheme.colors.White,
-                                disabledContentColor = MainTheme.colors.White
+                                contentColor = MainTheme.colors.Black,
+                                disabledContentColor = MainTheme.colors.Black
                             )
                         }
                         LearnState.ShowInRussianAndSelectSerbianVariants.VariantState.WRONG -> {
                             ButtonDefaults.buttonColors(
                                 backgroundColor = MainTheme.colors.Wrong,
                                 disabledBackgroundColor = MainTheme.colors.Wrong,
-                                contentColor = MainTheme.colors.White,
-                                disabledContentColor = MainTheme.colors.White
+                                contentColor = MainTheme.colors.Black,
+                                disabledContentColor = MainTheme.colors.Black
                             )
                         }
                         else -> {

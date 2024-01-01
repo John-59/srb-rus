@@ -19,6 +19,6 @@ object Colors {
     val Icons = Color(0xFF4200FF)
     val Buttons = Color(0xFF4200FF)
     val Delete = Color(0xFFE14E4E)
-    val Right = Color(0xFF25DBD0)
+    val Right = Color(0xFF3CF61E)
     val Wrong = Color(0xFFE14E4E)
 }
