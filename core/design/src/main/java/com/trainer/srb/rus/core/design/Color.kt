@@ -12,13 +12,14 @@ object Colors {
     val Pink40 = Color(0xFF7D5260)
 
     val White = Color(0xFFFFFFFF)
+    val Background = White
     val Black = Color(0xFF000000)
     val Dark_80 = Color(0xFF717893)
+    val Dark_40 = Color(0xFFE3E7F4)
     val Border = Color(0xFF55CCFF)
-    val Tips = Color(0xFF55CCFF)
-    val Icons = Color(0xFF4200FF)
+    val Tips = Border
     val Buttons = Color(0xFF4200FF)
     val Delete = Color(0xFFE14E4E)
     val Right = Color(0xFF3CF61E)
-    val Wrong = Color(0xFFE14E4E)
+    val Wrong = Delete
 }

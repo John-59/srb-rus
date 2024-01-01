@@ -1,5 +1,9 @@
 package com.trainer.srb.rus.feature.learn
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.trainer.srb.rus.core.dictionary.IDictionary
@@ -19,6 +23,12 @@ class LearnViewModel @Inject constructor(
 ): ViewModel() {
 
     private val learningWordsCount = 7
+
+    var progress by mutableFloatStateOf(0f)
+        private set
+
+    var showExitConfirmation by mutableStateOf(false)
+        private set
 
     private val learningSteps = listOf(
         LearningStep.ShowTranslation,
@@ -53,6 +63,14 @@ class LearnViewModel @Inject constructor(
         }
     }
 
+    fun showExitConfirmation() {
+        showExitConfirmation = true
+    }
+
+    fun hideExitConfirmation() {
+        showExitConfirmation = false
+    }
+
     private fun step(
         word: Translation<Word.Serbian, Word.Russian>?,
         stepQueue: ArrayDeque<LearningStep>?
@@ -60,7 +78,9 @@ class LearnViewModel @Inject constructor(
         val step = stepQueue?.removeFirstOrNull()
         if (word == null) {
             _state.value = LearnState.ExerciseFinished
+            progress = 1f
         } else {
+            progress += 1f / (learningWordsCount * learningSteps.count())
             when (step) {
                 is LearningStep.ChoosingFromSerbianVariants -> {
                     viewModelScope.launch {

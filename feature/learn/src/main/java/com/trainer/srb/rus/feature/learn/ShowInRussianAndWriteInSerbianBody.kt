@@ -134,7 +134,6 @@ fun ShowInRussianAndWriteInSerbianBody(
 
             Button(
                 shape = RoundedCornerShape(10.dp),
-                border = BorderStroke(2.dp, MainTheme.colors.Border),
                 colors = ButtonDefaults.buttonColors(
                     backgroundColor = MainTheme.colors.Border,
                     contentColor = MainTheme.colors.White,
@@ -160,14 +159,11 @@ fun ShowInRussianAndWriteInSerbianBody(
                 contentColor = MainTheme.colors.White,
             ),
             modifier = Modifier.fillMaxWidth(),
-            onClick = onNext
+            onClick = onNext,
+            enabled = state.userInputValidity != LearnState.ShowInRussianAndWriteInSerbian.Validity.UNDEFINED
         ) {
             Text(
-                text = if (state.userInputValidity != LearnState.ShowInRussianAndWriteInSerbian.Validity.UNDEFINED) {
-                    "Далее"
-                } else {
-                    "Пропустить"
-                },
+                text = "Далее",
                 style = MainTheme.typography.displayMedium
             )
         }

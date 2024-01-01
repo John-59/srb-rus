@@ -9,9 +9,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.trainer.srb.rus.core.ui.LogoFadeInOut
 
 @Composable
-fun InitializeBody() {
+fun InitializeBody(
+    modifier: Modifier = Modifier
+) {
     Box(
-        modifier = Modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
         LogoFadeInOut()

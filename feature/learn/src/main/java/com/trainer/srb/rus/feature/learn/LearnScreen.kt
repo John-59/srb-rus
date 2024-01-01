@@ -1,5 +1,6 @@
 package com.trainer.srb.rus.feature.learn
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
@@ -12,6 +13,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.trainer.srb.rus.core.dictionary.IDictionary
 import com.trainer.srb.rus.core.dictionary.Translation
 import com.trainer.srb.rus.core.dictionary.Word
+import com.trainer.srb.rus.core.ui.ExitExerciseConfirmationDialog
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 
@@ -21,29 +23,51 @@ fun LearnScreen(
     viewModel: LearnViewModel = hiltViewModel()
 ) {
     val learnState by viewModel.state.collectAsState()
-    Body(
-        state = learnState,
-        onNext = viewModel::next,
-        onFinished = onFinished
-    )
+    Column(
+        modifier = Modifier.padding(20.dp)
+    ) {
+        if (learnState != LearnState.Initialize
+            && learnState != LearnState.ExerciseFinished
+            && learnState !is LearnState.Error) {
+            LearnTopBar(
+                progress = viewModel.progress,
+                onSkip = viewModel::next,
+                onExit = viewModel::showExitConfirmation,
+                modifier = Modifier.padding(bottom = 10.dp)
+            )
+        }
+        Body(
+            state = learnState,
+            onNext = viewModel::next,
+            onFinished = onFinished,
+        )
+    }
+
+    if (viewModel.showExitConfirmation) {
+        ExitExerciseConfirmationDialog(
+            onCancel = viewModel::hideExitConfirmation,
+            onExit = onFinished,
+        )
+    }
 }
 
 @Composable
 private fun Body(
     state: LearnState,
     onNext: () -> Unit,
-    onFinished: () -> Unit
+    onFinished: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     when (state) {
         LearnState.Initialize -> {
-            InitializeBody()
+            InitializeBody(modifier = modifier)
         }
 
         is LearnState.ShowInRussianAndConstructFromPredefinedLetters -> {
             ShowInRussianAndConstructFromPredefinedLettersBody(
                 translation = state.translation,
                 onNext = onNext,
-                modifier = Modifier.padding(20.dp)
+                modifier = modifier
             )
         }
 
@@ -51,7 +75,7 @@ private fun Body(
             ShowInRussianAndSelectSerbianVariantsBody(
                 state = state,
                 onNext = onNext,
-                modifier = Modifier.padding(20.dp)
+                modifier = modifier
             )
         }
 
@@ -59,7 +83,7 @@ private fun Body(
             ShowInSerbianAndSelectRussianVariantsBody(
                 state = state,
                 onNext = onNext,
-                modifier = Modifier.padding(20.dp)
+                modifier = modifier
             )
         }
 
@@ -67,7 +91,7 @@ private fun Body(
             ShowInRussianAndWriteInSerbianBody(
                 state = state,
                 onNext = onNext,
-                modifier = Modifier.padding(20.dp)
+                modifier = modifier
             )
         }
 
@@ -75,21 +99,21 @@ private fun Body(
             ShowInSerbianWithTranslationBody(
                 translation = state.translation,
                 onNext = onNext,
-                modifier = Modifier.padding(20.dp)
+                modifier = modifier
             )
         }
 
         is LearnState.Error -> {
             ErrorBody(
                 message = state.message,
-                modifier = Modifier.fillMaxSize().padding(20.dp)
+                modifier = modifier.fillMaxSize()
             )
         }
 
         LearnState.ExerciseFinished -> {
             ExerciseFinishedBody(
                 onNext = onFinished,
-                modifier = Modifier.fillMaxSize().padding(20.dp)
+                modifier = modifier.fillMaxSize()
             )
         }
     }
