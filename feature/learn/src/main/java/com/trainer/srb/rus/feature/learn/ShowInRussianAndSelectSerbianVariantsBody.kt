@@ -18,10 +18,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.trainer.srb.rus.core.design.MainTheme
-import com.trainer.srb.rus.core.dictionary.Translation
-import com.trainer.srb.rus.core.dictionary.Word
 import com.trainer.srb.rus.core.dictionary.russianAsString
 import com.trainer.srb.rus.core.dictionary.serbianAsString
+import com.trainer.srb.rus.mocks.translationsExample
 
 @Composable
 fun ShowInRussianAndSelectSerbianVariantsBody(
@@ -164,44 +163,8 @@ fun ShowInRussianAndSelectSerbianVariantsBodyPreview() {
             .padding(20.dp),
         onNext = {},
         state = LearnState.ShowInRussianAndSelectSerbianVariants(
-            translation = Translation(
-                source = Word.Serbian(
-                    latinValue = "kašika",
-                    cyrillicValue = "кашика"
-                ),
-                translations = listOf(
-                    Word.Russian(value = "ложка")
-                )
-            ),
-            others = listOf(
-                Translation(
-                    source = Word.Serbian(
-                        latinValue = "viljuška",
-                        cyrillicValue = "виљушка"
-                    ),
-                    translations = listOf(
-                        Word.Russian(value = "вилка")
-                    )
-                ),
-                Translation(
-                    source = Word.Serbian(
-                        latinValue = "tanjir",
-                        cyrillicValue = "тањир"
-                    ),
-                    translations = listOf(
-                        Word.Russian(value = "тарелка")
-                    )
-                ),
-                Translation(
-                    source = Word.Serbian(
-                        latinValue = "sto",
-                        cyrillicValue = "сто"
-                    ),
-                    translations = listOf(
-                        Word.Russian(value = "стол")
-                    )
-                )
-            )
+            translation = translationsExample.first(),
+            others = translationsExample.take(3)
         ),
     )
 }

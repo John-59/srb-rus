@@ -8,22 +8,7 @@ import kotlinx.coroutines.flow.flow
 
 class DictionaryMock: IDictionary {
     override val translations: Flow<List<Translation<Word.Serbian, Word.Russian>>> = flow {
-        val translations = listOf(
-            Translation<Word.Serbian, Word.Russian>(
-                source = Word.Serbian(
-                    latinId = 1,
-                    latinValue = "kiša",
-                    cyrillicId = 1,
-                    cyrillicValue = "киша"
-                ),
-                translations = listOf(
-                    Word.Russian(
-                        id = 1,
-                        value = "дождь"
-                    )
-                )
-            )
-        )
+        val translations = translationsExample
         emit(translations)
     }
 
