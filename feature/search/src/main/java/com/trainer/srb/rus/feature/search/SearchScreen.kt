@@ -15,12 +15,10 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.trainer.srb.rus.core.dictionary.IDictionary
 import com.trainer.srb.rus.core.dictionary.IRemoteDictionary
 import com.trainer.srb.rus.core.dictionary.Translation
 import com.trainer.srb.rus.core.dictionary.Word
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.emptyFlow
+import com.trainer.srb.rus.mocks.DictionaryMock
 
 @Composable
 fun SearchScreen(
@@ -62,24 +60,7 @@ fun SearchScreen(
 private fun SearchScreenPreview() {
     SearchScreen(
         viewModel = SearchViewModel(
-            innerDictionary = object : IDictionary {
-                override val translations: Flow<List<Translation<Word.Serbian, Word.Russian>>>
-                    get() = emptyFlow()
-
-                override suspend fun search(value: String): List<Translation<Word.Serbian, Word.Russian>> {
-                    return emptyList()
-                }
-
-                override suspend fun add(translation: Translation<Word.Serbian, Word.Russian>) {
-                }
-
-                override suspend fun remove(translation: Translation<Word.Serbian, Word.Russian>) {
-                }
-
-                override suspend fun getRandom(randomTranslationsCount: Int): List<Translation<Word.Serbian, Word.Russian>> {
-                    return emptyList()
-                }
-            },
+            innerDictionary = DictionaryMock(),
             remoteDictionary = object : IRemoteDictionary {
                 override fun search(value: String): List<Translation<Word.Serbian, Word.Russian>> {
                     return emptyList()

@@ -26,12 +26,9 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.SavedStateHandle
 import com.trainer.srb.rus.core.design.MainTheme
-import com.trainer.srb.rus.core.dictionary.IDictionary
-import com.trainer.srb.rus.core.dictionary.Translation
 import com.trainer.srb.rus.core.dictionary.Word
 import com.trainer.srb.rus.core.ui.CustomTextField
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.emptyFlow
+import com.trainer.srb.rus.mocks.DictionaryMock
 import com.trainer.srb.rus.core.design.R as DesignRes
 
 @Composable
@@ -203,24 +200,7 @@ private fun AddWordScreenPreview() {
     AddWordScreen(
         viewModel = AddWordViewModel(
             savedStateHandle = SavedStateHandle(),
-            dictionary = object : IDictionary {
-                override val translations: Flow<List<Translation<Word.Serbian, Word.Russian>>>
-                    get() = emptyFlow()
-
-                override suspend fun search(value: String): List<Translation<Word.Serbian, Word.Russian>> {
-                    return emptyList()
-                }
-
-                override suspend fun add(translation: Translation<Word.Serbian, Word.Russian>) {
-                }
-
-                override suspend fun remove(translation: Translation<Word.Serbian, Word.Russian>) {
-                }
-
-                override suspend fun getRandom(randomTranslationsCount: Int): List<Translation<Word.Serbian, Word.Russian>> {
-                    return emptyList()
-                }
-            }
+            dictionary = DictionaryMock()
         ),
         onBack = {}
     )
