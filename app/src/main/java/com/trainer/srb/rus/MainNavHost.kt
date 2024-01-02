@@ -4,6 +4,9 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.trainer.srb.rus.editword.EditWordScreen
+import com.trainer.srb.rus.editword.navigation.EditWordDestination
+import com.trainer.srb.rus.editword.navigation.navigateToEditWord
 import com.trainer.srb.rus.feature.addword.AddWordScreen
 import com.trainer.srb.rus.feature.addword.navigation.AddWordDestination
 import com.trainer.srb.rus.feature.addword.navigation.navigateToAddWord
@@ -44,6 +47,9 @@ fun MainNavHost(
             SearchScreen(
                 navigateToAddWord = {
                     navController.navigateToAddWord(it, SearchScreenDestination.route)
+                },
+                navigateToEditWord = {
+                    navController.navigateToEditWord(it, SearchScreenDestination.route)
                 }
             )
         }
@@ -53,7 +59,17 @@ fun MainNavHost(
         ) {
             AddWordScreen(
                 onBack = {
-                    navController.navigateToSearch(HomeScreenDestination.route)
+                    navController.navigateToSearch(SearchScreenDestination.route)
+                }
+            )
+        }
+        composable(
+            route = EditWordDestination.routeWithArgs,
+            arguments = EditWordDestination.arguments
+        ) {
+            EditWordScreen(
+                onBack = {
+                    navController.navigateToSearch(SearchScreenDestination.route)
                 }
             )
         }

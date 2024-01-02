@@ -84,7 +84,7 @@ dependencies {
     implementation(project(":feature:home"))
     implementation(project(":feature:search"))
     implementation(project(":feature:addword"))
-    implementation(project(":feature:dictionary"))
+    implementation(project(":feature:editword"))
     implementation(project(":feature:learn"))
 
     implementation("androidx.core:core-ktx:1.12.0")

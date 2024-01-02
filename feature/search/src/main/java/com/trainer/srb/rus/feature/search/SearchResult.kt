@@ -34,6 +34,7 @@ import com.trainer.srb.rus.core.design.R as DesignRes
 fun SearchResult(
     innerWords: List<Translation<Word.Serbian, Word.Russian>>,
     onRemoveTranslation: (Translation<Word.Serbian, Word.Russian>) -> Unit,
+    onEdit: (Translation<Word.Serbian, Word.Russian>) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -71,6 +72,7 @@ fun SearchResult(
                 dismissContent = {
                     InnerSearchItem(
                         translation = translation,
+                        onEdit = onEdit,
                         modifier = Modifier
                             .padding(vertical = 5.dp)
                             .fillMaxWidth()
@@ -121,6 +123,7 @@ private fun ItemSwipeBackgroundPreview() {
 private fun SearchResultPreview() {
     SearchResult(
         onRemoveTranslation = {},
+        onEdit = {},
         innerWords = translationsExample
     )
 }

@@ -23,6 +23,7 @@ import com.trainer.srb.rus.mocks.DictionaryMock
 @Composable
 fun SearchScreen(
     navigateToAddWord: (Word) -> Unit,
+    navigateToEditWord: (Translation<Word.Serbian, Word.Russian>) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: SearchViewModel = hiltViewModel(),
 ) {
@@ -44,6 +45,7 @@ fun SearchScreen(
         SearchResult(
             innerWords = visibleWords,
             onRemoveTranslation = viewModel::removeTranslation,
+            onEdit = navigateToEditWord,
             modifier = Modifier
                 .padding(horizontal = 20.dp)
 
@@ -67,6 +69,7 @@ private fun SearchScreenPreview() {
                 }
             }
         ),
-        navigateToAddWord = {}
+        navigateToAddWord = {},
+        navigateToEditWord = {}
     )
 }

@@ -4,6 +4,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -24,6 +25,7 @@ import com.trainer.srb.rus.core.design.R as DesignRes
 @Composable
 fun InnerSearchItem(
     translation: Translation<Word.Serbian, Word.Russian>,
+    onEdit: (Translation<Word.Serbian, Word.Russian>) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val serbian = listOf(
@@ -69,7 +71,11 @@ fun InnerSearchItem(
         Image(
             painter = painterResource(id = DesignRes.drawable.wordindict),
             contentDescription = null,
-            modifier = Modifier.padding(end = 5.dp)
+            modifier = Modifier
+                .padding(end = 5.dp)
+                .clickable {
+                    onEdit(translation)
+                }
         )
     }
 
@@ -87,7 +93,8 @@ private fun InnerSearchItemPreviewOne() {
             translations = listOf(
                 Word.Russian(value = "дождь")
             )
-        )
+        ),
+        onEdit = {}
     )
 }
 
@@ -104,7 +111,8 @@ private fun InnerSearchItemPreviewTwo() {
                 Word.Russian(value = "уже"),
                 Word.Russian(value = "а")
             )
-        )
+        ),
+        onEdit = {}
     )
 }
 
@@ -120,7 +128,8 @@ private fun InnerSearchItemPreviewThree() {
             translations = listOf(
                 Word.Russian(value = "морковь"),
             )
-        )
+        ),
+        onEdit = {}
     )
 }
 
@@ -136,6 +145,7 @@ private fun InnerSearchItemPreviewFour() {
             translations = listOf(
                 Word.Russian(value = "книга"),
             )
-        )
+        ),
+        onEdit = {}
     )
 }
