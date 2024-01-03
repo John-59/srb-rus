@@ -12,12 +12,20 @@ class Dictionary @Inject constructor(
 
     override val translations = writableRepository.translations
 
+    override suspend fun get(serbianLatinId: Long): Translation<Word.Serbian, Word.Russian>? {
+        return writableRepository.get(serbianLatinId)
+    }
+
     override suspend fun search(value: String): List<Translation<Word.Serbian, Word.Russian>> {
         return writableRepository.search(value)
     }
 
     override suspend fun add(translation: Translation<Word.Serbian, Word.Russian>) {
         writableRepository.add(translation)
+    }
+
+    override suspend fun update(translation: Translation<Word.Serbian, Word.Russian>) {
+        writableRepository.update(translation)
     }
 
     override suspend fun remove(translation: Translation<Word.Serbian, Word.Russian>) {

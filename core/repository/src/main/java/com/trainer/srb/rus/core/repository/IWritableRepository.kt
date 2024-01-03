@@ -10,9 +10,13 @@ interface IWritableRepository {
 
     val unusedLinks: Flow<List<Long>>
 
+    suspend fun get(serbianLatinId: Long): Translation<Word.Serbian, Word.Russian>?
+
     suspend fun add(translation: Translation<Word.Serbian, Word.Russian>)
 
     suspend fun remove(translation: Translation<Word.Serbian, Word.Russian>)
+
+    suspend fun update(translation: Translation<Word.Serbian, Word.Russian>)
 
     suspend fun markAsUnused(translation: Translation<Word.Serbian, Word.Russian>)
 

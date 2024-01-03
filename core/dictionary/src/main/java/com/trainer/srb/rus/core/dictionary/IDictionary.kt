@@ -6,9 +6,13 @@ interface IDictionary {
 
     val translations: Flow<List<Translation<Word.Serbian, Word.Russian>>>
 
+    suspend fun get(serbianLatinId: Long): Translation<Word.Serbian, Word.Russian>?
+
     suspend fun search(value: String): List<Translation<Word.Serbian, Word.Russian>>
 
     suspend fun add(translation: Translation<Word.Serbian, Word.Russian>)
+
+    suspend fun update(translation: Translation<Word.Serbian, Word.Russian>)
 
     suspend fun remove(translation: Translation<Word.Serbian, Word.Russian>)
 

@@ -25,6 +25,10 @@ class Dictionary @Inject constructor(
             allTranslations
         }
 
+    override suspend fun get(serbianLatinId: Long): Translation<Word.Serbian, Word.Russian>? {
+        return writableRepository.get(serbianLatinId) ?: predefinedRepository.get(serbianLatinId)
+    }
+
     override suspend fun search(value: String): List<Translation<Word.Serbian, Word.Russian>> {
         val innerSearchResult = writableRepository.search(value)
         val predefinedSearchResult = predefinedRepository.search(value).toMutableList()

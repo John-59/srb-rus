@@ -22,6 +22,12 @@ class PredefinedRepository @Inject constructor(
         }
     }
 
+    override suspend fun get(serbianLatinId: Long): Translation<Word.Serbian, Word.Russian>? {
+        return withContext(Dispatchers.IO) {
+            predefinedRepositoryDao.getWord(serbianLatinId)?.toTranslation()
+        }
+    }
+
     override suspend fun markAsUnused(translation: Translation<Word.Serbian, Word.Russian>) {
         withContext(Dispatchers.IO) {
             val srbLatinWord = SerbianLatinWord(
@@ -35,8 +41,8 @@ class PredefinedRepository @Inject constructor(
 
     override suspend fun markAsUnusedById(latinId: Long) {
         withContext(Dispatchers.IO) {
-            predefinedRepositoryDao.getSerbianLatinWord(latinId)?.let {
-                val unused = it.copy(
+            predefinedRepositoryDao.getWord(latinId)?.let {
+                val unused = it.serbianLat.copy(
                     unused = true
                 )
                 predefinedRepositoryDao.update(unused)

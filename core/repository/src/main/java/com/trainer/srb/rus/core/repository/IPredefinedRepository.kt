@@ -8,6 +8,8 @@ interface IPredefinedRepository {
 
     val usedTranslations: Flow<List<Translation<Word.Serbian, Word.Russian>>>
 
+    suspend fun get(serbianLatinId: Long): Translation<Word.Serbian, Word.Russian>?
+
     suspend fun markAsUnused(translation: Translation<Word.Serbian, Word.Russian>)
 
     suspend fun markAsUnusedById(latinId: Long)

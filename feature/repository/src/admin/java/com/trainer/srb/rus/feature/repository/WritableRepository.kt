@@ -29,6 +29,12 @@ class WritableRepository @Inject constructor(
         }
     }
 
+    override suspend fun get(serbianLatinId: Long): Translation<Word.Serbian, Word.Russian>? {
+        return withContext(Dispatchers.IO) {
+            predefinedRepositoryDao.getWord(serbianLatinId)?.toTranslation()
+        }
+    }
+
     override suspend fun add(translation: Translation<Word.Serbian, Word.Russian>) {
         withContext(Dispatchers.IO) {
             val translationToRussian = TranslationToRussian(
@@ -50,14 +56,24 @@ class WritableRepository @Inject constructor(
         }
     }
 
+    override suspend fun update(translation: Translation<Word.Serbian, Word.Russian>) {
+        withContext(Dispatchers.IO) {
+            val serbianToRussianWord = translation.toSerbianToRussianWord(false)
+            predefinedRepositoryDao.update(serbianToRussianWord)
+            makeCheckpoint()
+        }
+    }
+
     override suspend fun markAsUnused(translation: Translation<Word.Serbian, Word.Russian>) {
         withContext(Dispatchers.IO) {
-            val srbLatinWord = SerbianLatinWord(
-                id = translation.source.latinId,
-                word = translation.source.latinValue,
-                unused = true
-            )
-            predefinedRepositoryDao.update(srbLatinWord)
+            val serbianToRussianWord = translation.toSerbianToRussianWord(true)
+//            val srbLatinWord = SerbianLatinWord(
+//                id = translation.source.latinId,
+//                word = translation.source.latinValue,
+//                unused = true
+//            )
+            predefinedRepositoryDao.update(serbianToRussianWord)
+            makeCheckpoint()
         }
     }
 

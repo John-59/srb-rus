@@ -37,8 +37,23 @@ abstract class PredefinedRepositoryDao {
     @Delete
     protected abstract suspend fun removeCrossRefs(crossRefTable: List<SerbianRussianCrossRefTable>)
 
+    @Update
+    protected abstract suspend fun update(word: SerbianLatinWord)
+
+    @Update
+    protected abstract suspend fun update(word: SerbianCyrillicWord)
+
+    @Update
+    protected abstract suspend fun update(word: RussianWord)
+
+    @Update
+    protected abstract suspend fun update(words: List<RussianWord>)
+
+    @Update
+    protected abstract suspend fun updateCrossRef(crossRefTable: SerbianRussianCrossRefTable)
+
     @Query("SELECT * FROM srb_lat WHERE id = :srbLatWordId")
-    protected abstract suspend fun getWord(srbLatWordId: Long): SerbianToRussianWord?
+    abstract suspend fun getWord(srbLatWordId: Long): SerbianToRussianWord?
 
     @Transaction
     open suspend fun insert(translationToRussian: TranslationToRussian) {
@@ -74,14 +89,61 @@ abstract class PredefinedRepositoryDao {
         remove(word.serbianLat)
     }
 
-    @Update
-    abstract suspend fun update(srbLatinWord: SerbianLatinWord)
+    @Transaction
+    open suspend fun update(srbToRussianWord: SerbianToRussianWord) {
+
+        val oldWord = getWord(srbToRussianWord.serbianLat.id)
+        if (oldWord == null) {
+            return
+        }
+
+        update(srbToRussianWord.serbianLat)
+
+        if (oldWord.serbianCyr != null && srbToRussianWord.serbianCyr == null) {
+            remove(oldWord.serbianCyr)
+        } else if (srbToRussianWord.serbianCyr != null) {
+            if (oldWord.serbianCyr == null) {
+                insert(srbToRussianWord.serbianCyr)
+            } else {
+                update(srbToRussianWord.serbianCyr)
+            }
+        }
+
+
+        val removed = oldWord.russians.filter { oldRussian ->
+            srbToRussianWord.russians.none { newRussian ->
+                oldRussian.id == newRussian.id
+            }
+        }
+        remove(removed)
+        val removedCrossRefs = removed.map {
+            SerbianRussianCrossRefTable(
+                srbLatWordId = srbToRussianWord.serbianLat.id,
+                rusWordId = it.id
+            )
+        }
+        removeCrossRefs(removedCrossRefs)
+
+        val added = srbToRussianWord.russians.filter { it.id == 0L }
+        added.forEach {
+            val id = insert(it)
+            val crossRef = SerbianRussianCrossRefTable(
+                srbLatWordId = srbToRussianWord.serbianLat.id,
+                rusWordId = id
+            )
+            insert(crossRef)
+        }
+
+        val updated = srbToRussianWord.russians.filter { newRussian ->
+            oldWord.russians.any { oldRussian ->
+                oldRussian.id == newRussian.id
+            }
+        }
+        update(updated)
+    }
 
     @Query("SELECT * FROM srb_lat ORDER BY id DESC")
     abstract fun getAll(): Flow<List<SerbianToRussianWord>>
-
-    @Query("SELECT * FROM srb_lat WHERE id = :latinId")
-    abstract suspend fun getSerbianLatinWord(latinId: Long): SerbianLatinWord?
 
     @Query("SELECT * FROM srb_lat WHERE NOT unused ORDER BY id DESC")
     abstract fun getUsed(): Flow<List<SerbianToRussianWord>>

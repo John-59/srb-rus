@@ -28,6 +28,12 @@ class WritableRepository @Inject constructor(
         }
     }
 
+    override suspend fun get(serbianLatinId: Long): Translation<Word.Serbian, Word.Russian>? {
+        return withContext(Dispatchers.IO) {
+            innerRepositoryDao.getWord(serbianLatinId)?.toTranslation()
+        }
+    }
+
     override suspend fun add(translation: Translation<Word.Serbian, Word.Russian>) {
         withContext(Dispatchers.IO) {
             val translationToRussian = TranslationToRussian(

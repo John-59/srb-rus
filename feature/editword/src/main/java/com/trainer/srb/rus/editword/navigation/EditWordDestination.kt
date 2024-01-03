@@ -10,6 +10,7 @@ object EditWordDestination {
     val arguments = listOf(
         navArgument(EditWordArgs.latinValueIdArgName) {
             type = NavType.LongType
+            defaultValue = -1
         }
     )
 }

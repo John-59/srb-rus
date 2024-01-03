@@ -35,7 +35,7 @@ abstract class InnerRepositoryDao {
     protected abstract suspend fun removeCrossRefs(crossRefTable: List<SerbianRussianCrossRefTable>)
 
     @Query("SELECT * FROM srb_lat WHERE id = :srbLatWordId")
-    protected abstract suspend fun getWord(srbLatWordId: Long): SerbianToRussianWord?
+    abstract suspend fun getWord(srbLatWordId: Long): SerbianToRussianWord?
 
     @Transaction
     open suspend fun insert(translationToRussian: TranslationToRussian) {
