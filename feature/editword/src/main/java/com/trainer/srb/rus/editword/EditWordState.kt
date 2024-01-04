@@ -77,7 +77,8 @@ sealed class EditWordState {
                                 value = it.value.trim()
                             )
                         }
-                    }
+                    },
+                    type = translation.type
                 )
                 dictionary.update(updatedTranslation)
             }

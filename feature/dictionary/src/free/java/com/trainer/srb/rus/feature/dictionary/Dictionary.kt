@@ -2,11 +2,11 @@ package com.trainer.srb.rus.feature.dictionary
 
 import com.trainer.srb.rus.core.dictionary.IDictionary
 import com.trainer.srb.rus.core.dictionary.Translation
+import com.trainer.srb.rus.core.dictionary.TranslationSourceType
 import com.trainer.srb.rus.core.dictionary.Word
 import com.trainer.srb.rus.core.repository.IPredefinedRepository
 import com.trainer.srb.rus.core.repository.IWritableRepository
 import kotlinx.coroutines.flow.combine
-import java.util.UUID
 import javax.inject.Inject
 
 class Dictionary @Inject constructor(
@@ -14,12 +14,8 @@ class Dictionary @Inject constructor(
     private val predefinedRepository: IPredefinedRepository
 ): IDictionary {
 
-    private val readonlyUuids = mutableSetOf<UUID>()
-
     override val translations = writableRepository.translations
         .combine(predefinedRepository.usedTranslations) { writableTranslations, predefinedTranslations ->
-            readonlyUuids.clear()
-            readonlyUuids.addAll(predefinedTranslations.map { it.uuid })
             val allTranslations = writableTranslations.toMutableList()
             allTranslations.addAll(predefinedTranslations)
             allTranslations
@@ -40,12 +36,33 @@ class Dictionary @Inject constructor(
         writableRepository.add(translation)
     }
 
+    override suspend fun update(translation: Translation<Word.Serbian, Word.Russian>) {
+        when (translation.type) {
+            TranslationSourceType.PREDEFINED -> {
+                predefinedRepository.markAsUnused(translation)
+                writableRepository.add(translation)
+            }
+            TranslationSourceType.USER -> {
+                writableRepository.update(translation)
+            }
+            TranslationSourceType.INTERNET -> {
+                // not implemented yet
+            }
+        }
+    }
+
     override suspend fun remove(translation: Translation<Word.Serbian, Word.Russian>) {
-        if (readonlyUuids.contains(translation.uuid)) {
-            predefinedRepository.markAsUnused(translation)
-            writableRepository.markAsUnused(translation)
-        } else {
-            writableRepository.remove(translation)
+        when (translation.type) {
+            TranslationSourceType.PREDEFINED -> {
+                predefinedRepository.markAsUnused(translation)
+                writableRepository.markAsUnused(translation)
+            }
+            TranslationSourceType.USER -> {
+                writableRepository.remove(translation)
+            }
+            TranslationSourceType.INTERNET -> {
+                // not implemented yet
+            }
         }
     }
 

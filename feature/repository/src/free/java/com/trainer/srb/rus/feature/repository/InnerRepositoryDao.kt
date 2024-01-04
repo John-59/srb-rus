@@ -5,6 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
+import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -33,6 +34,15 @@ abstract class InnerRepositoryDao {
 
     @Delete
     protected abstract suspend fun removeCrossRefs(crossRefTable: List<SerbianRussianCrossRefTable>)
+
+    @Update
+    protected abstract suspend fun update(word: SerbianLatinWord)
+
+    @Update
+    protected abstract suspend fun update(word: SerbianCyrillicWord)
+
+    @Update
+    protected abstract suspend fun update(words: List<RussianWord>)
 
     @Query("SELECT * FROM srb_lat WHERE id = :srbLatWordId")
     abstract suspend fun getWord(srbLatWordId: Long): SerbianToRussianWord?
@@ -72,6 +82,56 @@ abstract class InnerRepositoryDao {
         removeCrossRefs(crossRefs)
         remove(word.russians)
         remove(word.serbianLat)
+    }
+
+    @Transaction
+    open suspend fun update(srbToRussianWord: SerbianToRussianWord) {
+
+        val oldWord = getWord(srbToRussianWord.serbianLat.id) ?: return
+
+        update(srbToRussianWord.serbianLat)
+
+        if (oldWord.serbianCyr != null && srbToRussianWord.serbianCyr == null) {
+            remove(oldWord.serbianCyr)
+        } else if (srbToRussianWord.serbianCyr != null) {
+            if (oldWord.serbianCyr == null) {
+                insert(srbToRussianWord.serbianCyr)
+            } else {
+                update(srbToRussianWord.serbianCyr)
+            }
+        }
+
+
+        val removed = oldWord.russians.filter { oldRussian ->
+            srbToRussianWord.russians.none { newRussian ->
+                oldRussian.id == newRussian.id
+            }
+        }
+        remove(removed)
+        val removedCrossRefs = removed.map {
+            SerbianRussianCrossRefTable(
+                srbLatWordId = srbToRussianWord.serbianLat.id,
+                rusWordId = it.id
+            )
+        }
+        removeCrossRefs(removedCrossRefs)
+
+        val added = srbToRussianWord.russians.filter { it.id == 0L }
+        added.forEach {
+            val id = insert(it)
+            val crossRef = SerbianRussianCrossRefTable(
+                srbLatWordId = srbToRussianWord.serbianLat.id,
+                rusWordId = id
+            )
+            insert(crossRef)
+        }
+
+        val updated = srbToRussianWord.russians.filter { newRussian ->
+            oldWord.russians.any { oldRussian ->
+                oldRussian.id == newRussian.id
+            }
+        }
+        update(updated)
     }
 
     @Insert

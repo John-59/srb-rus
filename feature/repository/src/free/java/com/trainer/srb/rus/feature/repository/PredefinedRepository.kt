@@ -1,6 +1,7 @@
 package com.trainer.srb.rus.feature.repository
 
 import com.trainer.srb.rus.core.dictionary.Translation
+import com.trainer.srb.rus.core.dictionary.TranslationSourceType
 import com.trainer.srb.rus.core.dictionary.Word
 import com.trainer.srb.rus.core.repository.IPredefinedRepository
 import kotlinx.coroutines.Dispatchers
@@ -16,7 +17,7 @@ class PredefinedRepository @Inject constructor(
     override val usedTranslations: Flow<List<Translation<Word.Serbian, Word.Russian>>> = flow {
         predefinedRepositoryDao.getUsed().collect {
             val translations = it.map { serbianToRussianWord ->
-                serbianToRussianWord.toTranslation()
+                serbianToRussianWord.toTranslation(TranslationSourceType.PREDEFINED)
             }
             emit(translations)
         }
@@ -24,18 +25,13 @@ class PredefinedRepository @Inject constructor(
 
     override suspend fun get(serbianLatinId: Long): Translation<Word.Serbian, Word.Russian>? {
         return withContext(Dispatchers.IO) {
-            predefinedRepositoryDao.getWord(serbianLatinId)?.toTranslation()
+            predefinedRepositoryDao.getWord(serbianLatinId)?.toTranslation(TranslationSourceType.PREDEFINED)
         }
     }
 
     override suspend fun markAsUnused(translation: Translation<Word.Serbian, Word.Russian>) {
         withContext(Dispatchers.IO) {
-            val srbLatinWord = SerbianLatinWord(
-                id = translation.source.latinId,
-                word = translation.source.latinValue,
-                unused = true
-            )
-            predefinedRepositoryDao.update(srbLatinWord)
+            markAsUnusedById(translation.source.latinId)
         }
     }
 
@@ -54,7 +50,7 @@ class PredefinedRepository @Inject constructor(
         return withContext(Dispatchers.IO) {
             val found = predefinedRepositoryDao.searchInSrbLat(value)
             found.map {
-                it.toTranslation()
+                it.toTranslation(TranslationSourceType.PREDEFINED)
             }
         }
     }
@@ -63,7 +59,7 @@ class PredefinedRepository @Inject constructor(
         return withContext(Dispatchers.IO) {
             val random = predefinedRepositoryDao.getRandom(randomTranslationsCount)
             random.map {
-                it.toTranslation()
+                it.toTranslation(TranslationSourceType.PREDEFINED)
             }
         }
     }

@@ -38,19 +38,10 @@ abstract class PredefinedRepositoryDao {
     protected abstract suspend fun removeCrossRefs(crossRefTable: List<SerbianRussianCrossRefTable>)
 
     @Update
-    protected abstract suspend fun update(word: SerbianLatinWord)
-
-    @Update
     protected abstract suspend fun update(word: SerbianCyrillicWord)
 
     @Update
-    protected abstract suspend fun update(word: RussianWord)
-
-    @Update
     protected abstract suspend fun update(words: List<RussianWord>)
-
-    @Update
-    protected abstract suspend fun updateCrossRef(crossRefTable: SerbianRussianCrossRefTable)
 
     @Query("SELECT * FROM srb_lat WHERE id = :srbLatWordId")
     abstract suspend fun getWord(srbLatWordId: Long): SerbianToRussianWord?
@@ -89,13 +80,13 @@ abstract class PredefinedRepositoryDao {
         remove(word.serbianLat)
     }
 
+    @Update
+    abstract suspend fun update(word: SerbianLatinWord)
+
     @Transaction
     open suspend fun update(srbToRussianWord: SerbianToRussianWord) {
 
-        val oldWord = getWord(srbToRussianWord.serbianLat.id)
-        if (oldWord == null) {
-            return
-        }
+        val oldWord = getWord(srbToRussianWord.serbianLat.id) ?: return
 
         update(srbToRussianWord.serbianLat)
 

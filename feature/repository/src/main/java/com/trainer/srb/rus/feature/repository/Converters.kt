@@ -1,9 +1,12 @@
 package com.trainer.srb.rus.feature.repository
 
 import com.trainer.srb.rus.core.dictionary.Translation
+import com.trainer.srb.rus.core.dictionary.TranslationSourceType
 import com.trainer.srb.rus.core.dictionary.Word
 
-fun SerbianToRussianWord.toTranslation(): Translation<Word.Serbian, Word.Russian> {
+fun SerbianToRussianWord.toTranslation(
+    translationSourceType: TranslationSourceType
+): Translation<Word.Serbian, Word.Russian> {
     return Translation(
         source = Word.Serbian(
             latinId = serbianLat.id,
@@ -16,7 +19,8 @@ fun SerbianToRussianWord.toTranslation(): Translation<Word.Serbian, Word.Russian
                 id = it.id,
                 value = it.word
             )
-        }
+        },
+        type = translationSourceType
     )
 }
 

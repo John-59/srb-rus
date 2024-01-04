@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.trainer.srb.rus.core.design.MainTheme
 import com.trainer.srb.rus.core.dictionary.Translation
+import com.trainer.srb.rus.core.dictionary.TranslationSourceType
 import com.trainer.srb.rus.core.dictionary.Word
 import com.trainer.srb.rus.core.ui.CustomTextField
 import com.trainer.srb.rus.mocks.DictionaryMock
@@ -208,7 +209,8 @@ private fun EditWordSuccessBodyPreview() {
                 ),
                 translations = listOf(
                     Word.Russian(value = "морковь")
-                )
+                ),
+                type = TranslationSourceType.USER
             ),
             dictionary = DictionaryMock(),
             coroutineScope = coroutineScope

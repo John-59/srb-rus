@@ -2,6 +2,7 @@ package com.trainer.srb.rus.feature.repository
 
 import androidx.sqlite.db.SimpleSQLiteQuery
 import com.trainer.srb.rus.core.dictionary.Translation
+import com.trainer.srb.rus.core.dictionary.TranslationSourceType
 import com.trainer.srb.rus.core.dictionary.Word
 import com.trainer.srb.rus.core.repository.IWritableRepository
 import kotlinx.coroutines.Dispatchers
@@ -18,7 +19,7 @@ class WritableRepository @Inject constructor(
     override val translations: Flow<List<Translation<Word.Serbian, Word.Russian>>> = flow {
         predefinedRepositoryDao.getAll().collect {
             val translations = it.map { word ->
-                word.toTranslation()
+                word.toTranslation(TranslationSourceType.PREDEFINED)
             }
             emit(translations)
         }
@@ -31,7 +32,7 @@ class WritableRepository @Inject constructor(
 
     override suspend fun get(serbianLatinId: Long): Translation<Word.Serbian, Word.Russian>? {
         return withContext(Dispatchers.IO) {
-            predefinedRepositoryDao.getWord(serbianLatinId)?.toTranslation()
+            predefinedRepositoryDao.getWord(serbianLatinId)?.toTranslation(TranslationSourceType.PREDEFINED)
         }
     }
 
@@ -67,11 +68,6 @@ class WritableRepository @Inject constructor(
     override suspend fun markAsUnused(translation: Translation<Word.Serbian, Word.Russian>) {
         withContext(Dispatchers.IO) {
             val serbianToRussianWord = translation.toSerbianToRussianWord(true)
-//            val srbLatinWord = SerbianLatinWord(
-//                id = translation.source.latinId,
-//                word = translation.source.latinValue,
-//                unused = true
-//            )
             predefinedRepositoryDao.update(serbianToRussianWord)
             makeCheckpoint()
         }
@@ -81,7 +77,7 @@ class WritableRepository @Inject constructor(
         return withContext(Dispatchers.IO) {
             val found = predefinedRepositoryDao.searchInSrbLat(value)
             found.map {
-                it.toTranslation()
+                it.toTranslation(TranslationSourceType.PREDEFINED)
             }
         }
     }
@@ -90,7 +86,7 @@ class WritableRepository @Inject constructor(
         return withContext(Dispatchers.IO) {
             val randoms = predefinedRepositoryDao.getRandom(randomTranslationsCount)
             randoms.map {
-                it.toTranslation()
+                it.toTranslation(TranslationSourceType.PREDEFINED)
             }
         }
     }

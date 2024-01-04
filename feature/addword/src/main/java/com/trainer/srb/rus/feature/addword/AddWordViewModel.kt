@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.trainer.srb.rus.core.dictionary.IDictionary
 import com.trainer.srb.rus.core.dictionary.Translation
+import com.trainer.srb.rus.core.dictionary.TranslationSourceType
 import com.trainer.srb.rus.core.dictionary.Word
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -71,7 +72,8 @@ class AddWordViewModel @Inject constructor(
                     Word.Russian(
                         value = it.value.trim()
                     )
-                }
+                },
+                type = TranslationSourceType.USER
             )
             dictionary.add(translation)
         }

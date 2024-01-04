@@ -16,6 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.trainer.srb.rus.core.design.MainTheme
 import com.trainer.srb.rus.core.dictionary.Translation
+import com.trainer.srb.rus.core.dictionary.TranslationSourceType
 import com.trainer.srb.rus.core.dictionary.Word
 import com.trainer.srb.rus.core.dictionary.russianAsString
 import com.trainer.srb.rus.core.dictionary.serbianAsString
@@ -117,7 +118,8 @@ fun ShowInSerbianWithTranslationBodyPreview() {
             ),
             translations = listOf(
                 Word.Russian(value = "ложка")
-            )
+            ),
+            type = TranslationSourceType.USER
         )
     )
 }

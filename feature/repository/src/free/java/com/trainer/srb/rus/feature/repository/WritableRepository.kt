@@ -1,6 +1,7 @@
 package com.trainer.srb.rus.feature.repository
 
 import com.trainer.srb.rus.core.dictionary.Translation
+import com.trainer.srb.rus.core.dictionary.TranslationSourceType
 import com.trainer.srb.rus.core.dictionary.Word
 import com.trainer.srb.rus.core.repository.IWritableRepository
 import kotlinx.coroutines.Dispatchers
@@ -17,7 +18,7 @@ class WritableRepository @Inject constructor(
     override val translations: Flow<List<Translation<Word.Serbian, Word.Russian>>> = flow {
         innerRepositoryDao.getAll().collect {
             val translations = it.map { serbianRussianWord ->
-                serbianRussianWord.toTranslation()
+                serbianRussianWord.toTranslation(TranslationSourceType.USER)
             }
             emit(translations)
         }
@@ -30,7 +31,7 @@ class WritableRepository @Inject constructor(
 
     override suspend fun get(serbianLatinId: Long): Translation<Word.Serbian, Word.Russian>? {
         return withContext(Dispatchers.IO) {
-            innerRepositoryDao.getWord(serbianLatinId)?.toTranslation()
+            innerRepositoryDao.getWord(serbianLatinId)?.toTranslation(TranslationSourceType.USER)
         }
     }
 
@@ -53,6 +54,13 @@ class WritableRepository @Inject constructor(
         }
     }
 
+    override suspend fun update(translation: Translation<Word.Serbian, Word.Russian>) {
+        withContext(Dispatchers.IO) {
+            val serbianToRussianWord = translation.toSerbianToRussianWord(false)
+            innerRepositoryDao.update(serbianToRussianWord)
+        }
+    }
+
     override suspend fun markAsUnused(translation: Translation<Word.Serbian, Word.Russian>) {
         withContext(Dispatchers.IO) {
             innerRepositoryDao.addLinkToUnused(
@@ -67,7 +75,7 @@ class WritableRepository @Inject constructor(
         return withContext(Dispatchers.IO) {
             val found = innerRepositoryDao.searchInSrbLat(value)
             found.map {
-                it.toTranslation()
+                it.toTranslation(TranslationSourceType.USER)
             }
         }
     }
@@ -76,7 +84,7 @@ class WritableRepository @Inject constructor(
         return withContext(Dispatchers.IO) {
             val random = innerRepositoryDao.getRandom(randomTranslationsCount)
             random.map {
-                it.toTranslation()
+                it.toTranslation(TranslationSourceType.USER)
             }
         }
     }
