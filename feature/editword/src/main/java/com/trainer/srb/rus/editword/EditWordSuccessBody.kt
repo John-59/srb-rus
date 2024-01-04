@@ -68,6 +68,7 @@ fun EditWordSuccessBody(
                 backgroundColor = MainTheme.colors.Buttons,
                 contentColor = MainTheme.colors.White,
             ),
+            enabled = state.srbWord.latinValue.isNotBlank()
         ) {
             Image(
                 painter = painterResource(id = DesignRes.drawable.ok_checkbox),
