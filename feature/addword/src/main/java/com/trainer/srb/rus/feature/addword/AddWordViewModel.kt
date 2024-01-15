@@ -8,6 +8,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.trainer.srb.rus.core.dictionary.IDictionary
+import com.trainer.srb.rus.core.dictionary.LearningStatus
 import com.trainer.srb.rus.core.dictionary.Translation
 import com.trainer.srb.rus.core.dictionary.TranslationSourceType
 import com.trainer.srb.rus.core.dictionary.Word
@@ -73,7 +74,8 @@ class AddWordViewModel @Inject constructor(
                         value = it.value.trim()
                     )
                 },
-                type = TranslationSourceType.USER
+                type = TranslationSourceType.USER,
+                learningStatus = LearningStatus.NEW
             )
             dictionary.add(translation)
         }

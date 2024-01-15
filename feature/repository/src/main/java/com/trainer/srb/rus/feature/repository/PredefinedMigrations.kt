@@ -16,6 +16,14 @@ fun <T: RoomDatabase> RoomDatabase.Builder<T>.applyPredefinedMigrations(): RoomD
         .addMigrations(MIGRATION_ASSETS_8_9)
         .addMigrations(MIGRATION_ASSETS_9_10)
         .addMigrations(MIGRATION_ASSETS_10_11)
+        .addMigrations(MIGRATION_ASSETS_11_12)
+}
+
+private val MIGRATION_ASSETS_11_12 = object : Migration(11, 12) {
+    override fun migrate(db: SupportSQLiteDatabase) {
+        db.execSQL("ALTER TABLE srb_lat ADD COLUMN status TEXT NOT NULL DEFAULT 'UNKNOWN'")
+        db.execSQL("ALTER TABLE srb_lat ADD COLUMN status_time TEXT")
+    }
 }
 
 private val MIGRATION_ASSETS_10_11 = object : Migration(10, 11) {

@@ -6,6 +6,7 @@ class Translation<T, U>(
     val source: T,
     val translations: List<U>,
     val type: TranslationSourceType,
+    var learningStatus: LearningStatus,
     val uuid: UUID = UUID.randomUUID(),
 ) where T: Word, U: Word {
 

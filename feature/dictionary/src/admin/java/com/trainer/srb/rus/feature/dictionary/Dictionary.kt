@@ -1,6 +1,7 @@
 package com.trainer.srb.rus.feature.dictionary
 
 import com.trainer.srb.rus.core.dictionary.IDictionary
+import com.trainer.srb.rus.core.dictionary.LearningStatus
 import com.trainer.srb.rus.core.dictionary.Translation
 import com.trainer.srb.rus.core.dictionary.Word
 import com.trainer.srb.rus.core.repository.IWritableRepository
@@ -21,6 +22,9 @@ class Dictionary @Inject constructor(
     }
 
     override suspend fun add(translation: Translation<Word.Serbian, Word.Russian>) {
+        // for admin version all new words checked as unknown in order to users learning
+        // such words as random word from predefined dictionary.
+        translation.learningStatus = LearningStatus.UNKNOWN
         writableRepository.add(translation)
     }
 

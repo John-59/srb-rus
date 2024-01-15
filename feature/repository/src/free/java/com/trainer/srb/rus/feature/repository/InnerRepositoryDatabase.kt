@@ -2,9 +2,10 @@ package com.trainer.srb.rus.feature.repository
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 
 @Database(
-    version = 2,
+    version = 3,
     exportSchema = true,
     entities = [
         SerbianLatinWord::class,
@@ -14,6 +15,7 @@ import androidx.room.RoomDatabase
         UnusedPredefined::class
     ]
 )
+@TypeConverters(DateTimeConverter::class)
 abstract class InnerRepositoryDatabase: RoomDatabase() {
 
     abstract val dao: InnerRepositoryDao

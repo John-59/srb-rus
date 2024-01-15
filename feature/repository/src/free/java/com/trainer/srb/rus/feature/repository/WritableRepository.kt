@@ -42,7 +42,9 @@ class WritableRepository @Inject constructor(
                 srbCyrWord = translation.source.cyrillicValue,
                 rusWords = translation.translations.map {
                     it.value
-                }
+                },
+                status = translation.learningStatus.toWordStatus(),
+                statusDateTime = translation.learningStatus.dateTime
             )
             innerRepositoryDao.insert(translationToRussian)
         }

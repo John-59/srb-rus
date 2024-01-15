@@ -78,7 +78,8 @@ sealed class EditWordState {
                             )
                         }
                     },
-                    type = translation.type
+                    type = translation.type,
+                    learningStatus = translation.learningStatus
                 )
                 dictionary.update(updatedTranslation)
             }

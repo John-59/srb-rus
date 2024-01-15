@@ -18,6 +18,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.trainer.srb.rus.core.design.MainTheme
+import com.trainer.srb.rus.core.dictionary.LearningStatus
 import com.trainer.srb.rus.core.dictionary.Translation
 import com.trainer.srb.rus.core.dictionary.TranslationSourceType
 import com.trainer.srb.rus.core.dictionary.Word
@@ -94,7 +95,8 @@ private fun InnerSearchItemPreviewOne() {
             translations = listOf(
                 Word.Russian(value = "дождь")
             ),
-            type = TranslationSourceType.USER
+            type = TranslationSourceType.USER,
+            learningStatus = LearningStatus.UNKNOWN
         ),
         onEdit = {}
     )
@@ -113,7 +115,8 @@ private fun InnerSearchItemPreviewTwo() {
                 Word.Russian(value = "уже"),
                 Word.Russian(value = "а")
             ),
-            type = TranslationSourceType.USER
+            type = TranslationSourceType.USER,
+            learningStatus = LearningStatus.UNKNOWN
         ),
         onEdit = {}
     )
@@ -131,7 +134,8 @@ private fun InnerSearchItemPreviewThree() {
             translations = listOf(
                 Word.Russian(value = "морковь"),
             ),
-            type = TranslationSourceType.USER
+            type = TranslationSourceType.USER,
+            learningStatus = LearningStatus.UNKNOWN
         ),
         onEdit = {}
     )
@@ -149,7 +153,8 @@ private fun InnerSearchItemPreviewFour() {
             translations = listOf(
                 Word.Russian(value = "книга"),
             ),
-            type = TranslationSourceType.USER
+            type = TranslationSourceType.USER,
+            learningStatus = LearningStatus.UNKNOWN
         ),
         onEdit = {}
     )

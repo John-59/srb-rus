@@ -1,5 +1,6 @@
 package com.trainer.srb.rus.mocks
 
+import com.trainer.srb.rus.core.dictionary.LearningStatus
 import com.trainer.srb.rus.core.dictionary.Translation
 import com.trainer.srb.rus.core.dictionary.TranslationSourceType
 import com.trainer.srb.rus.core.dictionary.Word
@@ -14,7 +15,8 @@ val translationsExample = listOf(
             Word.Russian(value = "а"),
             Word.Russian(value = "уже")
         ),
-        type = TranslationSourceType.USER
+        type = TranslationSourceType.USER,
+        learningStatus = LearningStatus.UNKNOWN
     ),
     Translation(
         source = Word.Serbian(
@@ -24,7 +26,8 @@ val translationsExample = listOf(
         translations = listOf(
             Word.Russian(value = "морковь")
         ),
-        type = TranslationSourceType.USER
+        type = TranslationSourceType.USER,
+        learningStatus = LearningStatus.UNKNOWN
     ),
     Translation(
         source = Word.Serbian(
@@ -38,7 +41,8 @@ val translationsExample = listOf(
             Word.Russian(value = "перевод 4"),
             Word.Russian(value = "перевод 5")
         ),
-        type = TranslationSourceType.USER
+        type = TranslationSourceType.USER,
+        learningStatus = LearningStatus.UNKNOWN
     ),
     Translation(
         source = Word.Serbian(
@@ -48,6 +52,7 @@ val translationsExample = listOf(
         translations = listOf(
             Word.Russian(value = "дождь")
         ),
-        type = TranslationSourceType.USER
+        type = TranslationSourceType.USER,
+        learningStatus = LearningStatus.UNKNOWN
     )
 )

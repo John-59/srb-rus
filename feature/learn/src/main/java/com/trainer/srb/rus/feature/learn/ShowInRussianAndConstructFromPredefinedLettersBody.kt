@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.trainer.srb.rus.core.design.MainTheme
+import com.trainer.srb.rus.core.dictionary.LearningStatus
 import com.trainer.srb.rus.core.dictionary.Translation
 import com.trainer.srb.rus.core.dictionary.TranslationSourceType
 import com.trainer.srb.rus.core.dictionary.Word
@@ -94,7 +95,8 @@ fun ShowInRussianAndConstructFromPredefinedLettersBodyPreview() {
             translations = listOf(
                 Word.Russian(value = "ложка")
             ),
-            type = TranslationSourceType.USER
+            type = TranslationSourceType.USER,
+            learningStatus = LearningStatus.UNKNOWN
         )
     )
 }

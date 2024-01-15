@@ -49,7 +49,11 @@ abstract class InnerRepositoryDao {
 
     @Transaction
     open suspend fun insert(translationToRussian: TranslationToRussian) {
-        val srbLatinWord = SerbianLatinWord(word = translationToRussian.srbLatWord)
+        val srbLatinWord = SerbianLatinWord(
+            word = translationToRussian.srbLatWord,
+            status = translationToRussian.status,
+            statusDateTime = translationToRussian.statusDateTime
+        )
         val srbLatId = insert(srbLatinWord)
         if (translationToRussian.srbCyrWord.isNotBlank()) {
             val srbCyrillicWord =
