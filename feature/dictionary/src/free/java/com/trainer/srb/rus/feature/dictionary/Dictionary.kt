@@ -1,6 +1,7 @@
 package com.trainer.srb.rus.feature.dictionary
 
 import com.trainer.srb.rus.core.dictionary.IDictionary
+import com.trainer.srb.rus.core.dictionary.LearningStatus
 import com.trainer.srb.rus.core.dictionary.Translation
 import com.trainer.srb.rus.core.dictionary.TranslationSourceType
 import com.trainer.srb.rus.core.dictionary.Word
@@ -54,6 +55,7 @@ class Dictionary @Inject constructor(
     override suspend fun remove(translation: Translation<Word.Serbian, Word.Russian>) {
         when (translation.type) {
             TranslationSourceType.PREDEFINED -> {
+                translation.learningStatus = LearningStatus.UNUSED
                 predefinedRepository.markAsUnused(translation)
                 writableRepository.markAsUnused(translation)
             }

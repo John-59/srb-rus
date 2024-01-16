@@ -10,6 +10,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.trainer.srb.rus.core.dictionary.Translation
+import com.trainer.srb.rus.core.dictionary.Word
 import com.trainer.srb.rus.core.ui.ExitExerciseConfirmationDialog
 import com.trainer.srb.rus.mocks.DictionaryMock
 
@@ -35,6 +37,8 @@ fun LearnScreen(
         Body(
             state = learnState,
             onNext = viewModel::next,
+            onAlreadyKnow = viewModel::markAsAlreadyKnow,
+            onDontWantLearn = viewModel::markAsNotLearn,
             onFinished = onFinished,
         )
     }
@@ -51,6 +55,8 @@ fun LearnScreen(
 private fun Body(
     state: LearnState,
     onNext: () -> Unit,
+    onAlreadyKnow: (translation: Translation<Word.Serbian, Word.Russian>) -> Unit,
+    onDontWantLearn: (translation: Translation<Word.Serbian, Word.Russian>) -> Unit,
     onFinished: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -95,6 +101,14 @@ private fun Body(
             ShowInSerbianWithTranslationBody(
                 translation = state.translation,
                 onNext = onNext,
+                onAlreadyKnow = {
+                    onAlreadyKnow(state.translation)
+                    onNext()
+                },
+                onDontWantLearn = {
+                    onDontWantLearn(state.translation)
+                    onNext()
+                },
                 modifier = modifier
             )
         }

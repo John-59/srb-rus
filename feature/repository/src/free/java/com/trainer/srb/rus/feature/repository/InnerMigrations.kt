@@ -9,6 +9,18 @@ fun <T: RoomDatabase> RoomDatabase.Builder<T>.applyInnerMigrations(): RoomDataba
         .addMigrations(MIGRATION_ASSETS_1_2)
         .addMigrations(MIGRATION_ASSETS_2_3)
         .addMigrations(MIGRATION_ASSETS_3_4)
+        .addMigrations(MIGRATION_ASSETS_4_5)
+}
+
+private val MIGRATION_ASSETS_4_5 = object : Migration(4, 5) {
+    override fun migrate(db: SupportSQLiteDatabase) {
+        with (db) {
+            execSQL("ALTER TABLE unused_predefined RENAME TO predefined_statuses")
+            execSQL("ALTER TABLE predefined_statuses ADD COLUMN status TEXT NOT NULL DEFAULT 'unknown'")
+            execSQL("ALTER TABLE predefined_statuses ADD COLUMN status_time TEXT")
+            execSQL("UPDATE predefined_statuses SET status = 'unused'")
+        }
+    }
 }
 
 private val MIGRATION_ASSETS_3_4 = object : Migration(3, 4) {

@@ -7,6 +7,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.trainer.srb.rus.core.dictionary.IDictionary
+import com.trainer.srb.rus.core.dictionary.LearningStatus
 import com.trainer.srb.rus.core.dictionary.Translation
 import com.trainer.srb.rus.core.dictionary.Word
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -69,6 +70,22 @@ class LearnViewModel @Inject constructor(
 
     fun hideExitConfirmation() {
         showExitConfirmation = false
+    }
+
+    fun markAsAlreadyKnow(translation: Translation<Word.Serbian, Word.Russian>) {
+        wordToLearningStep.remove(translation)
+        translation.learningStatus = LearningStatus.ALREADY_KNOW
+        viewModelScope.launch {
+            dictionary.update(translation)
+        }
+    }
+
+    fun markAsNotLearn(translation: Translation<Word.Serbian, Word.Russian>) {
+        wordToLearningStep.remove(translation)
+        translation.learningStatus = LearningStatus.DONT_WANT_LEARN
+        viewModelScope.launch {
+            dictionary.update(translation)
+        }
     }
 
     private fun step(

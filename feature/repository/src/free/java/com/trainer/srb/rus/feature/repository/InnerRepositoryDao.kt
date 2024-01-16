@@ -70,10 +70,7 @@ abstract class InnerRepositoryDao {
 
     @Transaction
     open suspend fun remove(srbLatWordId: Long) {
-        val word = getWord(srbLatWordId)
-        if (word == null) {
-            return
-        }
+        val word = getWord(srbLatWordId) ?: return
         if (word.serbianCyr != null) {
             remove(word.serbianCyr)
         }
@@ -139,10 +136,10 @@ abstract class InnerRepositoryDao {
     }
 
     @Insert
-    abstract suspend fun addLinkToUnused(unused: UnusedPredefined)
+    abstract suspend fun addPredefinedStatus(predefinedStatus: PredefinedStatus)
 
-    @Query("SELECT * FROM unused_predefined")
-    abstract fun getUnusedLinks(): Flow<List<UnusedPredefined>>
+    @Query("SELECT * FROM predefined_statuses WHERE LOWER(status) = LOWER('${WordStatus.Unused.name}')")
+    abstract fun getUnusedLinks(): Flow<List<PredefinedStatus>>
 
     @Query("SELECT * FROM srb_lat ORDER BY id DESC")
     abstract fun getAll(): Flow<List<SerbianToRussianWord>>

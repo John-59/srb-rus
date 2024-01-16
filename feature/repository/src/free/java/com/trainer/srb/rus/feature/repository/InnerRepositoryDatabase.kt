@@ -5,14 +5,14 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 
 @Database(
-    version = 4,
+    version = 5,
     exportSchema = true,
     entities = [
         SerbianLatinWord::class,
         SerbianCyrillicWord::class,
         RussianWord::class,
         SerbianRussianCrossRefTable::class,
-        UnusedPredefined::class
+        PredefinedStatus::class
     ]
 )
 @TypeConverters(

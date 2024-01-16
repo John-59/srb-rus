@@ -65,9 +65,11 @@ class WritableRepository @Inject constructor(
 
     override suspend fun markAsUnused(translation: Translation<Word.Serbian, Word.Russian>) {
         withContext(Dispatchers.IO) {
-            innerRepositoryDao.addLinkToUnused(
-                UnusedPredefined(
-                    predefinedLatinId =  translation.source.latinId
+            innerRepositoryDao.addPredefinedStatus(
+                PredefinedStatus(
+                    predefinedLatinId =  translation.source.latinId,
+                    status = translation.learningStatus.toWordStatus(),
+                    statusDateTime = translation.learningStatus.dateTime
                 )
             )
         }
