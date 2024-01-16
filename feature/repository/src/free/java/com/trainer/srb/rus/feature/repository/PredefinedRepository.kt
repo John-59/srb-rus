@@ -39,7 +39,7 @@ class PredefinedRepository @Inject constructor(
         withContext(Dispatchers.IO) {
             predefinedRepositoryDao.getWord(latinId)?.let {
                 val unused = it.serbianLat.copy(
-                    unused = true
+                    status = WordStatus.Unused
                 )
                 predefinedRepositoryDao.update(unused)
             }

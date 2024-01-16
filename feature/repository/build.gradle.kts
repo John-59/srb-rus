@@ -71,4 +71,5 @@ dependencies {
     implementation("androidx.room:room-ktx:2.6.1")
 
     implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.5.0")
+    implementation(kotlin("reflect"))
 }

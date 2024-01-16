@@ -5,7 +5,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 
 @Database(
-    version = 3,
+    version = 4,
     exportSchema = true,
     entities = [
         SerbianLatinWord::class,
@@ -15,7 +15,10 @@ import androidx.room.TypeConverters
         UnusedPredefined::class
     ]
 )
-@TypeConverters(DateTimeConverter::class)
+@TypeConverters(
+    DateTimeConverter::class,
+    WordStatusConverter::class
+)
 abstract class InnerRepositoryDatabase: RoomDatabase() {
 
     abstract val dao: InnerRepositoryDao

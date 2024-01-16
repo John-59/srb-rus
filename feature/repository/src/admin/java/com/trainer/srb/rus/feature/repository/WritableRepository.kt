@@ -61,18 +61,15 @@ class WritableRepository @Inject constructor(
 
     override suspend fun update(translation: Translation<Word.Serbian, Word.Russian>) {
         withContext(Dispatchers.IO) {
-            val serbianToRussianWord = translation.toSerbianToRussianWord(false)
+            val serbianToRussianWord = translation.toSerbianToRussianWord()
             predefinedRepositoryDao.update(serbianToRussianWord)
             makeCheckpoint()
         }
     }
 
     override suspend fun markAsUnused(translation: Translation<Word.Serbian, Word.Russian>) {
-        withContext(Dispatchers.IO) {
-            val serbianToRussianWord = translation.toSerbianToRussianWord(true)
-            predefinedRepositoryDao.update(serbianToRussianWord)
-            makeCheckpoint()
-        }
+        // for admin version mark as unused has no means, because admin removes words,
+        // not marks them as unused.
     }
 
     override suspend fun search(value: String): List<Translation<Word.Serbian, Word.Russian>> {

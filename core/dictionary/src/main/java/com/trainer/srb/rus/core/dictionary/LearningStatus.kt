@@ -17,5 +17,7 @@ enum class LearningStatus(
     AFTER_THREE_DAYS,
     AFTER_WEEK,
     AFTER_TWO_WEEKS,
-    AFTER_MONTH
+    AFTER_MONTH,
+    ALREADY_KNOW,
+    DONT_WANT_LEARN
 }

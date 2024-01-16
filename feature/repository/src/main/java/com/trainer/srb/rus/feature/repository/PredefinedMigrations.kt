@@ -17,6 +17,25 @@ fun <T: RoomDatabase> RoomDatabase.Builder<T>.applyPredefinedMigrations(): RoomD
         .addMigrations(MIGRATION_ASSETS_9_10)
         .addMigrations(MIGRATION_ASSETS_10_11)
         .addMigrations(MIGRATION_ASSETS_11_12)
+        .addMigrations(MIGRATION_ASSETS_12_13)
+        .addMigrations(MIGRATION_ASSETS_13_14)
+}
+
+private val MIGRATION_ASSETS_13_14 = object : Migration(13, 14) {
+    override fun migrate(db: SupportSQLiteDatabase) {
+    }
+}
+
+private val MIGRATION_ASSETS_12_13 = object : Migration(12, 13) {
+    override fun migrate(db: SupportSQLiteDatabase) {
+        with (db) {
+            execSQL("CREATE TABLE srb_lat_backup (id INTEGER NOT NULL, word TEXT NOT NULL, status TEXT NOT NULL, status_time TEXT, PRIMARY KEY(`id`))")
+            execSQL("INSERT INTO srb_lat_backup SELECT id, word, status, status_time FROM srb_lat")
+            execSQL("DROP TABLE srb_lat")
+            execSQL("ALTER TABLE srb_lat_backup RENAME TO srb_lat")
+            execSQL("UPDATE srb_lat SET status = LOWER(status)")
+        }
+    }
 }
 
 private val MIGRATION_ASSETS_11_12 = object : Migration(11, 12) {

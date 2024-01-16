@@ -58,7 +58,7 @@ class WritableRepository @Inject constructor(
 
     override suspend fun update(translation: Translation<Word.Serbian, Word.Russian>) {
         withContext(Dispatchers.IO) {
-            val serbianToRussianWord = translation.toSerbianToRussianWord(false)
+            val serbianToRussianWord = translation.toSerbianToRussianWord()
             innerRepositoryDao.update(serbianToRussianWord)
         }
     }

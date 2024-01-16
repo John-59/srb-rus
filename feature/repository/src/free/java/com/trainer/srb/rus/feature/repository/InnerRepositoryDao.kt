@@ -147,7 +147,7 @@ abstract class InnerRepositoryDao {
     @Query("SELECT * FROM srb_lat ORDER BY id DESC")
     abstract fun getAll(): Flow<List<SerbianToRussianWord>>
 
-    @Query("SELECT * FROM srb_lat WHERE NOT unused ORDER BY RANDOM() LIMIT :randomTranslationsCount")
+    @Query("SELECT * FROM srb_lat WHERE LOWER(status) <> LOWER('${WordStatus.Unused.name}') ORDER BY RANDOM() LIMIT :randomTranslationsCount")
     abstract suspend fun getRandom(randomTranslationsCount: Int): List<SerbianToRussianWord>
 
     @Query("SELECT * FROM srb_lat WHERE word LIKE :value||'%'")

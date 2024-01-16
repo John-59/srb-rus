@@ -10,7 +10,6 @@ data class SerbianLatinWord(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0L,
     val word: String = "",
-    val unused: Boolean = false,
     val status: WordStatus,
     @ColumnInfo(name = "status_time")
     val statusDateTime: LocalDateTime?
