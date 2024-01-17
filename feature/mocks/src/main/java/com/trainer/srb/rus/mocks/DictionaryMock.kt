@@ -23,6 +23,9 @@ class DictionaryMock: IDictionary {
     override suspend fun add(translation: Translation<Word.Serbian, Word.Russian>) {
     }
 
+    override suspend fun edit(translation: Translation<Word.Serbian, Word.Russian>) {
+    }
+
     override suspend fun update(translation: Translation<Word.Serbian, Word.Russian>) {
     }
 

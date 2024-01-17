@@ -67,9 +67,9 @@ class WritableRepository @Inject constructor(
         }
     }
 
-    override suspend fun markAsUnused(translation: Translation<Word.Serbian, Word.Russian>) {
-        // for admin version mark as unused has no means, because admin removes words,
-        // not marks them as unused.
+    override suspend fun addLinkToPredefinedTranslation(translation: Translation<Word.Serbian, Word.Russian>) {
+        // for admin version adding link to predefined translation has no means,
+        // because admin can change predefined repo directly.
     }
 
     override suspend fun search(value: String): List<Translation<Word.Serbian, Word.Russian>> {

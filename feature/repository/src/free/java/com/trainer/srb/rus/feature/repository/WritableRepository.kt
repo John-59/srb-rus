@@ -36,6 +36,9 @@ class WritableRepository @Inject constructor(
     }
 
     override suspend fun add(translation: Translation<Word.Serbian, Word.Russian>) {
+        if (translation.type != TranslationSourceType.USER) {
+            return
+        }
         withContext(Dispatchers.IO) {
             val translationToRussian = TranslationToRussian(
                 srbLatWord = translation.source.latinValue,
@@ -51,19 +54,28 @@ class WritableRepository @Inject constructor(
     }
 
     override suspend fun remove(translation: Translation<Word.Serbian, Word.Russian>) {
+        if (translation.type != TranslationSourceType.USER) {
+            return
+        }
         withContext(Dispatchers.IO) {
             innerRepositoryDao.remove(translation.source.latinId)
         }
     }
 
     override suspend fun update(translation: Translation<Word.Serbian, Word.Russian>) {
+        if (translation.type != TranslationSourceType.USER) {
+            return
+        }
         withContext(Dispatchers.IO) {
             val serbianToRussianWord = translation.toSerbianToRussianWord()
             innerRepositoryDao.update(serbianToRussianWord)
         }
     }
 
-    override suspend fun markAsUnused(translation: Translation<Word.Serbian, Word.Russian>) {
+    override suspend fun addLinkToPredefinedTranslation(translation: Translation<Word.Serbian, Word.Russian>) {
+        if (translation.type != TranslationSourceType.PREDEFINED) {
+            return
+        }
         withContext(Dispatchers.IO) {
             innerRepositoryDao.addPredefinedStatus(
                 PredefinedStatus(

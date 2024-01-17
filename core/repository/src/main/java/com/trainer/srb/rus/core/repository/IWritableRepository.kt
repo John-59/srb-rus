@@ -18,7 +18,7 @@ interface IWritableRepository {
 
     suspend fun update(translation: Translation<Word.Serbian, Word.Russian>)
 
-    suspend fun markAsUnused(translation: Translation<Word.Serbian, Word.Russian>)
+    suspend fun addLinkToPredefinedTranslation(translation: Translation<Word.Serbian, Word.Russian>)
 
     suspend fun search(value: String): List<Translation<Word.Serbian, Word.Russian>>
 

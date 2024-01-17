@@ -12,6 +12,8 @@ interface IDictionary {
 
     suspend fun add(translation: Translation<Word.Serbian, Word.Russian>)
 
+    suspend fun edit(translation: Translation<Word.Serbian, Word.Russian>)
+
     suspend fun update(translation: Translation<Word.Serbian, Word.Russian>)
 
     suspend fun remove(translation: Translation<Word.Serbian, Word.Russian>)

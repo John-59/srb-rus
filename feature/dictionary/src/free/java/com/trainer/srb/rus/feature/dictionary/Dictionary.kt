@@ -37,11 +37,31 @@ class Dictionary @Inject constructor(
         writableRepository.add(translation)
     }
 
+    override suspend fun edit(translation: Translation<Word.Serbian, Word.Russian>) {
+        when (translation.type) {
+            TranslationSourceType.PREDEFINED -> {
+                val status = translation.learningStatus
+                translation.learningStatus = LearningStatus.UNUSED
+                writableRepository.addLinkToPredefinedTranslation(translation)
+
+                translation.type = TranslationSourceType.USER
+                translation.learningStatus = status
+                writableRepository.add(translation)
+            }
+            TranslationSourceType.USER -> {
+                update(translation)
+            }
+            TranslationSourceType.INTERNET -> {
+                // not implemented yet
+            }
+        }
+    }
+
     override suspend fun update(translation: Translation<Word.Serbian, Word.Russian>) {
         when (translation.type) {
             TranslationSourceType.PREDEFINED -> {
-                predefinedRepository.markAsUnused(translation)
-                writableRepository.add(translation)
+                predefinedRepository.update(translation)
+                writableRepository.addLinkToPredefinedTranslation(translation)
             }
             TranslationSourceType.USER -> {
                 writableRepository.update(translation)
@@ -56,8 +76,8 @@ class Dictionary @Inject constructor(
         when (translation.type) {
             TranslationSourceType.PREDEFINED -> {
                 translation.learningStatus = LearningStatus.UNUSED
-                predefinedRepository.markAsUnused(translation)
-                writableRepository.markAsUnused(translation)
+                predefinedRepository.update(translation)
+                writableRepository.addLinkToPredefinedTranslation(translation)
             }
             TranslationSourceType.USER -> {
                 writableRepository.remove(translation)

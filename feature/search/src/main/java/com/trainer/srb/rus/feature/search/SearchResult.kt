@@ -34,6 +34,7 @@ import com.trainer.srb.rus.core.design.R as DesignRes
 fun SearchResult(
     innerWords: List<Translation<Word.Serbian, Word.Russian>>,
     onRemoveTranslation: (Translation<Word.Serbian, Word.Russian>) -> Unit,
+    onAddToLearn: (Translation<Word.Serbian, Word.Russian>) -> Unit,
     onEdit: (Translation<Word.Serbian, Word.Russian>) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -47,17 +48,25 @@ fun SearchResult(
             }
         ) { translation ->
             val dismissState = rememberDismissState {
-                if (it == DismissValue.DismissedToStart) {
-                    onRemoveTranslation(translation)
-                    true
-                } else {
-                    false
+                when (it) {
+                    DismissValue.DismissedToStart -> {
+                        onRemoveTranslation(translation)
+                        true
+                    }
+                    DismissValue.DismissedToEnd -> {
+                        onAddToLearn(translation)
+                        false
+                    }
+                    else -> {
+                        false
+                    }
                 }
             }
-            val dismissDirection = DismissDirection.EndToStart
+            val removeDirection = DismissDirection.EndToStart
+            val learnDirection = DismissDirection.StartToEnd
             SwipeToDismiss(
                 state = dismissState,
-                directions = setOf(dismissDirection),
+                directions = setOf(removeDirection, learnDirection),
                 dismissThresholds = {
                     FractionalThreshold(0.5f)
                 },
@@ -83,7 +92,6 @@ fun SearchResult(
     }
 }
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 private fun ItemSwipeBackground(
     direction: DismissDirection?,
@@ -92,37 +100,66 @@ private fun ItemSwipeBackground(
     Row(
         modifier = modifier
             .background(
-                color = MainTheme.colors.Delete,
+                color = if (direction == DismissDirection.EndToStart) {
+                    MainTheme.colors.Delete
+                } else {
+                   MainTheme.colors.Right
+                },
                 shape = RoundedCornerShape(10.dp)
             ),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
+        horizontalArrangement = if (direction == DismissDirection.EndToStart) {
+            Arrangement.End
+        } else {
+            Arrangement.Start
+        }
     ) {
         Spacer(modifier = Modifier)
-        if (direction == DismissDirection.EndToStart) {
-            Image(
-                painter = painterResource(id = DesignRes.drawable.delete),
-                contentDescription = null,
-                modifier = Modifier.padding(end = 8.dp)
-            )
-        }
+        Image(
+            painter = if (direction == DismissDirection.EndToStart) {
+                painterResource(id = DesignRes.drawable.delete)
+            } else {
+                painterResource(id = DesignRes.drawable.add_to_learn)
+            },
+            contentDescription = null,
+            modifier = Modifier.padding(horizontal = 8.dp)
+        )
     }
 }
 
-@Preview
+@Preview(apiLevel = 33)
 @Composable
-private fun ItemSwipeBackgroundPreview() {
+private fun ItemSwipeDeleteBackgroundPreview() {
     ItemSwipeBackground(
         direction = DismissDirection.EndToStart,
         modifier = Modifier.fillMaxWidth()
     )
 }
 
-@Preview
+@Preview(apiLevel = 33)
+@Composable
+private fun ItemSwipeAddToLearnedBackgroundPreview() {
+    ItemSwipeBackground(
+        direction = DismissDirection.StartToEnd,
+        modifier = Modifier.fillMaxWidth()
+    )
+}
+
+@Preview(apiLevel = 33)
+@Composable
+private fun ItemSwipeLearnAgainBackgroundPreview() {
+    ItemSwipeBackground(
+        direction = DismissDirection.StartToEnd,
+        modifier = Modifier.fillMaxWidth()
+    )
+}
+
+@Preview(apiLevel = 33)
 @Composable
 private fun SearchResultPreview() {
     SearchResult(
         onRemoveTranslation = {},
+        onAddToLearn = {},
         onEdit = {},
         innerWords = translationsExample
     )

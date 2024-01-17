@@ -45,6 +45,7 @@ fun SearchScreen(
         SearchResult(
             innerWords = visibleWords,
             onRemoveTranslation = viewModel::removeTranslation,
+            onAddToLearn = viewModel::addToLearn,
             onEdit = navigateToEditWord,
             modifier = Modifier
                 .padding(horizontal = 20.dp)

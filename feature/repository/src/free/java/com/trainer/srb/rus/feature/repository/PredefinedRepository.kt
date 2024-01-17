@@ -29,9 +29,12 @@ class PredefinedRepository @Inject constructor(
         }
     }
 
-    override suspend fun markAsUnused(translation: Translation<Word.Serbian, Word.Russian>) {
+    override suspend fun update(translation: Translation<Word.Serbian, Word.Russian>) {
+        if (translation.type != TranslationSourceType.PREDEFINED) {
+            return
+        }
         withContext(Dispatchers.IO) {
-            markAsUnusedById(translation.source.latinId)
+            predefinedRepositoryDao.update(translation.toSerbianToRussianWord())
         }
     }
 

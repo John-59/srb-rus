@@ -32,6 +32,39 @@ sealed class EditWordState {
             Word.Russian()
         )
 
+        val isTranslationValid: Boolean
+            get() {
+                return srbWord.latinValue.isNotBlank() && !translation.contentEqual(editedTranslation)
+            }
+
+        private val editedTranslation: Translation<Word.Serbian, Word.Russian>
+            get() {
+                return Translation(
+                    source = Word.Serbian(
+                        latinId = translation.source.latinId,
+                        latinValue = srbWord.latinValue.trim(),
+                        cyrillicId = translation.source.cyrillicId,
+                        cyrillicValue = srbWord.cyrillicValue.trim()
+                    ),
+                    translations = rusWords.filter {
+                        it.value.isNotBlank()
+                    }.map {
+                        if (it.id > 0) {
+                            Word.Russian(
+                                id = it.id,
+                                value = it.value.trim()
+                            )
+                        } else {
+                            Word.Russian(
+                                value = it.value.trim()
+                            )
+                        }
+                    },
+                    type = translation.type,
+                    learningStatus = translation.learningStatus
+                )
+            }
+
         fun srbLatinChange(word: String) {
             srbWord = srbWord.copy(
                 latinValue = word
@@ -57,31 +90,7 @@ sealed class EditWordState {
 
         fun edit() {
             coroutineScope.launch {
-                val updatedTranslation = Translation(
-                    source = Word.Serbian(
-                        latinId = translation.source.latinId,
-                        latinValue = srbWord.latinValue.trim(),
-                        cyrillicId = translation.source.cyrillicId,
-                        cyrillicValue = srbWord.cyrillicValue.trim()
-                    ),
-                    translations = rusWords.filter {
-                        it.value.isNotBlank()
-                    }.map {
-                        if (it.id > 0) {
-                            Word.Russian(
-                                id = it.id,
-                                value = it.value.trim()
-                            )
-                        } else {
-                            Word.Russian(
-                                value = it.value.trim()
-                            )
-                        }
-                    },
-                    type = translation.type,
-                    learningStatus = translation.learningStatus
-                )
-                dictionary.update(updatedTranslation)
+                dictionary.edit(editedTranslation)
             }
         }
     }
