@@ -1,6 +1,7 @@
 package com.trainer.srb.rus.mocks
 
 import com.trainer.srb.rus.core.dictionary.IDictionary
+import com.trainer.srb.rus.core.dictionary.LearningStatusName
 import com.trainer.srb.rus.core.dictionary.Translation
 import com.trainer.srb.rus.core.dictionary.Word
 import kotlinx.coroutines.flow.Flow
@@ -32,7 +33,14 @@ class DictionaryMock: IDictionary {
     override suspend fun remove(translation: Translation<Word.Serbian, Word.Russian>) {
     }
 
-    override suspend fun getRandom(randomTranslationsCount: Int): List<Translation<Word.Serbian, Word.Russian>> {
+    override suspend fun getRandom(
+        randomTranslationsCount: Int,
+        vararg statuses: LearningStatusName
+    ): List<Translation<Word.Serbian, Word.Russian>> {
         return emptyList()
+    }
+
+    override suspend fun containsWordsForRepeat(): Boolean {
+        return false
     }
 }

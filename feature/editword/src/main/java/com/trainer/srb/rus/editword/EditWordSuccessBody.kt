@@ -213,7 +213,7 @@ private fun EditWordSuccessBodyPreview() {
                     Word.Russian(value = "морковь")
                 ),
                 type = TranslationSourceType.USER,
-                learningStatus = LearningStatus.UNKNOWN
+                learningStatus = LearningStatus.Unknown()
             ),
             dictionary = DictionaryMock(),
             coroutineScope = coroutineScope

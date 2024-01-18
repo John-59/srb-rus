@@ -17,9 +17,9 @@ class MainActivityViewModel @Inject constructor(
     private val writableRepository: IWritableRepository
 ): ViewModel() {
 
-    val uiState: StateFlow<MainActivityUiState> = writableRepository.unusedLinks.map {
-        it.forEach { unusedPredefinedLatinId ->
-            predefinedRepository.markAsUnusedById(unusedPredefinedLatinId)
+    val uiState: StateFlow<MainActivityUiState> = writableRepository.predefinedStatuses.map {
+        it.forEach { (srbLatinId, status) ->
+            predefinedRepository.setStatusById(srbLatinId, status)
         }
         MainActivityUiState.Success
     }.stateIn(

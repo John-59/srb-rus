@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
+import com.trainer.srb.rus.core.dictionary.LearningStatusName
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -138,14 +139,21 @@ abstract class InnerRepositoryDao {
     @Insert
     abstract suspend fun addPredefinedStatus(predefinedStatus: PredefinedStatus)
 
-    @Query("SELECT * FROM predefined_statuses WHERE LOWER(status) = LOWER('${WordStatus.Unused.name}')")
-    abstract fun getUnusedLinks(): Flow<List<PredefinedStatus>>
+    @Query("SELECT * FROM predefined_statuses")
+    abstract fun getPredefinedStatuses(): Flow<List<PredefinedStatus>>
 
     @Query("SELECT * FROM srb_lat ORDER BY id DESC")
     abstract fun getAll(): Flow<List<SerbianToRussianWord>>
 
-    @Query("SELECT * FROM srb_lat WHERE LOWER(status) <> LOWER('${WordStatus.Unused.name}') ORDER BY RANDOM() LIMIT :randomTranslationsCount")
-    abstract suspend fun getRandom(randomTranslationsCount: Int): List<SerbianToRussianWord>
+    @Query("SELECT * FROM srb_lat WHERE LOWER(status) IN (:statuses) ORDER BY RANDOM() LIMIT :randomTranslationsCount")
+    protected abstract suspend fun getRandom(randomTranslationsCount: Int, vararg statuses: String): List<SerbianToRussianWord>
+
+    suspend fun getRandom(randomTranslationsCount: Int, statuses: List<LearningStatusName>): List<SerbianToRussianWord> {
+        val statusesString = statuses.map {
+            it.name.lowercase()
+        }.toTypedArray()
+        return getRandom(randomTranslationsCount, *statusesString)
+    }
 
     @Query("SELECT * FROM srb_lat WHERE word LIKE :value||'%'")
     abstract suspend fun searchInSrbLat(value: String): List<SerbianToRussianWord>

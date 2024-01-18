@@ -51,7 +51,7 @@ class SearchViewModel @Inject constructor(
     }
 
     fun addToLearn(translation: Translation<Word.Serbian, Word.Russian>) {
-        translation.learningStatus = LearningStatus.NEW
+        translation.learningStatus = LearningStatus.New()
         viewModelScope.launch {
             innerDictionary.update(translation)
         }

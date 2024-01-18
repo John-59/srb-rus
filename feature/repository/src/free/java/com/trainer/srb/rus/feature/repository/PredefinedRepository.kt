@@ -1,5 +1,7 @@
 package com.trainer.srb.rus.feature.repository
 
+import com.trainer.srb.rus.core.dictionary.LearningStatus
+import com.trainer.srb.rus.core.dictionary.LearningStatusName
 import com.trainer.srb.rus.core.dictionary.Translation
 import com.trainer.srb.rus.core.dictionary.TranslationSourceType
 import com.trainer.srb.rus.core.dictionary.Word
@@ -38,13 +40,14 @@ class PredefinedRepository @Inject constructor(
         }
     }
 
-    override suspend fun markAsUnusedById(latinId: Long) {
+    override suspend fun setStatusById(latinId: Long, status: LearningStatus) {
         withContext(Dispatchers.IO) {
             predefinedRepositoryDao.getWord(latinId)?.let {
-                val unused = it.serbianLat.copy(
-                    status = WordStatus.Unused
+                val srbLatinWord = it.serbianLat.copy(
+                    status = status.toWordStatus(),
+                    statusDateTime = status.dateTime
                 )
-                predefinedRepositoryDao.update(unused)
+                predefinedRepositoryDao.update(srbLatinWord)
             }
         }
     }
@@ -58,9 +61,12 @@ class PredefinedRepository @Inject constructor(
         }
     }
 
-    override suspend fun getRandom(randomTranslationsCount: Int): List<Translation<Word.Serbian, Word.Russian>> {
+    override suspend fun getRandom(
+        randomTranslationsCount: Int,
+        statuses: List<LearningStatusName>
+    ): List<Translation<Word.Serbian, Word.Russian>> {
         return withContext(Dispatchers.IO) {
-            val random = predefinedRepositoryDao.getRandom(randomTranslationsCount)
+            val random = predefinedRepositoryDao.getRandom(randomTranslationsCount, statuses)
             random.map {
                 it.toTranslation(TranslationSourceType.PREDEFINED)
             }

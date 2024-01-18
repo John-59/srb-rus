@@ -96,7 +96,7 @@ private fun InnerSearchItemPreviewOne() {
                 Word.Russian(value = "дождь")
             ),
             type = TranslationSourceType.USER,
-            learningStatus = LearningStatus.UNKNOWN
+            learningStatus = LearningStatus.Unknown()
         ),
         onEdit = {}
     )
@@ -116,7 +116,7 @@ private fun InnerSearchItemPreviewTwo() {
                 Word.Russian(value = "а")
             ),
             type = TranslationSourceType.USER,
-            learningStatus = LearningStatus.UNKNOWN
+            learningStatus = LearningStatus.Unknown()
         ),
         onEdit = {}
     )
@@ -135,7 +135,7 @@ private fun InnerSearchItemPreviewThree() {
                 Word.Russian(value = "морковь"),
             ),
             type = TranslationSourceType.USER,
-            learningStatus = LearningStatus.UNKNOWN
+            learningStatus = LearningStatus.Unknown()
         ),
         onEdit = {}
     )
@@ -154,7 +154,7 @@ private fun InnerSearchItemPreviewFour() {
                 Word.Russian(value = "книга"),
             ),
             type = TranslationSourceType.USER,
-            learningStatus = LearningStatus.UNKNOWN
+            learningStatus = LearningStatus.Unknown()
         ),
         onEdit = {}
     )

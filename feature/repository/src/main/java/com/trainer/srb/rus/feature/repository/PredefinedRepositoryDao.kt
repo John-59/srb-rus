@@ -8,6 +8,7 @@ import androidx.room.RawQuery
 import androidx.room.Transaction
 import androidx.room.Update
 import androidx.sqlite.db.SupportSQLiteQuery
+import com.trainer.srb.rus.core.dictionary.LearningStatusName
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -146,8 +147,15 @@ abstract class PredefinedRepositoryDao {
     @Query("SELECT * FROM srb_lat WHERE LOWER(status) = LOWER('${WordStatus.Unused.name}')")
     abstract fun getUnused(): Flow<List<SerbianToRussianWord>>
 
-    @Query("SELECT * FROM srb_lat WHERE LOWER(status) <> LOWER('${WordStatus.Unused.name}') ORDER BY RANDOM() LIMIT :randomTranslationsCount")
-    abstract suspend fun getRandom(randomTranslationsCount: Int): List<SerbianToRussianWord>
+    @Query("SELECT * FROM srb_lat WHERE LOWER(status) IN (:statuses) ORDER BY RANDOM() LIMIT :randomTranslationsCount")
+    protected abstract suspend fun getRandom(randomTranslationsCount: Int, vararg statuses: String): List<SerbianToRussianWord>
+
+    suspend fun getRandom(randomTranslationsCount: Int, statuses: List<LearningStatusName>): List<SerbianToRussianWord> {
+        val statusesString = statuses.map {
+            it.name.lowercase()
+        }.toTypedArray()
+        return getRandom(randomTranslationsCount, *statusesString)
+    }
 
     @RawQuery
     abstract suspend fun checkpoint(supportSQLiteQuery: SupportSQLiteQuery): Int

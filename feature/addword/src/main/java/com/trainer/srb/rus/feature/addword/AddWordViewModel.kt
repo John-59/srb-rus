@@ -75,7 +75,7 @@ class AddWordViewModel @Inject constructor(
                     )
                 },
                 type = TranslationSourceType.USER,
-                learningStatus = LearningStatus.NEW
+                learningStatus = LearningStatus.New()
             )
             dictionary.add(translation)
         }

@@ -1,5 +1,7 @@
 package com.trainer.srb.rus.feature.repository
 
+import com.trainer.srb.rus.core.dictionary.LearningStatus
+import com.trainer.srb.rus.core.dictionary.LearningStatusName
 import com.trainer.srb.rus.core.dictionary.Translation
 import com.trainer.srb.rus.core.dictionary.TranslationSourceType
 import com.trainer.srb.rus.core.dictionary.Word
@@ -9,6 +11,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
+import kotlinx.datetime.Clock
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import javax.inject.Inject
 
 class WritableRepository @Inject constructor(
@@ -23,10 +28,14 @@ class WritableRepository @Inject constructor(
             emit(translations)
         }
     }
-    override val unusedLinks: Flow<List<Long>> = innerRepositoryDao.getUnusedLinks().map {
-        it.map { unused ->
-            unused.predefinedLatinId
-        }
+
+    override val predefinedStatuses: Flow<List<Pair<Long, LearningStatus>>> = innerRepositoryDao
+        .getPredefinedStatuses().map { statuses ->
+            statuses.map {
+                it.predefinedLatinId to it.status.toLearningStatus(
+                    it.statusDateTime ?: Clock.System.now().toLocalDateTime(TimeZone.UTC)
+                )
+            }
     }
 
     override suspend fun get(serbianLatinId: Long): Translation<Word.Serbian, Word.Russian>? {
@@ -96,9 +105,12 @@ class WritableRepository @Inject constructor(
         }
     }
 
-    override suspend fun getRandom(randomTranslationsCount: Int): List<Translation<Word.Serbian, Word.Russian>> {
+    override suspend fun getRandom(
+        randomTranslationsCount: Int,
+        statuses: List<LearningStatusName>
+    ): List<Translation<Word.Serbian, Word.Russian>> {
         return withContext(Dispatchers.IO) {
-            val random = innerRepositoryDao.getRandom(randomTranslationsCount)
+            val random = innerRepositoryDao.getRandom(randomTranslationsCount, statuses)
             random.map {
                 it.toTranslation(TranslationSourceType.USER)
             }

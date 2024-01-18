@@ -2,6 +2,7 @@ package com.trainer.srb.rus.feature.dictionary
 
 import com.trainer.srb.rus.core.dictionary.IDictionary
 import com.trainer.srb.rus.core.dictionary.LearningStatus
+import com.trainer.srb.rus.core.dictionary.LearningStatusName
 import com.trainer.srb.rus.core.dictionary.Translation
 import com.trainer.srb.rus.core.dictionary.TranslationSourceType
 import com.trainer.srb.rus.core.dictionary.Word
@@ -41,7 +42,7 @@ class Dictionary @Inject constructor(
         when (translation.type) {
             TranslationSourceType.PREDEFINED -> {
                 val status = translation.learningStatus
-                translation.learningStatus = LearningStatus.UNUSED
+                translation.learningStatus = LearningStatus.Unused()
                 writableRepository.addLinkToPredefinedTranslation(translation)
 
                 translation.type = TranslationSourceType.USER
@@ -75,7 +76,7 @@ class Dictionary @Inject constructor(
     override suspend fun remove(translation: Translation<Word.Serbian, Word.Russian>) {
         when (translation.type) {
             TranslationSourceType.PREDEFINED -> {
-                translation.learningStatus = LearningStatus.UNUSED
+                translation.learningStatus = LearningStatus.Unused()
                 predefinedRepository.update(translation)
                 writableRepository.addLinkToPredefinedTranslation(translation)
             }
@@ -88,7 +89,15 @@ class Dictionary @Inject constructor(
         }
     }
 
-    override suspend fun getRandom(randomTranslationsCount: Int): List<Translation<Word.Serbian, Word.Russian>> {
+    override suspend fun getRandom(
+        randomTranslationsCount: Int,
+        vararg statuses: LearningStatusName
+    ): List<Translation<Word.Serbian, Word.Russian>> {
+        val usedStatuses = if (statuses.isEmpty()) {
+            LearningStatusName.entries.toList()
+        } else {
+            statuses.toList()
+        }
         return when {
             randomTranslationsCount <= 0 -> {
                 emptyList()
@@ -96,22 +105,23 @@ class Dictionary @Inject constructor(
 
             randomTranslationsCount == 1 -> {
                 val random = listOfNotNull(
-                    predefinedRepository.getRandom(1).firstOrNull(),
-                    writableRepository.getRandom(1).firstOrNull()
+                    predefinedRepository.getRandom(1, usedStatuses).firstOrNull(),
+                    writableRepository.getRandom(1, usedStatuses).firstOrNull()
                 ).randomOrNull()
                 listOfNotNull(random)
             }
 
             else -> {
-                val fromPredefined = predefinedRepository.getRandom(randomTranslationsCount)
-                val fromWritable = writableRepository.getRandom(randomTranslationsCount)
-                (0 until randomTranslationsCount).mapNotNull {
-                    when (it % 2) {
-                        0 -> fromPredefined.getOrNull(it) ?: fromWritable.getOrNull(it)
-                        else -> fromWritable.getOrNull(it) ?: fromPredefined.getOrNull(it)
-                    }
-                }
+                val fromPredefined = predefinedRepository.getRandom(randomTranslationsCount, usedStatuses)
+                val fromWritable = writableRepository.getRandom(randomTranslationsCount, usedStatuses)
+                (fromPredefined + fromWritable).shuffled().take(
+                    randomTranslationsCount
+                )
             }
         }
+    }
+
+    override suspend fun containsWordsForRepeat(): Boolean {
+        return false
     }
 }

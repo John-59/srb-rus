@@ -194,7 +194,7 @@ fun ShowInRussianAndWriteInSerbianBodyPreview() {
                     Word.Russian(value = "ложка")
                 ),
                 type = TranslationSourceType.USER,
-                learningStatus = LearningStatus.UNKNOWN
+                learningStatus = LearningStatus.Unknown()
             )
         ),
     )

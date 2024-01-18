@@ -20,7 +20,7 @@ import com.trainer.srb.rus.core.design.MainTheme
 import com.trainer.srb.rus.core.design.R as DesignRes
 
 @Composable
-fun ExerciseFinishedBody(
+fun FinishBody(
     onNext: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -57,8 +57,8 @@ fun ExerciseFinishedBody(
 
 @Preview(apiLevel = 33)
 @Composable
-fun ExerciseFinishedBodyPreview() {
-    ExerciseFinishedBody(
+fun FinishBodyPreview() {
+    FinishBody(
         modifier = Modifier.fillMaxSize().padding(20.dp),
         onNext = {}
     )

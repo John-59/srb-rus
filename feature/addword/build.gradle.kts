@@ -70,4 +70,6 @@ dependencies {
     implementation("androidx.compose.material3:material3")
     implementation("androidx.compose.ui:ui-tooling")
     implementation("androidx.compose.ui:ui-tooling-preview")
+
+    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.5.0")
 }

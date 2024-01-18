@@ -1,15 +1,21 @@
 package com.trainer.srb.rus.feature.repository
 
 import androidx.sqlite.db.SimpleSQLiteQuery
+import com.trainer.srb.rus.core.dictionary.LearningStatus
+import com.trainer.srb.rus.core.dictionary.LearningStatusName
 import com.trainer.srb.rus.core.dictionary.Translation
 import com.trainer.srb.rus.core.dictionary.TranslationSourceType
 import com.trainer.srb.rus.core.dictionary.Word
 import com.trainer.srb.rus.core.repository.IWritableRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
+import kotlinx.datetime.Clock
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import javax.inject.Inject
 
 class WritableRepository @Inject constructor(
@@ -24,11 +30,10 @@ class WritableRepository @Inject constructor(
             emit(translations)
         }
     }
-    override val unusedLinks: Flow<List<Long>> = predefinedRepositoryDao.getUnused().map {
-        it.map { translation ->
-            translation.serbianLat.id
-        }
-    }
+
+
+    // not means for admin version
+    override val predefinedStatuses: Flow<List<Pair<Long, LearningStatus>>> = emptyFlow()
 
     override suspend fun get(serbianLatinId: Long): Translation<Word.Serbian, Word.Russian>? {
         return withContext(Dispatchers.IO) {
@@ -81,9 +86,12 @@ class WritableRepository @Inject constructor(
         }
     }
 
-    override suspend fun getRandom(randomTranslationsCount: Int): List<Translation<Word.Serbian, Word.Russian>> {
+    override suspend fun getRandom(
+        randomTranslationsCount: Int,
+        statuses: List<LearningStatusName>
+    ): List<Translation<Word.Serbian, Word.Russian>> {
         return withContext(Dispatchers.IO) {
-            val randoms = predefinedRepositoryDao.getRandom(randomTranslationsCount)
+            val randoms = predefinedRepositoryDao.getRandom(randomTranslationsCount, statuses)
             randoms.map {
                 it.toTranslation(TranslationSourceType.PREDEFINED)
             }

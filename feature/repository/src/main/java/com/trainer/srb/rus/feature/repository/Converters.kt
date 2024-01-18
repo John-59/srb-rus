@@ -4,6 +4,10 @@ import com.trainer.srb.rus.core.dictionary.LearningStatus
 import com.trainer.srb.rus.core.dictionary.Translation
 import com.trainer.srb.rus.core.dictionary.TranslationSourceType
 import com.trainer.srb.rus.core.dictionary.Word
+import kotlinx.datetime.Clock
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 
 fun SerbianToRussianWord.toTranslation(
     translationSourceType: TranslationSourceType
@@ -22,7 +26,9 @@ fun SerbianToRussianWord.toTranslation(
             )
         },
         type = translationSourceType,
-        learningStatus = this.serbianLat.status.toLearningStatus()
+        learningStatus = this.serbianLat.status.toLearningStatus(
+            serbianLat.statusDateTime ?: Clock.System.now().toLocalDateTime(TimeZone.UTC)
+        )
     )
 }
 
@@ -54,34 +60,34 @@ fun Translation<Word.Serbian, Word.Russian>.toSerbianToRussianWord(): SerbianToR
 
 fun LearningStatus.toWordStatus(): WordStatus {
     return when (this) {
-        LearningStatus.UNKNOWN -> WordStatus.Unknown
-        LearningStatus.UNUSED -> WordStatus.Unused
-        LearningStatus.NEW -> WordStatus.New
-        LearningStatus.FIRST_ACQUAINTANCE -> WordStatus.FirstAcquaintance
-        LearningStatus.NEXT_DAY -> WordStatus.NextDay
-        LearningStatus.AFTER_TWO_DAYS -> WordStatus.AfterTwoDays
-        LearningStatus.AFTER_THREE_DAYS -> WordStatus.AfterThreeDays
-        LearningStatus.AFTER_WEEK -> WordStatus.AfterWeek
-        LearningStatus.AFTER_TWO_WEEKS -> WordStatus.AfterTwoWeeks
-        LearningStatus.AFTER_MONTH -> WordStatus.AfterMonth
-        LearningStatus.ALREADY_KNOW -> WordStatus.AlreadyKnow
-        LearningStatus.DONT_WANT_LEARN -> WordStatus.DontWantLearn
+        is LearningStatus.Unknown -> WordStatus.Unknown
+        is LearningStatus.Unused -> WordStatus.Unused
+        is LearningStatus.New -> WordStatus.New
+        is LearningStatus.FirstAcquaintance -> WordStatus.FirstAcquaintance
+        is LearningStatus.NextDay -> WordStatus.NextDay
+        is LearningStatus.AfterTwoDays -> WordStatus.AfterTwoDays
+        is LearningStatus.AfterThreeDays -> WordStatus.AfterThreeDays
+        is LearningStatus.AfterWeek -> WordStatus.AfterWeek
+        is LearningStatus.AfterTwoWeeks -> WordStatus.AfterTwoWeeks
+        is LearningStatus.AfterMonth -> WordStatus.AfterMonth
+        is LearningStatus.AlreadyKnow -> WordStatus.AlreadyKnow
+        is LearningStatus.DontWantLearn -> WordStatus.DontWantLearn
     }
 }
 
-fun WordStatus.toLearningStatus(): LearningStatus {
+fun WordStatus.toLearningStatus(dateTime: LocalDateTime): LearningStatus {
     return when (this) {
-        WordStatus.Unknown -> LearningStatus.UNKNOWN
-        WordStatus.Unused -> LearningStatus.UNUSED
-        WordStatus.New -> LearningStatus.NEW
-        WordStatus.FirstAcquaintance -> LearningStatus.FIRST_ACQUAINTANCE
-        WordStatus.NextDay -> LearningStatus.NEXT_DAY
-        WordStatus.AfterTwoDays -> LearningStatus.AFTER_TWO_DAYS
-        WordStatus.AfterThreeDays -> LearningStatus.AFTER_THREE_DAYS
-        WordStatus.AfterWeek -> LearningStatus.AFTER_WEEK
-        WordStatus.AfterTwoWeeks -> LearningStatus.AFTER_TWO_WEEKS
-        WordStatus.AfterMonth -> LearningStatus.AFTER_MONTH
-        WordStatus.AlreadyKnow -> LearningStatus.ALREADY_KNOW
-        WordStatus.DontWantLearn -> LearningStatus.DONT_WANT_LEARN
+        WordStatus.Unknown -> LearningStatus.Unknown(dateTime)
+        WordStatus.Unused -> LearningStatus.Unused(dateTime)
+        WordStatus.New -> LearningStatus.New(dateTime)
+        WordStatus.FirstAcquaintance -> LearningStatus.FirstAcquaintance(dateTime)
+        WordStatus.NextDay -> LearningStatus.NextDay(dateTime)
+        WordStatus.AfterTwoDays -> LearningStatus.AfterTwoDays(dateTime)
+        WordStatus.AfterThreeDays -> LearningStatus.AfterThreeDays(dateTime)
+        WordStatus.AfterWeek -> LearningStatus.AfterWeek(dateTime)
+        WordStatus.AfterTwoWeeks -> LearningStatus.AfterTwoWeeks(dateTime)
+        WordStatus.AfterMonth -> LearningStatus.AfterMonth(dateTime)
+        WordStatus.AlreadyKnow -> LearningStatus.AlreadyKnow(dateTime)
+        WordStatus.DontWantLearn -> LearningStatus.DontWantLearn(dateTime)
     }
 }

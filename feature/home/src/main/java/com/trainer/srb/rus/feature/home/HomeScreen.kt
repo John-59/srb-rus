@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.trainer.srb.rus.core.design.MainTheme
 import com.trainer.srb.rus.core.dictionary.ExerciseType
 
@@ -26,7 +27,8 @@ import com.trainer.srb.rus.core.dictionary.ExerciseType
 fun HomeScreen(
     navigateToSearch: () -> Unit,
     navigateToLearn: (ExerciseType) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: HomeViewModel = hiltViewModel()
 ) {
     Column(
         modifier = modifier.fillMaxSize()
@@ -47,6 +49,7 @@ fun HomeScreen(
         )
         Body(
             navigateToLearn = navigateToLearn,
+            viewModel = viewModel,
             modifier = Modifier
                 .padding(20.dp)
                 .fillMaxSize()
@@ -57,7 +60,8 @@ fun HomeScreen(
 @Composable
 private fun Body(
     navigateToLearn: (ExerciseType) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: HomeViewModel
 ) {
     Column(
         modifier = modifier,
@@ -97,7 +101,8 @@ private fun Body(
             border = BorderStroke(2.dp, MainTheme.colors.Border),
             colors = ButtonDefaults.buttonColors(
                 backgroundColor = MainTheme.colors.White,
-            )
+            ),
+            enabled = viewModel.isNewWords
         ) {
             Text(
                 text = "Новые слова",
@@ -114,41 +119,8 @@ private fun Body(
             border = BorderStroke(2.dp, MainTheme.colors.Border),
             colors = ButtonDefaults.buttonColors(
                 backgroundColor = MainTheme.colors.White,
-            )
-        ) {
-            Text(
-                text = "Повторение слов",
-                style = MainTheme.typography.displayMedium
-            )
-        }
-        Spacer(modifier = Modifier.height(10.dp))
-        Button(
-            onClick = {
-                navigateToLearn(ExerciseType.REPEAT)
-            },
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(10.dp),
-            border = BorderStroke(2.dp, MainTheme.colors.Border),
-            colors = ButtonDefaults.buttonColors(
-                backgroundColor = MainTheme.colors.White,
-            )
-        ) {
-            Text(
-                text = "Повторение слов",
-                style = MainTheme.typography.displayMedium
-            )
-        }
-        Spacer(modifier = Modifier.height(10.dp))
-        Button(
-            onClick = {
-                navigateToLearn(ExerciseType.REPEAT)
-            },
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(10.dp),
-            border = BorderStroke(2.dp, MainTheme.colors.Border),
-            colors = ButtonDefaults.buttonColors(
-                backgroundColor = MainTheme.colors.White,
-            )
+            ),
+            enabled = viewModel.isWordsForRepeat
         ) {
             Text(
                 text = "Повторение слов",

@@ -16,7 +16,7 @@ val translationsExample = listOf(
             Word.Russian(value = "уже")
         ),
         type = TranslationSourceType.USER,
-        learningStatus = LearningStatus.UNKNOWN
+        learningStatus = LearningStatus.Unknown()
     ),
     Translation(
         source = Word.Serbian(
@@ -27,7 +27,7 @@ val translationsExample = listOf(
             Word.Russian(value = "морковь")
         ),
         type = TranslationSourceType.USER,
-        learningStatus = LearningStatus.UNKNOWN
+        learningStatus = LearningStatus.Unknown()
     ),
     Translation(
         source = Word.Serbian(
@@ -42,7 +42,7 @@ val translationsExample = listOf(
             Word.Russian(value = "перевод 5")
         ),
         type = TranslationSourceType.USER,
-        learningStatus = LearningStatus.UNKNOWN
+        learningStatus = LearningStatus.Unknown()
     ),
     Translation(
         source = Word.Serbian(
@@ -53,6 +53,6 @@ val translationsExample = listOf(
             Word.Russian(value = "дождь")
         ),
         type = TranslationSourceType.USER,
-        learningStatus = LearningStatus.UNKNOWN
+        learningStatus = LearningStatus.Unknown()
     )
 )

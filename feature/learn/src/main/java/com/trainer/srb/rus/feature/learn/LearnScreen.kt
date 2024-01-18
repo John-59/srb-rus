@@ -122,7 +122,7 @@ private fun Body(
         }
 
         LearnState.ExerciseFinished -> {
-            ExerciseFinishedBody(
+            FinishBody(
                 onNext = onFinished,
                 modifier = modifier.fillMaxSize()
             )

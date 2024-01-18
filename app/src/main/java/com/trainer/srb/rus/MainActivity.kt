@@ -40,16 +40,17 @@ class MainActivity : ComponentActivity() {
         splashScreen.setKeepOnScreenCondition {
             when (uiState) {
                 MainActivityUiState.Loading -> true
-                MainActivityUiState.Success -> false
-            }
-        }
-
-        setContent {
-            MainTheme {
-                val navController = rememberNavController()
-                MainNavHost(
-                    navController = navController,
-                )
+                MainActivityUiState.Success -> {
+                    setContent {
+                        MainTheme {
+                            val navController = rememberNavController()
+                            MainNavHost(
+                                navController = navController,
+                            )
+                        }
+                    }
+                    false
+                }
             }
         }
     }

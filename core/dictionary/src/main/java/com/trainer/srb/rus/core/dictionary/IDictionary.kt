@@ -18,5 +18,10 @@ interface IDictionary {
 
     suspend fun remove(translation: Translation<Word.Serbian, Word.Russian>)
 
-    suspend fun getRandom(randomTranslationsCount: Int): List<Translation<Word.Serbian, Word.Russian>>
+    suspend fun getRandom(
+        randomTranslationsCount: Int,
+        vararg statuses: LearningStatusName
+    ): List<Translation<Word.Serbian, Word.Russian>>
+
+    suspend fun containsWordsForRepeat(): Boolean
 }
