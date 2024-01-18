@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.SavedStateHandle
 import com.trainer.srb.rus.core.dictionary.Translation
 import com.trainer.srb.rus.core.dictionary.Word
 import com.trainer.srb.rus.core.ui.ExitExerciseConfirmationDialog
@@ -135,7 +136,8 @@ fun LearnScreenPreview() {
     LearnScreen(
         onFinished = {},
         viewModel = LearnViewModel(
-            dictionary = DictionaryMock()
+            dictionary = DictionaryMock(),
+            savedStateHandle = SavedStateHandle()
         )
     )
 }

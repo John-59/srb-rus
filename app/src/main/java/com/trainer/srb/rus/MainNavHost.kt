@@ -34,11 +34,14 @@ fun MainNavHost(
                     navController.navigateToSearch(HomeScreenDestination.route)
                 },
                 navigateToLearn = {
-                    navController.navigateToLearn(HomeScreenDestination.route)
+                    navController.navigateToLearn(it, HomeScreenDestination.route)
                 }
             )
         }
-        composable(LearnDestination.route) {
+        composable(
+            route = LearnDestination.routeWithArgs,
+            arguments = LearnDestination.arguments
+        ) {
             LearnScreen(
                 onFinished = navController::navigateToHome
             )
