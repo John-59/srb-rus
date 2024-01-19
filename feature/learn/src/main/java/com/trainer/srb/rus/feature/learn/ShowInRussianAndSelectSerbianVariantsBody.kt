@@ -24,7 +24,7 @@ import com.trainer.srb.rus.mocks.translationsExample
 
 @Composable
 fun ShowInRussianAndSelectSerbianVariantsBody(
-    state: LearnState.ShowInRussianAndSelectSerbianVariants,
+    state: ExerciseStep.ShowInRussianAndSelectSerbianVariants,
     onNext: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -48,7 +48,7 @@ fun ShowInRussianAndSelectSerbianVariantsBody(
 
 @Composable
 private fun WordAndVariants(
-    state: LearnState.ShowInRussianAndSelectSerbianVariants,
+    state: ExerciseStep.ShowInRussianAndSelectSerbianVariants,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -73,7 +73,7 @@ private fun WordAndVariants(
                     shape = RoundedCornerShape(10.dp),
                     border = BorderStroke(2.dp, MainTheme.colors.Border),
                     colors = when (state.translationStates[it]) {
-                        LearnState.ShowInRussianAndSelectSerbianVariants.VariantState.RIGHT -> {
+                        ExerciseStep.ShowInRussianAndSelectSerbianVariants.VariantState.RIGHT -> {
                             ButtonDefaults.buttonColors(
                                 backgroundColor = MainTheme.colors.Right,
                                 disabledBackgroundColor = MainTheme.colors.Right,
@@ -81,7 +81,7 @@ private fun WordAndVariants(
                                 disabledContentColor = MainTheme.colors.Black
                             )
                         }
-                        LearnState.ShowInRussianAndSelectSerbianVariants.VariantState.WRONG -> {
+                        ExerciseStep.ShowInRussianAndSelectSerbianVariants.VariantState.WRONG -> {
                             ButtonDefaults.buttonColors(
                                 backgroundColor = MainTheme.colors.Wrong,
                                 disabledBackgroundColor = MainTheme.colors.Wrong,
@@ -162,7 +162,7 @@ fun ShowInRussianAndSelectSerbianVariantsBodyPreview() {
             .fillMaxSize()
             .padding(20.dp),
         onNext = {},
-        state = LearnState.ShowInRussianAndSelectSerbianVariants(
+        state = ExerciseStep.ShowInRussianAndSelectSerbianVariants(
             translation = translationsExample.first(),
             others = translationsExample.take(3)
         ),

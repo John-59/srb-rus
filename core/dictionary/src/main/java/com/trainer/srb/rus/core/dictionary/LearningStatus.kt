@@ -21,10 +21,6 @@ sealed class LearningStatus(
         dateTime: LocalDateTime = Clock.System.now().toLocalDateTime(TimeZone.UTC)
     ): LearningStatus(dateTime, LearningStatusName.NEW)
 
-    class FirstAcquaintance(
-        dateTime: LocalDateTime = Clock.System.now().toLocalDateTime(TimeZone.UTC)
-    ): LearningStatus(dateTime, LearningStatusName.FIRST_ACQUAINTANCE)
-
     class NextDay(
         dateTime: LocalDateTime = Clock.System.now().toLocalDateTime(TimeZone.UTC)
     ): LearningStatus(dateTime, LearningStatusName.NEXT_DAY)

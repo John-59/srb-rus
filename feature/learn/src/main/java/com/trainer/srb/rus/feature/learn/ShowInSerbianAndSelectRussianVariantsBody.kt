@@ -6,7 +6,7 @@ import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 fun ShowInSerbianAndSelectRussianVariantsBody(
-    state: LearnState.ShowInSerbianAndSelectRussianVariants,
+    state: ExerciseStep.ShowInSerbianAndSelectRussianVariants,
     onNext: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -17,7 +17,7 @@ fun ShowInSerbianAndSelectRussianVariantsBody(
 @Composable
 fun ShowInSerbianAndSelectRussianVariantsBodyPreview() {
     ShowInSerbianAndSelectRussianVariantsBody(
-        state = LearnState.ShowInSerbianAndSelectRussianVariants(),
+        state = ExerciseStep.ShowInSerbianAndSelectRussianVariants(),
         onNext = {}
     )
 }

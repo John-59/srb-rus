@@ -7,22 +7,32 @@ import androidx.compose.runtime.setValue
 import com.trainer.srb.rus.core.dictionary.Translation
 import com.trainer.srb.rus.core.dictionary.Word
 
-sealed class LearnState {
+sealed class ExerciseStep {
 
-    data class Error(val message: String): LearnState()
+    abstract val result: Boolean
 
-    data object Initialize: LearnState()
+    data class Error(val message: String, override val result: Boolean = false): ExerciseStep()
 
-    data object ExerciseFinished: LearnState()
+    data object Initialize: ExerciseStep() {
+        override val result: Boolean = true
+    }
+
+    data object ExerciseFinished: ExerciseStep() {
+        override val result: Boolean = true
+    }
 
     class ShowInSerbianWithTranslation(
-        val translation: Translation<Word.Serbian, Word.Russian>
-    ): LearnState()
+        val translation: Translation<Word.Serbian, Word.Russian>,
+        override val result: Boolean = true
+    ): ExerciseStep()
 
     class ShowInRussianAndSelectSerbianVariants(
         val translation: Translation<Word.Serbian, Word.Russian>,
         val others: List<Translation<Word.Serbian, Word.Russian>>,
-    ): LearnState() {
+    ): ExerciseStep() {
+
+        override var result: Boolean = false
+            private set
 
         enum class VariantState {
             ORDINARY,
@@ -47,23 +57,31 @@ sealed class LearnState {
         fun select(selectedTranslation: Translation<Word.Serbian, Word.Russian>) {
             selectionIsDone = true
             if (selectedTranslation == translation) {
+                result = true
                 translationStates[translation] = VariantState.RIGHT
             } else {
+                result = false
                 translationStates[selectedTranslation] = VariantState.WRONG
                 translationStates[translation] = VariantState.RIGHT
             }
         }
     }
 
-    class ShowInSerbianAndSelectRussianVariants: LearnState()
+    class ShowInSerbianAndSelectRussianVariants: ExerciseStep() {
+        override val result: Boolean = true
+    }
 
     class ShowInRussianAndConstructFromPredefinedLetters(
-        val translation: Translation<Word.Serbian, Word.Russian>
-    ): LearnState()
+        val translation: Translation<Word.Serbian, Word.Russian>,
+        override val result: Boolean = true
+    ): ExerciseStep()
 
     class ShowInRussianAndWriteInSerbian(
         val translation: Translation<Word.Serbian, Word.Russian>
-    ): LearnState() {
+    ): ExerciseStep() {
+
+        override var result: Boolean = false
+            private set
 
         enum class Validity {
             UNDEFINED,
@@ -84,9 +102,18 @@ sealed class LearnState {
 
         fun checkUserInput() {
             userInputValidity = when (userInput.trim().lowercase()) {
-                translation.source.latinValue.lowercase() -> Validity.VALID
-                translation.source.cyrillicValue.lowercase() -> Validity.VALID
-                else -> Validity.INVALID
+                translation.source.latinValue.lowercase() -> {
+                    result = true
+                    Validity.VALID
+                }
+                translation.source.cyrillicValue.lowercase() -> {
+                    result = true
+                    Validity.VALID
+                }
+                else -> {
+                    result = false
+                    Validity.INVALID
+                }
             }
         }
     }

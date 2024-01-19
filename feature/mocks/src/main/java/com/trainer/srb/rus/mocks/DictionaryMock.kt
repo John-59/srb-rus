@@ -5,6 +5,7 @@ import com.trainer.srb.rus.core.dictionary.LearningStatusName
 import com.trainer.srb.rus.core.dictionary.Translation
 import com.trainer.srb.rus.core.dictionary.Word
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flow
 
 class DictionaryMock: IDictionary {
@@ -12,6 +13,8 @@ class DictionaryMock: IDictionary {
         val translations = translationsExample
         emit(translations)
     }
+
+    override val isNewWords: Flow<Boolean> = emptyFlow()
 
     override suspend fun get(serbianLatinId: Long): Translation<Word.Serbian, Word.Russian>? {
         return null

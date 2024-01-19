@@ -8,7 +8,9 @@ import com.trainer.srb.rus.core.dictionary.TranslationSourceType
 import com.trainer.srb.rus.core.dictionary.Word
 import com.trainer.srb.rus.core.repository.IPredefinedRepository
 import com.trainer.srb.rus.core.repository.IWritableRepository
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class Dictionary @Inject constructor(
@@ -22,6 +24,11 @@ class Dictionary @Inject constructor(
             allTranslations.addAll(predefinedTranslations)
             allTranslations
         }
+
+    override val isNewWords: Flow<Boolean> = flow {
+        val result = getRandom(1, LearningStatusName.NEW).isNotEmpty()
+        emit(result)
+    }
 
     override suspend fun get(serbianLatinId: Long): Translation<Word.Serbian, Word.Russian>? {
         return writableRepository.get(serbianLatinId) ?: predefinedRepository.get(serbianLatinId)

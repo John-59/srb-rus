@@ -6,26 +6,27 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.trainer.srb.rus.core.dictionary.IDictionary
-import com.trainer.srb.rus.core.dictionary.LearningStatusName
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    dictionary: IDictionary
+    private val dictionary: IDictionary
 ): ViewModel() {
 
-    var isNewWords by mutableStateOf(false)
-        private set
+    val isNewWords = dictionary.isNewWords.stateIn(
+        scope = viewModelScope,
+        initialValue = false,
+        started = SharingStarted.WhileSubscribed()
+    )
 
     var isWordsForRepeat by mutableStateOf(false)
         private set
 
     init {
-        viewModelScope.launch {
-            isNewWords = dictionary.getRandom(1, LearningStatusName.NEW).isNotEmpty()
-        }
         viewModelScope.launch {
             isWordsForRepeat = dictionary.containsWordsForRepeat()
         }

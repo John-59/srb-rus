@@ -8,6 +8,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.trainer.srb.rus.core.dictionary.IDictionary
+import com.trainer.srb.rus.core.dictionary.LearningStatus
 import com.trainer.srb.rus.core.dictionary.Translation
 import com.trainer.srb.rus.core.dictionary.Word
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,7 +21,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LearnViewModel @Inject constructor(
-    dictionary: IDictionary,
+    private val dictionary: IDictionary,
     savedStateHandle: SavedStateHandle
 ): ViewModel() {
 
@@ -34,11 +35,11 @@ class LearnViewModel @Inject constructor(
     var showExitConfirmation by mutableStateOf(false)
         private set
 
-    private val _state = MutableStateFlow<LearnState>(LearnState.Initialize)
-    val state: StateFlow<LearnState> = _state.stateIn(
+    private val _state = MutableStateFlow<ExerciseStep>(ExerciseStep.Initialize)
+    val state: StateFlow<ExerciseStep> = _state.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(),
-        initialValue = LearnState.Initialize
+        initialValue = ExerciseStep.Initialize
     )
 
     init {
@@ -64,13 +65,99 @@ class LearnViewModel @Inject constructor(
 
     fun markAsAlreadyKnow(translation: Translation<Word.Serbian, Word.Russian>) {
         viewModelScope.launch {
-            exercise.markAsAlreadyKnow(translation)
+            exercise.remove(translation)
+            translation.learningStatus = LearningStatus.AlreadyKnow()
+            dictionary.update(translation)
         }
     }
 
     fun markAsNotLearn(translation: Translation<Word.Serbian, Word.Russian>) {
         viewModelScope.launch {
-            exercise.markAsNotLearn(translation)
+            exercise.remove(translation)
+            translation.learningStatus = LearningStatus.DontWantLearn()
+            dictionary.update(translation)
+        }
+    }
+
+    fun updateLearningStatuses() {
+        viewModelScope.launch {
+            when (exercise) {
+                is ExerciseNew -> {
+                    exercise.completedSteps.forEach { (translation, steps) ->
+                        when (translation.learningStatus) {
+                            is LearningStatus.AfterMonth -> {
+                                if (steps.all { it.result}) {
+                                    translation.learningStatus = LearningStatus.AlreadyKnow()
+                                } else {
+                                    translation.learningStatus = LearningStatus.NextDay()
+                                }
+                            }
+                            is LearningStatus.AfterThreeDays -> {
+                                if (steps.all { it.result}) {
+                                    translation.learningStatus = LearningStatus.AfterWeek()
+                                } else {
+                                    translation.learningStatus = LearningStatus.NextDay()
+                                }
+                            }
+                            is LearningStatus.AfterTwoDays -> {
+                                if (steps.all { it.result}) {
+                                    translation.learningStatus = LearningStatus.AfterThreeDays()
+                                } else {
+                                    translation.learningStatus = LearningStatus.NextDay()
+                                }
+                            }
+                            is LearningStatus.AfterTwoWeeks -> {
+                                if (steps.all { it.result}) {
+                                    translation.learningStatus = LearningStatus.AfterMonth()
+                                } else {
+                                    translation.learningStatus = LearningStatus.NextDay()
+                                }
+                            }
+                            is LearningStatus.AfterWeek -> {
+                                if (steps.all { it.result}) {
+                                    translation.learningStatus = LearningStatus.AfterTwoWeeks()
+                                } else {
+                                    translation.learningStatus = LearningStatus.NextDay()
+                                }
+                            }
+                            is LearningStatus.New -> {
+                                translation.learningStatus = LearningStatus.NextDay()
+                            }
+                            is LearningStatus.NextDay -> {
+                                if (steps.all { it.result}) {
+                                    translation.learningStatus = LearningStatus.AfterTwoDays()
+                                } else {
+                                    translation.learningStatus = LearningStatus.NextDay()
+                                }
+                            }
+                            is LearningStatus.Unknown -> {
+                                translation.learningStatus = LearningStatus.NextDay()
+                            }
+                            is LearningStatus.AlreadyKnow -> {}
+                            is LearningStatus.DontWantLearn -> {}
+                            is LearningStatus.Unused -> {}
+                        }
+                        dictionary.update(translation)
+                    }
+                }
+
+                is ExerciseRandom -> {
+                    exercise.completedSteps.forEach {( translation, _) ->
+                        when (translation.learningStatus) {
+                            is LearningStatus.New -> {
+                                translation.learningStatus = LearningStatus.NextDay()
+                                dictionary.update(translation)
+                            }
+                            is LearningStatus.Unknown -> {
+                                translation.learningStatus = LearningStatus.NextDay()
+                                dictionary.update(translation)
+                            }
+                            else -> {}
+                        }
+                    }
+                }
+                ExerciseUndefined -> {}
+            }
         }
     }
 }

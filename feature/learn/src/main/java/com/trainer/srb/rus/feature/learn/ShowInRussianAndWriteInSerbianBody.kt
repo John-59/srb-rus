@@ -37,7 +37,7 @@ import com.trainer.srb.rus.core.ui.CustomTextField
 
 @Composable
 fun ShowInRussianAndWriteInSerbianBody(
-    state: LearnState.ShowInRussianAndWriteInSerbian,
+    state: ExerciseStep.ShowInRussianAndWriteInSerbian,
     onNext: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -65,15 +65,15 @@ fun ShowInRussianAndWriteInSerbianBody(
                     )
                     .background(
                         color = when (state.userInputValidity) {
-                            LearnState.ShowInRussianAndWriteInSerbian.Validity.UNDEFINED -> {
+                            ExerciseStep.ShowInRussianAndWriteInSerbian.Validity.UNDEFINED -> {
                                 MainTheme.colors.White
                             }
 
-                            LearnState.ShowInRussianAndWriteInSerbian.Validity.VALID -> {
+                            ExerciseStep.ShowInRussianAndWriteInSerbian.Validity.VALID -> {
                                 MainTheme.colors.Right
                             }
 
-                            LearnState.ShowInRussianAndWriteInSerbian.Validity.INVALID -> {
+                            ExerciseStep.ShowInRussianAndWriteInSerbian.Validity.INVALID -> {
                                 MainTheme.colors.Wrong
                             }
                         },
@@ -107,7 +107,7 @@ fun ShowInRussianAndWriteInSerbianBody(
             Box(
                 modifier = Modifier
                     .alpha(
-                        if (state.userInputValidity == LearnState.ShowInRussianAndWriteInSerbian.Validity.INVALID) {
+                        if (state.userInputValidity == ExerciseStep.ShowInRussianAndWriteInSerbian.Validity.INVALID) {
                             1.0f
                         } else {
                             0.0f
@@ -141,7 +141,7 @@ fun ShowInRussianAndWriteInSerbianBody(
                     contentColor = MainTheme.colors.White,
                 ),
                 modifier = Modifier.fillMaxWidth(),
-                enabled = state.userInput.isNotBlank() && state.userInputValidity == LearnState.ShowInRussianAndWriteInSerbian.Validity.UNDEFINED,
+                enabled = state.userInput.isNotBlank() && state.userInputValidity == ExerciseStep.ShowInRussianAndWriteInSerbian.Validity.UNDEFINED,
                 onClick = {
                     focusRequester.requestFocus()
                     state.checkUserInput()
@@ -162,7 +162,7 @@ fun ShowInRussianAndWriteInSerbianBody(
             ),
             modifier = Modifier.fillMaxWidth(),
             onClick = onNext,
-            enabled = state.userInputValidity != LearnState.ShowInRussianAndWriteInSerbian.Validity.UNDEFINED
+            enabled = state.userInputValidity != ExerciseStep.ShowInRussianAndWriteInSerbian.Validity.UNDEFINED
         ) {
             Text(
                 text = "Далее",
@@ -184,7 +184,7 @@ fun ShowInRussianAndWriteInSerbianBodyPreview() {
             .fillMaxSize()
             .padding(20.dp),
         onNext = {},
-        state = LearnState.ShowInRussianAndWriteInSerbian(
+        state = ExerciseStep.ShowInRussianAndWriteInSerbian(
             translation = Translation(
                 source = Word.Serbian(
                     latinValue = "kašika",

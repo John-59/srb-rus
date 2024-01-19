@@ -19,11 +19,6 @@ sealed class WordStatus {
         override var innerName = name
     }
 
-    data object FirstAcquaintance: WordStatus() {
-        const val name = "first_acquaintance" // for using in DAO query because only const may be used in DAO
-        override var innerName = name
-    }
-
     data object NextDay: WordStatus() {
         const val name = "next_day" // for using in DAO query because only const may be used in DAO
         override var innerName = name

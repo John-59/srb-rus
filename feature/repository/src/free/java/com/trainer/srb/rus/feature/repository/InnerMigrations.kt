@@ -10,6 +10,24 @@ fun <T: RoomDatabase> RoomDatabase.Builder<T>.applyInnerMigrations(): RoomDataba
         .addMigrations(MIGRATION_ASSETS_2_3)
         .addMigrations(MIGRATION_ASSETS_3_4)
         .addMigrations(MIGRATION_ASSETS_4_5)
+        .addMigrations(MIGRATION_ASSETS_5_6)
+}
+
+private val MIGRATION_ASSETS_5_6 = object : Migration(5, 6) {
+    override fun migrate(db: SupportSQLiteDatabase) {
+        with (db) {
+            execSQL(
+            "CREATE TABLE predefined_statuses_backup " +
+                "(predefinedLatinId INTEGER NOT NULL, " +
+                "status TEXT NOT NULL DEFAULT 'unknown', " +
+                "status_time TEXT, " +
+                "PRIMARY KEY(`predefinedLatinId`))"
+            )
+            execSQL("INSERT INTO predefined_statuses_backup SELECT predefinedLatinId, status, status_time FROM predefined_statuses")
+            execSQL("DROP TABLE predefined_statuses")
+            execSQL("ALTER TABLE predefined_statuses_backup RENAME TO predefined_statuses")
+        }
+    }
 }
 
 private val MIGRATION_ASSETS_4_5 = object : Migration(4, 5) {

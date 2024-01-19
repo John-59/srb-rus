@@ -9,11 +9,11 @@ sealed interface Exercise {
 
     val progress: Float
 
-    suspend fun next(): LearnState = LearnState.Error("Не задан следующий шаг упражнения")
+    val completedSteps: Map<Translation<Word.Serbian, Word.Russian>, List<ExerciseStep>>
 
-    suspend fun markAsAlreadyKnow(translation: Translation<Word.Serbian, Word.Russian>) {}
+    suspend fun next(): ExerciseStep = ExerciseStep.Error("Не задан следующий шаг упражнения")
 
-    suspend fun markAsNotLearn(translation: Translation<Word.Serbian, Word.Russian>) {}
+    fun remove(translation: Translation<Word.Serbian, Word.Russian>) {}
 
     companion object {
         fun build(

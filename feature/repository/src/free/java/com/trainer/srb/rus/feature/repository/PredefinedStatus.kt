@@ -7,8 +7,7 @@ import kotlinx.datetime.LocalDateTime
 
 @Entity(tableName = "predefined_statuses")
 data class PredefinedStatus(
-    @PrimaryKey(autoGenerate = true)
-    val id: Long = 0L,
+    @PrimaryKey(autoGenerate = false)
     val predefinedLatinId: Long,
     val status: WordStatus,
     @ColumnInfo(name = "status_time")

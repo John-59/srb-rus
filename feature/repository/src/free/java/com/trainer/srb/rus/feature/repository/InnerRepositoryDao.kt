@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
+import androidx.room.Upsert
 import com.trainer.srb.rus.core.dictionary.LearningStatusName
 import kotlinx.coroutines.flow.Flow
 
@@ -136,7 +137,7 @@ abstract class InnerRepositoryDao {
         update(updated)
     }
 
-    @Insert
+    @Upsert
     abstract suspend fun addPredefinedStatus(predefinedStatus: PredefinedStatus)
 
     @Query("SELECT * FROM predefined_statuses")

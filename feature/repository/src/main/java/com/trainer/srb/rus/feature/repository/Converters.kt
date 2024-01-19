@@ -63,7 +63,6 @@ fun LearningStatus.toWordStatus(): WordStatus {
         is LearningStatus.Unknown -> WordStatus.Unknown
         is LearningStatus.Unused -> WordStatus.Unused
         is LearningStatus.New -> WordStatus.New
-        is LearningStatus.FirstAcquaintance -> WordStatus.FirstAcquaintance
         is LearningStatus.NextDay -> WordStatus.NextDay
         is LearningStatus.AfterTwoDays -> WordStatus.AfterTwoDays
         is LearningStatus.AfterThreeDays -> WordStatus.AfterThreeDays
@@ -80,7 +79,6 @@ fun WordStatus.toLearningStatus(dateTime: LocalDateTime): LearningStatus {
         WordStatus.Unknown -> LearningStatus.Unknown(dateTime)
         WordStatus.Unused -> LearningStatus.Unused(dateTime)
         WordStatus.New -> LearningStatus.New(dateTime)
-        WordStatus.FirstAcquaintance -> LearningStatus.FirstAcquaintance(dateTime)
         WordStatus.NextDay -> LearningStatus.NextDay(dateTime)
         WordStatus.AfterTwoDays -> LearningStatus.AfterTwoDays(dateTime)
         WordStatus.AfterThreeDays -> LearningStatus.AfterThreeDays(dateTime)

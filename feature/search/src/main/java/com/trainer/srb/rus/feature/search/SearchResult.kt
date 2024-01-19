@@ -1,5 +1,6 @@
 package com.trainer.srb.rus.feature.search
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -20,12 +21,14 @@ import androidx.compose.material.rememberDismissState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.trainer.srb.rus.core.design.MainTheme
 import com.trainer.srb.rus.core.dictionary.Translation
 import com.trainer.srb.rus.core.dictionary.Word
+import com.trainer.srb.rus.core.dictionary.serbianAsString
 import com.trainer.srb.rus.mocks.translationsExample
 import com.trainer.srb.rus.core.design.R as DesignRes
 
@@ -38,6 +41,7 @@ fun SearchResult(
     onEdit: (Translation<Word.Serbian, Word.Russian>) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val context = LocalContext.current
     LazyColumn(
         modifier = modifier
     ) {
@@ -55,6 +59,11 @@ fun SearchResult(
                     }
                     DismissValue.DismissedToEnd -> {
                         onAddToLearn(translation)
+                        Toast.makeText(
+                            context,
+                            "Слово ${translation.serbianAsString()} выбрано для изучения.",
+                            Toast.LENGTH_LONG
+                        ).show()
                         false
                     }
                     else -> {

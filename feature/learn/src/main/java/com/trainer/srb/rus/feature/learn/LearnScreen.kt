@@ -25,9 +25,9 @@ fun LearnScreen(
     Column(
         modifier = Modifier.padding(20.dp)
     ) {
-        if (learnState != LearnState.Initialize
-            && learnState != LearnState.ExerciseFinished
-            && learnState !is LearnState.Error) {
+        if (learnState != ExerciseStep.Initialize
+            && learnState != ExerciseStep.ExerciseFinished
+            && learnState !is ExerciseStep.Error) {
             LearnTopBar(
                 progress = viewModel.progress,
                 onSkip = viewModel::next,
@@ -40,7 +40,10 @@ fun LearnScreen(
             onNext = viewModel::next,
             onAlreadyKnow = viewModel::markAsAlreadyKnow,
             onDontWantLearn = viewModel::markAsNotLearn,
-            onFinished = onFinished,
+            onFinished = {
+                viewModel.updateLearningStatuses()
+                onFinished()
+            },
         )
     }
 
@@ -54,7 +57,7 @@ fun LearnScreen(
 
 @Composable
 private fun Body(
-    state: LearnState,
+    state: ExerciseStep,
     onNext: () -> Unit,
     onAlreadyKnow: (translation: Translation<Word.Serbian, Word.Russian>) -> Unit,
     onDontWantLearn: (translation: Translation<Word.Serbian, Word.Russian>) -> Unit,
@@ -62,11 +65,11 @@ private fun Body(
     modifier: Modifier = Modifier
 ) {
     when (state) {
-        LearnState.Initialize -> {
+        ExerciseStep.Initialize -> {
             InitializeBody(modifier = modifier)
         }
 
-        is LearnState.ShowInRussianAndConstructFromPredefinedLetters -> {
+        is ExerciseStep.ShowInRussianAndConstructFromPredefinedLetters -> {
             ShowInRussianAndConstructFromPredefinedLettersBody(
                 translation = state.translation,
                 onNext = onNext,
@@ -74,7 +77,7 @@ private fun Body(
             )
         }
 
-        is LearnState.ShowInRussianAndSelectSerbianVariants -> {
+        is ExerciseStep.ShowInRussianAndSelectSerbianVariants -> {
             ShowInRussianAndSelectSerbianVariantsBody(
                 state = state,
                 onNext = onNext,
@@ -82,7 +85,7 @@ private fun Body(
             )
         }
 
-        is LearnState.ShowInSerbianAndSelectRussianVariants -> {
+        is ExerciseStep.ShowInSerbianAndSelectRussianVariants -> {
             ShowInSerbianAndSelectRussianVariantsBody(
                 state = state,
                 onNext = onNext,
@@ -90,7 +93,7 @@ private fun Body(
             )
         }
 
-        is LearnState.ShowInRussianAndWriteInSerbian -> {
+        is ExerciseStep.ShowInRussianAndWriteInSerbian -> {
             ShowInRussianAndWriteInSerbianBody(
                 state = state,
                 onNext = onNext,
@@ -98,7 +101,7 @@ private fun Body(
             )
         }
 
-        is LearnState.ShowInSerbianWithTranslation -> {
+        is ExerciseStep.ShowInSerbianWithTranslation -> {
             ShowInSerbianWithTranslationBody(
                 translation = state.translation,
                 onNext = onNext,
@@ -114,14 +117,14 @@ private fun Body(
             )
         }
 
-        is LearnState.Error -> {
+        is ExerciseStep.Error -> {
             ErrorBody(
                 message = state.message,
                 modifier = modifier.fillMaxSize()
             )
         }
 
-        LearnState.ExerciseFinished -> {
+        ExerciseStep.ExerciseFinished -> {
             FinishBody(
                 onNext = onFinished,
                 modifier = modifier.fillMaxSize()

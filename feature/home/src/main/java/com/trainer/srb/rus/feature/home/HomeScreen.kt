@@ -14,6 +14,8 @@ import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
@@ -63,6 +65,7 @@ private fun Body(
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel
 ) {
+    val isNewWords by viewModel.isNewWords.collectAsState()
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.Center,
@@ -102,7 +105,7 @@ private fun Body(
             colors = ButtonDefaults.buttonColors(
                 backgroundColor = MainTheme.colors.White,
             ),
-            enabled = viewModel.isNewWords
+            enabled = isNewWords
         ) {
             Text(
                 text = "Новые слова",
