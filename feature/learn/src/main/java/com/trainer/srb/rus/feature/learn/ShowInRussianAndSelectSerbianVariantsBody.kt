@@ -26,6 +26,8 @@ import com.trainer.srb.rus.mocks.translationsExample
 fun ShowInRussianAndSelectSerbianVariantsBody(
     state: ExerciseStep.ShowInRussianAndSelectSerbianVariants,
     onNext: () -> Unit,
+    onAlreadyKnow: () -> Unit,
+    onDontWantLearn: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -38,9 +40,11 @@ fun ShowInRussianAndSelectSerbianVariantsBody(
                 .weight(2.0f)
                 .fillMaxWidth()
         )
-        Actions(
-            isNextEnable = state.selectionIsDone,
+        WordActions(
+            isNextEnabled = state.selectionIsDone,
             onNext = onNext,
+            onAlreadyKnow = onAlreadyKnow,
+            onDontWantLearn = onDontWantLearn,
             modifier = Modifier.fillMaxWidth()
         )
     }
@@ -111,49 +115,6 @@ private fun WordAndVariants(
     }
 }
 
-@Composable
-private fun Actions(
-    isNextEnable: Boolean,
-    onNext: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Column(
-        modifier = modifier,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-//        Button(onClick = {}) {
-//            Text(
-//                text = "Уже знаю это слово"
-//            )
-//        }
-//        Button(onClick = {}) {
-//            Text(
-//                text = "Не хочу учить это слово"
-//            )
-//        }
-//        Button(onClick = {}) {
-//            Text(
-//                text = "Учить заново"
-//            )
-//        }
-        Button(
-            shape = RoundedCornerShape(10.dp),
-            colors = ButtonDefaults.buttonColors(
-                backgroundColor = MainTheme.colors.Buttons,
-                contentColor = MainTheme.colors.White,
-            ),
-            modifier = Modifier.fillMaxWidth(),
-            enabled = isNextEnable,
-            onClick = onNext
-        ) {
-            Text(
-                text = "Далее",
-                style = MainTheme.typography.displayMedium
-            )
-        }
-    }
-}
-
 @Preview(apiLevel = 33)
 @Composable
 fun ShowInRussianAndSelectSerbianVariantsBodyPreview() {
@@ -162,6 +123,8 @@ fun ShowInRussianAndSelectSerbianVariantsBodyPreview() {
             .fillMaxSize()
             .padding(20.dp),
         onNext = {},
+        onAlreadyKnow = {},
+        onDontWantLearn = {},
         state = ExerciseStep.ShowInRussianAndSelectSerbianVariants(
             translation = translationsExample.first(),
             others = translationsExample.take(3)

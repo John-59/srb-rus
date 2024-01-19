@@ -78,6 +78,14 @@ private fun Body(
             ShowInRussianAndSelectSerbianVariantsBody(
                 state = exerciseStep,
                 onNext = onNext,
+                onAlreadyKnow = {
+                    onAlreadyKnow(exerciseStep.translation)
+                    onNext()
+                },
+                onDontWantLearn = {
+                    onDontWantLearn(exerciseStep.translation)
+                    onNext()
+                },
                 modifier = modifier
             )
         }
