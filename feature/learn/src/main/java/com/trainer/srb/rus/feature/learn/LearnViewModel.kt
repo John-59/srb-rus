@@ -51,6 +51,9 @@ class LearnViewModel @Inject constructor(
             exercise.next().also {
                 _state.value = it
                 progress = exercise.progress
+                if (it is ExerciseStep.ExerciseFinished) {
+                    updateLearningStatuses()
+                }
             }
         }
     }
@@ -79,85 +82,91 @@ class LearnViewModel @Inject constructor(
         }
     }
 
-    fun updateLearningStatuses() {
-        viewModelScope.launch {
-            when (exercise) {
-                is ExerciseNew -> {
-                    exercise.completedSteps.forEach { (translation, steps) ->
-                        when (translation.learningStatus) {
-                            is LearningStatus.AfterMonth -> {
-                                if (steps.all { it.result}) {
-                                    translation.learningStatus = LearningStatus.AlreadyKnow()
-                                } else {
-                                    translation.learningStatus = LearningStatus.NextDay()
-                                }
-                            }
-                            is LearningStatus.AfterThreeDays -> {
-                                if (steps.all { it.result}) {
-                                    translation.learningStatus = LearningStatus.AfterWeek()
-                                } else {
-                                    translation.learningStatus = LearningStatus.NextDay()
-                                }
-                            }
-                            is LearningStatus.AfterTwoDays -> {
-                                if (steps.all { it.result}) {
-                                    translation.learningStatus = LearningStatus.AfterThreeDays()
-                                } else {
-                                    translation.learningStatus = LearningStatus.NextDay()
-                                }
-                            }
-                            is LearningStatus.AfterTwoWeeks -> {
-                                if (steps.all { it.result}) {
-                                    translation.learningStatus = LearningStatus.AfterMonth()
-                                } else {
-                                    translation.learningStatus = LearningStatus.NextDay()
-                                }
-                            }
-                            is LearningStatus.AfterWeek -> {
-                                if (steps.all { it.result}) {
-                                    translation.learningStatus = LearningStatus.AfterTwoWeeks()
-                                } else {
-                                    translation.learningStatus = LearningStatus.NextDay()
-                                }
-                            }
-                            is LearningStatus.New -> {
-                                translation.learningStatus = LearningStatus.NextDay()
-                            }
-                            is LearningStatus.NextDay -> {
-                                if (steps.all { it.result}) {
-                                    translation.learningStatus = LearningStatus.AfterTwoDays()
-                                } else {
-                                    translation.learningStatus = LearningStatus.NextDay()
-                                }
-                            }
-                            is LearningStatus.Unknown -> {
-                                translation.learningStatus = LearningStatus.NextDay()
-                            }
-                            is LearningStatus.AlreadyKnow -> {}
-                            is LearningStatus.DontWantLearn -> {}
-                            is LearningStatus.Unused -> {}
-                        }
-                        dictionary.update(translation)
-                    }
-                }
-
-                is ExerciseRandom -> {
-                    exercise.completedSteps.forEach {( translation, _) ->
-                        when (translation.learningStatus) {
-                            is LearningStatus.New -> {
-                                translation.learningStatus = LearningStatus.NextDay()
-                                dictionary.update(translation)
-                            }
-                            is LearningStatus.Unknown -> {
-                                translation.learningStatus = LearningStatus.NextDay()
-                                dictionary.update(translation)
-                            }
-                            else -> {}
-                        }
-                    }
-                }
-                ExerciseUndefined -> {}
+    private suspend fun updateLearningStatuses() {
+        when (exercise) {
+            is ExerciseNew -> {
+                moveTranslationAlongLearningCurve(exercise.completedSteps)
             }
+            is ExerciseRepeat -> {
+                moveTranslationAlongLearningCurve(exercise.completedSteps)
+            }
+            is ExerciseRandom -> {
+                exercise.completedSteps.forEach {( translation, _) ->
+                    when (translation.learningStatus) {
+                        is LearningStatus.New -> {
+                            translation.learningStatus = LearningStatus.NextDay()
+                            dictionary.update(translation)
+                        }
+                        is LearningStatus.Unknown -> {
+                            translation.learningStatus = LearningStatus.NextDay()
+                            dictionary.update(translation)
+                        }
+                        else -> {}
+                    }
+                }
+            }
+            ExerciseUndefined -> {}
+        }
+    }
+
+    private suspend fun moveTranslationAlongLearningCurve(
+        completedSteps: Map<Translation<Word.Serbian, Word.Russian>, List<ExerciseStep>>
+    ) {
+        completedSteps.forEach { (translation, steps) ->
+            when (translation.learningStatus) {
+                is LearningStatus.AfterMonth -> {
+                    if (steps.all { it.result}) {
+                        translation.learningStatus = LearningStatus.AlreadyKnow()
+                    } else {
+                        translation.learningStatus = LearningStatus.NextDay()
+                    }
+                }
+                is LearningStatus.AfterThreeDays -> {
+                    if (steps.all { it.result}) {
+                        translation.learningStatus = LearningStatus.AfterWeek()
+                    } else {
+                        translation.learningStatus = LearningStatus.NextDay()
+                    }
+                }
+                is LearningStatus.AfterTwoDays -> {
+                    if (steps.all { it.result}) {
+                        translation.learningStatus = LearningStatus.AfterThreeDays()
+                    } else {
+                        translation.learningStatus = LearningStatus.NextDay()
+                    }
+                }
+                is LearningStatus.AfterTwoWeeks -> {
+                    if (steps.all { it.result}) {
+                        translation.learningStatus = LearningStatus.AfterMonth()
+                    } else {
+                        translation.learningStatus = LearningStatus.NextDay()
+                    }
+                }
+                is LearningStatus.AfterWeek -> {
+                    if (steps.all { it.result}) {
+                        translation.learningStatus = LearningStatus.AfterTwoWeeks()
+                    } else {
+                        translation.learningStatus = LearningStatus.NextDay()
+                    }
+                }
+                is LearningStatus.New -> {
+                    translation.learningStatus = LearningStatus.NextDay()
+                }
+                is LearningStatus.NextDay -> {
+                    if (steps.all { it.result}) {
+                        translation.learningStatus = LearningStatus.AfterTwoDays()
+                    } else {
+                        translation.learningStatus = LearningStatus.NextDay()
+                    }
+                }
+                is LearningStatus.Unknown -> {
+                    translation.learningStatus = LearningStatus.NextDay()
+                }
+                is LearningStatus.AlreadyKnow -> {}
+                is LearningStatus.DontWantLearn -> {}
+                is LearningStatus.Unused -> {}
+            }
+            dictionary.update(translation)
         }
     }
 }

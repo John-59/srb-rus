@@ -16,6 +16,8 @@ class DictionaryMock: IDictionary {
 
     override val isNewWords: Flow<Boolean> = emptyFlow()
 
+    override val translationsForRepeat: Flow<List<Translation<Word.Serbian, Word.Russian>>> = emptyFlow()
+
     override val isWordsForRepeat: Flow<Boolean> = emptyFlow()
 
     override suspend fun get(serbianLatinId: Long): Translation<Word.Serbian, Word.Russian>? {

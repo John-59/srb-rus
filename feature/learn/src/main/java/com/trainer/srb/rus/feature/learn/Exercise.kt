@@ -24,7 +24,7 @@ sealed interface Exercise {
                 ExerciseType.UNDEFINED -> ExerciseUndefined
                 ExerciseType.RANDOM -> ExerciseRandom(dictionary)
                 ExerciseType.NEW -> ExerciseNew(dictionary)
-                ExerciseType.REPEAT -> TODO()
+                ExerciseType.REPEAT -> ExerciseRepeat(dictionary)
             }
         }
     }
