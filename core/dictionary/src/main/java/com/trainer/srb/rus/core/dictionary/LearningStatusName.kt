@@ -4,7 +4,6 @@ enum class LearningStatusName {
     UNKNOWN,
     UNUSED,
     NEW,
-    FIRST_ACQUAINTANCE,
     NEXT_DAY,
     AFTER_TWO_DAYS,
     AFTER_THREE_DAYS,

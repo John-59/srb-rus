@@ -7,8 +7,10 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -22,6 +24,7 @@ import com.trainer.srb.rus.core.dictionary.LearningStatus
 import com.trainer.srb.rus.core.dictionary.Translation
 import com.trainer.srb.rus.core.dictionary.TranslationSourceType
 import com.trainer.srb.rus.core.dictionary.Word
+import com.trainer.srb.rus.core.dictionary.getProgress
 import com.trainer.srb.rus.core.design.R as DesignRes
 
 @Composable
@@ -69,6 +72,12 @@ fun InnerSearchItem(
                 text = russian,
                 style = MainTheme.typography.displaySmall
             )
+            LinearProgressIndicator(
+                progress = translation.getProgress(),
+                trackColor = MainTheme.colors.Dark_40,
+                color = MainTheme.colors.Right,
+                modifier = Modifier.fillMaxWidth()
+            )
         }
         Image(
             painter = painterResource(id = DesignRes.drawable.wordindict),
@@ -80,7 +89,6 @@ fun InnerSearchItem(
                 }
         )
     }
-
 }
 
 @Preview(apiLevel = 33)
@@ -96,7 +104,7 @@ private fun InnerSearchItemPreviewOne() {
                 Word.Russian(value = "дождь")
             ),
             type = TranslationSourceType.USER,
-            learningStatus = LearningStatus.Unknown()
+            learningStatus = LearningStatus.AlreadyKnow()
         ),
         onEdit = {}
     )
@@ -116,7 +124,7 @@ private fun InnerSearchItemPreviewTwo() {
                 Word.Russian(value = "а")
             ),
             type = TranslationSourceType.USER,
-            learningStatus = LearningStatus.Unknown()
+            learningStatus = LearningStatus.New()
         ),
         onEdit = {}
     )
@@ -135,7 +143,7 @@ private fun InnerSearchItemPreviewThree() {
                 Word.Russian(value = "морковь"),
             ),
             type = TranslationSourceType.USER,
-            learningStatus = LearningStatus.Unknown()
+            learningStatus = LearningStatus.NextDay()
         ),
         onEdit = {}
     )
@@ -154,7 +162,7 @@ private fun InnerSearchItemPreviewFour() {
                 Word.Russian(value = "книга"),
             ),
             type = TranslationSourceType.USER,
-            learningStatus = LearningStatus.Unknown()
+            learningStatus = LearningStatus.AfterTwoWeeks()
         ),
         onEdit = {}
     )

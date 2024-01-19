@@ -52,3 +52,19 @@ fun Translation<Word.Serbian, Word.Russian>.canRepeat(now: Instant): Boolean {
         is LearningStatus.Unused -> return false
     }
 }
+
+fun Translation<Word.Serbian, Word.Russian>.getProgress(): Float {
+    return when (this.learningStatus) {
+        is LearningStatus.AfterMonth -> 6f / 7
+        is LearningStatus.AfterThreeDays -> 3f / 7
+        is LearningStatus.AfterTwoDays -> 2f / 7
+        is LearningStatus.AfterTwoWeeks -> 5f / 7
+        is LearningStatus.AfterWeek -> 4f / 7
+        is LearningStatus.AlreadyKnow -> 1f
+        is LearningStatus.DontWantLearn -> 0f
+        is LearningStatus.New -> 0f
+        is LearningStatus.NextDay -> 1f / 7
+        is LearningStatus.Unknown -> 0f
+        is LearningStatus.Unused -> 0f
+    }
+}
