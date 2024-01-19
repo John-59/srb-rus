@@ -27,7 +27,7 @@ fun SerbianToRussianWord.toTranslation(
         },
         type = translationSourceType,
         learningStatus = this.serbianLat.status.toLearningStatus(
-            serbianLat.statusDateTime ?: Clock.System.now().toLocalDateTime(TimeZone.UTC)
+            serbianLat.statusDateTime ?: Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
         )
     )
 }

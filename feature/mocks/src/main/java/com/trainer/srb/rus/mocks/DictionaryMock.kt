@@ -16,6 +16,8 @@ class DictionaryMock: IDictionary {
 
     override val isNewWords: Flow<Boolean> = emptyFlow()
 
+    override val isWordsForRepeat: Flow<Boolean> = emptyFlow()
+
     override suspend fun get(serbianLatinId: Long): Translation<Word.Serbian, Word.Russian>? {
         return null
     }
@@ -41,9 +43,5 @@ class DictionaryMock: IDictionary {
         vararg statuses: LearningStatusName
     ): List<Translation<Word.Serbian, Word.Russian>> {
         return emptyList()
-    }
-
-    override suspend fun containsWordsForRepeat(): Boolean {
-        return false
     }
 }

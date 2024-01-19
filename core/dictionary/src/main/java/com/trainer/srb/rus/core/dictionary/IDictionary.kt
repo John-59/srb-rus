@@ -8,6 +8,8 @@ interface IDictionary {
 
     val isNewWords: Flow<Boolean>
 
+    val isWordsForRepeat: Flow<Boolean>
+
     suspend fun get(serbianLatinId: Long): Translation<Word.Serbian, Word.Russian>?
 
     suspend fun search(value: String): List<Translation<Word.Serbian, Word.Russian>>
@@ -24,6 +26,4 @@ interface IDictionary {
         randomTranslationsCount: Int,
         vararg statuses: LearningStatusName
     ): List<Translation<Word.Serbian, Word.Russian>>
-
-    suspend fun containsWordsForRepeat(): Boolean
 }

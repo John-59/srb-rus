@@ -66,6 +66,7 @@ private fun Body(
     viewModel: HomeViewModel
 ) {
     val isNewWords by viewModel.isNewWords.collectAsState()
+    val isWordsForRepeat by viewModel.isWordsForRepeat.collectAsState()
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.Center,
@@ -123,7 +124,7 @@ private fun Body(
             colors = ButtonDefaults.buttonColors(
                 backgroundColor = MainTheme.colors.White,
             ),
-            enabled = viewModel.isWordsForRepeat
+            enabled = isWordsForRepeat
         ) {
             Text(
                 text = "Повторение слов",

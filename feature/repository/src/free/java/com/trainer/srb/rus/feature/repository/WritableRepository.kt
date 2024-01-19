@@ -33,7 +33,7 @@ class WritableRepository @Inject constructor(
         .getPredefinedStatuses().map { statuses ->
             statuses.map {
                 it.predefinedLatinId to it.status.toLearningStatus(
-                    it.statusDateTime ?: Clock.System.now().toLocalDateTime(TimeZone.UTC)
+                    it.statusDateTime ?: Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
                 )
             }
     }
