@@ -5,7 +5,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 
 @Database(
-    version = 14,
+    version = 15,
     exportSchema = true,
     entities = [
         SerbianLatinWord::class,

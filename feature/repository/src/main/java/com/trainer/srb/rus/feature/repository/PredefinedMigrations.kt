@@ -19,6 +19,12 @@ fun <T: RoomDatabase> RoomDatabase.Builder<T>.applyPredefinedMigrations(): RoomD
         .addMigrations(MIGRATION_ASSETS_11_12)
         .addMigrations(MIGRATION_ASSETS_12_13)
         .addMigrations(MIGRATION_ASSETS_13_14)
+        .addMigrations(MIGRATION_ASSETS_14_15)
+}
+
+private val MIGRATION_ASSETS_14_15 = object : Migration(14, 15) {
+    override fun migrate(db: SupportSQLiteDatabase) {
+    }
 }
 
 private val MIGRATION_ASSETS_13_14 = object : Migration(13, 14) {
