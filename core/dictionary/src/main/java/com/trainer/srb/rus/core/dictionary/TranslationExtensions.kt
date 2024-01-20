@@ -21,10 +21,10 @@ fun Translation<Word.Serbian, Word.Russian>.canRepeat(now: Instant): Boolean {
         year = status.dateTime.year,
         month = status.dateTime.month,
         dayOfMonth = status.dateTime.dayOfMonth,
-        hour = status.dateTime.hour,
-        minute = status.dateTime.minute,
-        second = status.dateTime.second,
-        nanosecond = status.dateTime.nanosecond
+        hour = 0,
+        minute = 0,
+        second = 0,
+        nanosecond = 0
     ).toInstant(TimeZone.currentSystemDefault())
     when (status) {
         is LearningStatus.AfterMonth -> {
