@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "336357415813",
+    "project_id": "srbrus-admin",
+    "storage_bucket": "srbrus-admin.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:336357415813:android:4f93e39de75db3fc2c42ec",
+        "android_client_info": {
+          "package_name": "com.trainer.srb.rus.admin"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBHKHVT5yEOUN9mVSkFGZSS7Wnpo_LA2cw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

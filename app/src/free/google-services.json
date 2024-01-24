@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "758849668387",
+    "project_id": "srbrus-ec733",
+    "storage_bucket": "srbrus-ec733.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:758849668387:android:63f0f4c22bd5d09a1eb896",
+        "android_client_info": {
+          "package_name": "com.trainer.srb.rus.free"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCEd8DnK9F1lXLMGjv0f_KPdefPTHTUOaY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
