@@ -16,6 +16,8 @@ interface IPredefinedRepository {
 
     suspend fun setStatusById(latinId: Long, status: LearningStatus)
 
+    suspend fun resetStatuses()
+
     suspend fun search(value: String): List<Translation<Word.Serbian, Word.Russian>>
 
     suspend fun getRandom(

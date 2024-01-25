@@ -3,7 +3,7 @@ package com.trainer.srb.rus.feature.learn
 import com.trainer.srb.rus.core.dictionary.IDictionary
 import com.trainer.srb.rus.core.dictionary.Translation
 import com.trainer.srb.rus.core.dictionary.Word
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 
 class ExerciseRepeat(private val dictionary: IDictionary): Exercise {
 
@@ -30,8 +30,8 @@ class ExerciseRepeat(private val dictionary: IDictionary): Exercise {
 
     override suspend fun next(): ExerciseStep {
         if (wordToExerciseStepTypes.isEmpty()) {
-            val translationsForRepeat = dictionary.translationsForRepeat.first()
-            translationsForRepeat.take(learningWordsCount).forEach {
+            val translationsForRepeat = dictionary.translationsForRepeat.firstOrNull()
+            translationsForRepeat?.take(learningWordsCount)?.forEach {
                 wordToExerciseStepTypes[it] = ArrayDeque(exerciseStepTypes)
                 wordToCompletedSteps[it] = mutableListOf()
             }

@@ -52,6 +52,12 @@ class PredefinedRepository @Inject constructor(
         }
     }
 
+    override suspend fun resetStatuses() {
+        withContext(Dispatchers.IO) {
+            predefinedRepositoryDao.resetStatuses()
+        }
+    }
+
     override suspend fun search(value: String): List<Translation<Word.Serbian, Word.Russian>> {
         return withContext(Dispatchers.IO) {
             val found = predefinedRepositoryDao.searchInSrbLat(value)

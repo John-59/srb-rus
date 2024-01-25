@@ -5,6 +5,7 @@ plugins {
     id("com.google.dagger.hilt.android")
     id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
+    id("com.google.protobuf") version "0.9.4"
 }
 
 android {
@@ -15,8 +16,8 @@ android {
         applicationId = "com.trainer.srb.rus"
         minSdk = 24
         targetSdk = 34
-        versionCode = 16
-        versionName = "0.0.16"
+        versionCode = 116
+        versionName = "0.1.16"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -82,6 +83,7 @@ dependencies {
     implementation(project(":core:design"))
     implementation(project(":core:dictionary"))
     implementation(project(":core:repository"))
+    implementation(project(":core:utils"))
 
     implementation(project(":feature:home"))
     implementation(project(":feature:search"))
@@ -119,4 +121,25 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:32.7.1"))
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-crashlytics")
+
+    implementation("androidx.datastore:datastore:1.0.0")
+    implementation("com.google.protobuf:protobuf-javalite:3.8.0")
+}
+
+protobuf {
+    // Configures the Protobuf compilation and the protoc executable
+    protoc {
+        // Downloads from the repositories
+        artifact = "com.google.protobuf:protoc:3.8.0"
+    }
+    // Generates the java Protobuf-lite code for the Protobufs in this project
+    generateProtoTasks {
+        all().forEach { task ->
+            task.plugins {
+                create("java") {
+                    option("lite")
+                }
+            }
+        }
+    }
 }

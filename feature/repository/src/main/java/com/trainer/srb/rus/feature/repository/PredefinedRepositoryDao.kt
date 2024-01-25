@@ -47,6 +47,9 @@ abstract class PredefinedRepositoryDao {
     @Query("SELECT * FROM srb_lat WHERE id = :srbLatWordId")
     abstract suspend fun getWord(srbLatWordId: Long): SerbianToRussianWord?
 
+    @Query("UPDATE srb_lat SET status = '${WordStatus.Unknown.name}'")
+    abstract suspend fun resetStatuses()
+
     @Transaction
     open suspend fun insert(translationToRussian: TranslationToRussian) {
         val srbLatinWord = SerbianLatinWord(
