@@ -31,8 +31,10 @@ class ExerciseRandom(
 
     private val wordToCompletedSteps = mutableMapOf<Translation<Word.Serbian, Word.Russian>, MutableList<ExerciseStep>>()
 
+    private var needInit = true
+
     override suspend fun next(): ExerciseStep {
-        if (wordToExerciseStepType.isEmpty()) {
+        if (needInit) {
             val statuses = LearningStatusName.entries.minus(
                 listOf(LearningStatusName.ALREADY_KNOW,
                     LearningStatusName.DONT_WANT_LEARN,
@@ -43,6 +45,7 @@ class ExerciseRandom(
                 wordToCompletedSteps[it] = mutableListOf()
             }
             totalStepsCount = wordToExerciseStepType.count().coerceAtMost(learningWordsCount) * exerciseStepTypes.count()
+            needInit = false
         }
         return getNextWord().let {
             val (word, stepQueue) = it ?: (null to null)

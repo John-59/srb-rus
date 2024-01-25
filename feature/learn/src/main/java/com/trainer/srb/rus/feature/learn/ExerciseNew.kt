@@ -29,13 +29,16 @@ class ExerciseNew(private val dictionary: IDictionary): Exercise {
 
     private val wordToCompletedSteps = mutableMapOf<Translation<Word.Serbian, Word.Russian>, MutableList<ExerciseStep>>()
 
+    private var needInit = true
+
     override suspend fun next(): ExerciseStep {
-        if (wordToExerciseStepTypes.isEmpty()) {
+        if (needInit) {
             dictionary.getRandom(learningWordsCount, LearningStatusName.NEW).forEach {
                 wordToExerciseStepTypes[it] = ArrayDeque(exerciseStepTypes)
                 wordToCompletedSteps[it] = mutableListOf()
             }
             totalStepsCount = wordToExerciseStepTypes.count().coerceAtMost(learningWordsCount) * exerciseStepTypes.count()
+            needInit = false
         }
         return getNextWord().let {
             val (word, stepQueue) = it ?: (null to null)
