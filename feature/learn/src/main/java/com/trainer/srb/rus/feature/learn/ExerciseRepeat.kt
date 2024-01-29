@@ -31,7 +31,7 @@ class ExerciseRepeat(private val dictionary: IDictionary): Exercise {
     override suspend fun next(): ExerciseStep {
         if (wordToExerciseStepTypes.isEmpty()) {
             val translationsForRepeat = dictionary.translationsForRepeat.firstOrNull()
-            translationsForRepeat?.take(learningWordsCount)?.forEach {
+            translationsForRepeat?.shuffled()?.take(learningWordsCount)?.forEach {
                 wordToExerciseStepTypes[it] = ArrayDeque(exerciseStepTypes)
                 wordToCompletedSteps[it] = mutableListOf()
             }
