@@ -30,6 +30,7 @@ fun SearchAndAdd(
     value: TextFieldValue,
     onValueChange: (TextFieldValue) -> Unit,
     onAddClicked: (Word) -> Unit,
+    onResetSearch: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -48,8 +49,17 @@ fun SearchAndAdd(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
-            painter = painterResource(id = DesignRes.drawable.search),
+            painter = if (value.text.isBlank()) {
+                painterResource(id = DesignRes.drawable.search)
+            } else {
+                painterResource(id = DesignRes.drawable.addtodict_40_40)
+            },
             contentDescription = null,
+            modifier = Modifier.clickable {
+                if (value.text.isNotBlank()) {
+                    onAddClicked(Word.Serbian(latinValue = value.text, cyrillicValue = ""))
+                }
+            }
         )
         CustomTextField(
             modifier = Modifier
@@ -73,27 +83,40 @@ fun SearchAndAdd(
         )
         Image(
             painter = if (value.text.isBlank()) {
-                painterResource(DesignRes.drawable.addtodictgray)
+                painterResource(DesignRes.drawable.cross_red)
             } else {
-                painterResource(DesignRes.drawable.addtodict)
+                painterResource(DesignRes.drawable.cross_red)
             },
             contentDescription = null,
-            modifier = Modifier.clickable {
-                if (value.text.isNotBlank()) {
-                    onAddClicked(Word.Serbian(latinValue = value.text, cyrillicValue = ""))
+            modifier = Modifier
+                .clickable {
+                    onResetSearch()
                 }
-            }.padding(5.dp)
+                .padding(5.dp)
         )
     }
 }
 
 @Preview(apiLevel = 33)
 @Composable
-fun SearchAndAddPreview() {
+fun SearchAndAddEmptyPreview() {
     SearchAndAdd(
         value = TextFieldValue(""),
         onValueChange = {},
         onAddClicked = {},
+        onResetSearch = {},
+        modifier = Modifier.fillMaxWidth()
+    )
+}
+
+@Preview(apiLevel = 33)
+@Composable
+fun SearchAndAddPreview() {
+    SearchAndAdd(
+        value = TextFieldValue("lubenica"),
+        onValueChange = {},
+        onAddClicked = {},
+        onResetSearch = {},
         modifier = Modifier.fillMaxWidth()
     )
 }

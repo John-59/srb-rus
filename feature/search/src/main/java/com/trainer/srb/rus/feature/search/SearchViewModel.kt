@@ -64,4 +64,10 @@ class SearchViewModel @Inject constructor(
             selection = TextRange(searchingWord.value.text.length)
         )
     }
+
+    fun resetSearch() {
+        searchingWord.value = searchingWord.value.copy(
+            text = ""
+        )
+    }
 }

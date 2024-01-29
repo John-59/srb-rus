@@ -40,7 +40,8 @@ fun SearchScreen(
                 .focusRequester(focusRequester),
             value = searchingWord,
             onValueChange = viewModel::searchingWordChange,
-            onAddClicked = navigateToAddWord
+            onAddClicked = navigateToAddWord,
+            onResetSearch = viewModel::resetSearch
         )
         SearchResult(
             innerWords = visibleWords,
