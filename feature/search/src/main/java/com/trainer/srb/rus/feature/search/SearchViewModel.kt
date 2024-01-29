@@ -1,5 +1,7 @@
 package com.trainer.srb.rus.feature.search
 
+import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.trainer.srb.rus.core.dictionary.IDictionary
@@ -21,15 +23,15 @@ class SearchViewModel @Inject constructor(
     private val remoteDictionary: IRemoteDictionary
 ): ViewModel() {
 
-    var searchingWord = MutableStateFlow("")
+    var searchingWord = MutableStateFlow(TextFieldValue(""))
         private set
 
     val visibleWords = innerDictionary.translations.combine(searchingWord) { words, word ->
-        if (word.isBlank()) {
+        if (word.text.isBlank()) {
             words
         } else {
             words.filter {
-                it.contains(word)
+                it.contains(word.text)
             }
         }
     }.stateIn(
@@ -40,7 +42,7 @@ class SearchViewModel @Inject constructor(
 
     private var _foundRemoteWords: List<Translation<Word.Serbian, Word.Russian>> = emptyList()
 
-    fun searchingWordChange(value: String) {
+    fun searchingWordChange(value: TextFieldValue) {
         searchingWord.value = value
     }
 
@@ -55,5 +57,11 @@ class SearchViewModel @Inject constructor(
         viewModelScope.launch {
             innerDictionary.update(translation)
         }
+    }
+
+    fun setSelectionToEnd() {
+        searchingWord.value = searchingWord.value.copy(
+            selection = TextRange(searchingWord.value.text.length)
+        )
     }
 }

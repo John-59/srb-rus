@@ -55,6 +55,7 @@ fun SearchScreen(
 
     LaunchedEffect(Unit) {
         focusRequester.requestFocus()
+        viewModel.setSelectionToEnd()
     }
 }
 

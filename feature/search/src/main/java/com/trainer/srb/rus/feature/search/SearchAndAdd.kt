@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.BaselineShift
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -26,8 +27,8 @@ import com.trainer.srb.rus.core.design.R as DesignRes
 
 @Composable
 fun SearchAndAdd(
-    value: String,
-    onValueChange: (String) -> Unit,
+    value: TextFieldValue,
+    onValueChange: (TextFieldValue) -> Unit,
     onAddClicked: (Word) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -71,15 +72,15 @@ fun SearchAndAdd(
             onValueChange = onValueChange
         )
         Image(
-            painter = if (value.isBlank()) {
+            painter = if (value.text.isBlank()) {
                 painterResource(DesignRes.drawable.addtodictgray)
             } else {
                 painterResource(DesignRes.drawable.addtodict)
             },
             contentDescription = null,
             modifier = Modifier.clickable {
-                if (value.isNotBlank()) {
-                    onAddClicked(Word.Serbian(latinValue = value, cyrillicValue = ""))
+                if (value.text.isNotBlank()) {
+                    onAddClicked(Word.Serbian(latinValue = value.text, cyrillicValue = ""))
                 }
             }.padding(5.dp)
         )
@@ -90,7 +91,7 @@ fun SearchAndAdd(
 @Composable
 fun SearchAndAddPreview() {
     SearchAndAdd(
-        value = "",
+        value = TextFieldValue(""),
         onValueChange = {},
         onAddClicked = {},
         modifier = Modifier.fillMaxWidth()
