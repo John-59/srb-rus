@@ -19,6 +19,8 @@ import androidx.compose.material.FractionalThreshold
 import androidx.compose.material.SwipeToDismiss
 import androidx.compose.material.rememberDismissState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -42,6 +44,8 @@ fun SearchResult(
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
+    val dismissThreshold = 0.5f
+    val currentFraction = remember { mutableFloatStateOf(0f) }
     LazyColumn(
         modifier = modifier
     ) {
@@ -52,23 +56,29 @@ fun SearchResult(
             }
         ) { translation ->
             val dismissState = rememberDismissState {
-                when (it) {
-                    DismissValue.DismissedToStart -> {
-                        onRemoveTranslation(translation)
-                        true
+                if (currentFraction.floatValue >= dismissThreshold && currentFraction.floatValue < 1f ) {
+                    when (it) {
+                        DismissValue.DismissedToStart -> {
+                            onRemoveTranslation(translation)
+                            true
+                        }
+
+                        DismissValue.DismissedToEnd -> {
+                            onAddToLearn(translation)
+                            Toast.makeText(
+                                context,
+                                "Слово ${translation.serbianAsString()} выбрано для изучения.",
+                                Toast.LENGTH_LONG
+                            ).show()
+                            false
+                        }
+
+                        else -> {
+                            false
+                        }
                     }
-                    DismissValue.DismissedToEnd -> {
-                        onAddToLearn(translation)
-                        Toast.makeText(
-                            context,
-                            "Слово ${translation.serbianAsString()} выбрано для изучения.",
-                            Toast.LENGTH_LONG
-                        ).show()
-                        false
-                    }
-                    else -> {
-                        false
-                    }
+                } else {
+                    false
                 }
             }
             val removeDirection = DismissDirection.EndToStart
@@ -77,9 +87,10 @@ fun SearchResult(
                 state = dismissState,
                 directions = setOf(removeDirection, learnDirection),
                 dismissThresholds = {
-                    FractionalThreshold(0.5f)
+                    FractionalThreshold(dismissThreshold)
                 },
                 background = {
+                    currentFraction.floatValue = dismissState.progress.fraction
                      ItemSwipeBackground(
                          direction = dismissState.dismissDirection,
                          modifier = Modifier
