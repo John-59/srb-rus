@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.trainer.srb.rus.core.design.MainTheme
 import com.trainer.srb.rus.core.dictionary.ExerciseType
+import com.trainer.srb.rus.mocks.DictionaryMock
 
 @Composable
 fun HomeScreen(
@@ -40,7 +41,7 @@ fun HomeScreen(
                 .padding(20.dp)
                 .fillMaxWidth()
                 .onFocusChanged {
-                    if (it.isFocused)
+                    if (it.hasFocus)
                         navigateToSearch()
                 }
                 .clickable {
@@ -139,6 +140,9 @@ private fun Body(
 private fun HomeScreenPreview() {
     HomeScreen(
         navigateToSearch = {},
-        navigateToLearn = {}
+        navigateToLearn = {},
+        viewModel = HomeViewModel(
+            dictionary = DictionaryMock()
+        )
     )
 }
