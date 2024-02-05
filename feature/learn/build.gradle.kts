@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.trainer.srb.rus.feature.learn"
+    namespace = "com.trainer.srb.rus.feature.home"
     compileSdk = 34
 
     defaultConfig {
@@ -25,6 +25,18 @@ android {
             )
         }
     }
+
+    flavorDimensions += "version"
+    productFlavors {
+        create("free") {
+            dimension = "version"
+            isDefault = true
+        }
+        create("admin") {
+            dimension = "version"
+        }
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -46,11 +58,11 @@ kapt {
 
 dependencies {
 
+    implementation(project(":core:design"))
     implementation(project(":core:ui"))
     implementation(project(":core:dictionary"))
-    implementation(project(":core:design"))
-
-    implementation(project(":feature:mocks"))
+    implementation(project(":core:mocks"))
+    implementation(project(":feature:exercise"))
 
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
@@ -69,6 +81,4 @@ dependencies {
     implementation("androidx.compose.material3:material3")
     implementation("androidx.compose.ui:ui-tooling")
     implementation("androidx.compose.ui:ui-tooling-preview")
-
-    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.5.0")
 }

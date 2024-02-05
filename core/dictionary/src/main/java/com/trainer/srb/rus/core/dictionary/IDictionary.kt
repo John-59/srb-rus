@@ -1,5 +1,8 @@
 package com.trainer.srb.rus.core.dictionary
 
+import com.trainer.srb.rus.core.translation.LearningStatusName
+import com.trainer.srb.rus.core.translation.Translation
+import com.trainer.srb.rus.core.translation.Word
 import kotlinx.coroutines.flow.Flow
 
 interface IDictionary {

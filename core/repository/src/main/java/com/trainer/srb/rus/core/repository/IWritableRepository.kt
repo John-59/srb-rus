@@ -1,9 +1,9 @@
 package com.trainer.srb.rus.core.repository
 
-import com.trainer.srb.rus.core.dictionary.LearningStatus
-import com.trainer.srb.rus.core.dictionary.LearningStatusName
-import com.trainer.srb.rus.core.dictionary.Translation
-import com.trainer.srb.rus.core.dictionary.Word
+import com.trainer.srb.rus.core.translation.LearningStatus
+import com.trainer.srb.rus.core.translation.LearningStatusName
+import com.trainer.srb.rus.core.translation.Translation
+import com.trainer.srb.rus.core.translation.Word
 import kotlinx.coroutines.flow.Flow
 
 interface IWritableRepository {

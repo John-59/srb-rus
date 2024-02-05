@@ -2,7 +2,7 @@ package com.trainer.srb.rus.feature.addword.navigation
 
 import android.net.Uri
 import androidx.navigation.NavHostController
-import com.trainer.srb.rus.core.dictionary.Word
+import com.trainer.srb.rus.core.translation.Word
 
 fun NavHostController.navigateToAddWord(word: Word, previousDestination: String) {
     val (srbLatValue, srbCyrValue, rusValue) = when (word) {

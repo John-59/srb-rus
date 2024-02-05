@@ -44,9 +44,10 @@ class MainActivity : ComponentActivity() {
                     setContent {
                         MainTheme {
                             val navController = rememberNavController()
-                            MainNavHost(
-                                navController = navController,
-                            )
+//                            MainNavHost(
+//                                navController = navController,
+//                            )
+                            MainScreen(navController = navController)
                         }
                     }
                     false

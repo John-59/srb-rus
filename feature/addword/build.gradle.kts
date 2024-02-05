@@ -25,6 +25,18 @@ android {
             )
         }
     }
+
+    flavorDimensions += "version"
+    productFlavors {
+        create("free") {
+            dimension = "version"
+            isDefault = true
+        }
+        create("admin") {
+            dimension = "version"
+        }
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -48,9 +60,9 @@ dependencies {
 
     implementation(project(":core:ui"))
     implementation(project(":core:dictionary"))
+    implementation(project(":core:translation"))
     implementation(project(":core:design"))
-
-    implementation(project(":feature:mocks"))
+    implementation(project(":core:mocks"))
 
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")

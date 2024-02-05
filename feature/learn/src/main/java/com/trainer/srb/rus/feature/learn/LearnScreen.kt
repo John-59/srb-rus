@@ -1,138 +1,135 @@
 package com.trainer.srb.rus.feature.learn
 
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.SavedStateHandle
-import com.trainer.srb.rus.core.dictionary.Translation
-import com.trainer.srb.rus.core.dictionary.Word
-import com.trainer.srb.rus.core.ui.ExitExerciseConfirmationDialog
-import com.trainer.srb.rus.mocks.DictionaryMock
+import com.trainer.srb.rus.core.design.MainTheme
+import com.trainer.srb.rus.core.mocks.DictionaryMock
+import com.trainer.srb.rus.feature.exercise.ExerciseType
 
 @Composable
 fun LearnScreen(
-    onFinished: () -> Unit,
+    navigateToSearch: () -> Unit,
+    navigateToLearn: (ExerciseType) -> Unit,
+    modifier: Modifier = Modifier,
     viewModel: LearnViewModel = hiltViewModel()
 ) {
-    val exerciseStep by viewModel.state.collectAsState()
     Column(
-        modifier = Modifier.padding(20.dp)
+        modifier = modifier.fillMaxSize()
     ) {
-        if (exerciseStep != ExerciseStep.Initialize
-            && exerciseStep != ExerciseStep.ExerciseFinished
-            && exerciseStep !is ExerciseStep.Error) {
-            LearnTopBar(
-                progress = viewModel.progress,
-                onSkip = viewModel::next,
-                onExit = viewModel::showExitConfirmation,
-                modifier = Modifier.padding(bottom = 10.dp)
-            )
-        }
-        Body(
-            exerciseStep = exerciseStep,
-            onNext = viewModel::next,
-            onAlreadyKnow = viewModel::markAsAlreadyKnow,
-            onDontWantLearn = viewModel::markAsNotLearn,
-            onFinished = onFinished
+        Search(
+            modifier = Modifier
+                .padding(20.dp)
+                .fillMaxWidth()
+                .onFocusChanged {
+                    if (it.hasFocus)
+                        navigateToSearch()
+                }
+                .clickable {
+                    navigateToSearch()
+                },
+            value = "",
+            onValueChange = {}
         )
-    }
-
-    if (viewModel.showExitConfirmation) {
-        ExitExerciseConfirmationDialog(
-            onCancel = viewModel::hideExitConfirmation,
-            onExit = onFinished,
+        Body(
+            navigateToLearn = navigateToLearn,
+            viewModel = viewModel,
+            modifier = Modifier
+                .padding(20.dp)
+                .fillMaxSize()
         )
     }
 }
 
 @Composable
 private fun Body(
-    exerciseStep: ExerciseStep,
-    onNext: () -> Unit,
-    onAlreadyKnow: (translation: Translation<Word.Serbian, Word.Russian>) -> Unit,
-    onDontWantLearn: (translation: Translation<Word.Serbian, Word.Russian>) -> Unit,
-    onFinished: () -> Unit,
-    modifier: Modifier = Modifier
+    navigateToLearn: (ExerciseType) -> Unit,
+    modifier: Modifier = Modifier,
+    viewModel: LearnViewModel
 ) {
-    when (exerciseStep) {
-        ExerciseStep.Initialize -> {
-            InitializeBody(modifier = modifier)
-        }
-
-        is ExerciseStep.ShowInRussianAndConstructFromPredefinedLetters -> {
-            ShowInRussianAndConstructFromPredefinedLettersBody(
-                translation = exerciseStep.translation,
-                onNext = onNext,
-                modifier = modifier
+    val isNewWords by viewModel.isNewWords.collectAsState()
+    val isWordsForRepeat by viewModel.isWordsForRepeat.collectAsState()
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = "Учить слова:",
+            color = MainTheme.colors.Border,
+            style = MainTheme.typography.titleLarge,
+            modifier = Modifier.fillMaxWidth()
+        )
+        Spacer(modifier = Modifier.height(10.dp))
+        Button(
+            onClick = {
+                navigateToLearn(ExerciseType.RANDOM)
+            },
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(10.dp),
+            border = BorderStroke(2.dp, MainTheme.colors.Border),
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = MainTheme.colors.White,
+            )
+        ) {
+            Text(
+                text = "Случайные слова",
+                style = MainTheme.typography.displayMedium
             )
         }
-
-        is ExerciseStep.ShowInRussianAndSelectSerbianVariants -> {
-            ShowInRussianAndSelectSerbianVariantsBody(
-                state = exerciseStep,
-                onNext = onNext,
-                onAlreadyKnow = {
-                    onAlreadyKnow(exerciseStep.translation)
-                    onNext()
-                },
-                onDontWantLearn = {
-                    onDontWantLearn(exerciseStep.translation)
-                    onNext()
-                },
-                modifier = modifier
+        Spacer(modifier = Modifier.height(10.dp))
+        Button(
+            onClick = {
+                navigateToLearn(ExerciseType.NEW)
+            },
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(10.dp),
+            border = BorderStroke(2.dp, MainTheme.colors.Border),
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = MainTheme.colors.White,
+            ),
+            enabled = isNewWords
+        ) {
+            Text(
+                text = "Новые слова",
+                style = MainTheme.typography.displayMedium
             )
         }
-
-        is ExerciseStep.ShowInSerbianAndSelectRussianVariants -> {
-            ShowInSerbianAndSelectRussianVariantsBody(
-                state = exerciseStep,
-                onNext = onNext,
-                modifier = modifier
-            )
-        }
-
-        is ExerciseStep.ShowInRussianAndWriteInSerbian -> {
-            ShowInRussianAndWriteInSerbianBody(
-                state = exerciseStep,
-                onNext = onNext,
-                modifier = modifier
-            )
-        }
-
-        is ExerciseStep.ShowInSerbianWithTranslation -> {
-            ShowInSerbianWithTranslationBody(
-                translation = exerciseStep.translation,
-                onNext = onNext,
-                onAlreadyKnow = {
-                    onAlreadyKnow(exerciseStep.translation)
-                    onNext()
-                },
-                onDontWantLearn = {
-                    onDontWantLearn(exerciseStep.translation)
-                    onNext()
-                },
-                modifier = modifier
-            )
-        }
-
-        is ExerciseStep.Error -> {
-            ErrorBody(
-                message = exerciseStep.message,
-                modifier = modifier.fillMaxSize()
-            )
-        }
-
-        ExerciseStep.ExerciseFinished -> {
-            FinishBody(
-                onNext = onFinished,
-                modifier = modifier.fillMaxSize()
+        Spacer(modifier = Modifier.height(10.dp))
+        Button(
+            onClick = {
+                navigateToLearn(ExerciseType.REPEAT)
+            },
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(10.dp),
+            border = BorderStroke(2.dp, MainTheme.colors.Border),
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = MainTheme.colors.White,
+            ),
+            enabled = isWordsForRepeat
+        ) {
+            Text(
+                text = "Повторение слов",
+                style = MainTheme.typography.displayMedium
             )
         }
     }
@@ -140,12 +137,12 @@ private fun Body(
 
 @Preview(apiLevel = 33)
 @Composable
-fun LearnScreenPreview() {
+private fun HomeScreenPreview() {
     LearnScreen(
-        onFinished = {},
+        navigateToSearch = {},
+        navigateToLearn = {},
         viewModel = LearnViewModel(
-            dictionary = DictionaryMock(),
-            savedStateHandle = SavedStateHandle()
+            dictionary = DictionaryMock()
         )
     )
 }

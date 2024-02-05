@@ -3,9 +3,9 @@ package com.trainer.srb.rus
 import androidx.datastore.core.DataStore
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.trainer.srb.rus.core.utils.AppVersionProvider
 import com.trainer.srb.rus.core.repository.IPredefinedRepository
 import com.trainer.srb.rus.core.repository.IWritableRepository
-import com.trainer.srb.rus.core.utils.AppVersionProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow

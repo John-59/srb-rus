@@ -1,5 +1,10 @@
 package com.trainer.srb.rus.core.dictionary
 
+import com.trainer.srb.rus.core.translation.LearningStatus
+import com.trainer.srb.rus.core.translation.Translation
+import com.trainer.srb.rus.core.translation.TranslationSourceType
+import com.trainer.srb.rus.core.translation.Word
+import com.trainer.srb.rus.core.translation.canRepeat
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant

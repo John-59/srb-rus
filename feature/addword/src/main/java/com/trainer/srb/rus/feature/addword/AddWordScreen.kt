@@ -26,9 +26,9 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.SavedStateHandle
 import com.trainer.srb.rus.core.design.MainTheme
-import com.trainer.srb.rus.core.dictionary.Word
 import com.trainer.srb.rus.core.ui.CustomTextField
-import com.trainer.srb.rus.mocks.DictionaryMock
+import com.trainer.srb.rus.core.mocks.DictionaryMock
+import com.trainer.srb.rus.core.translation.Word
 import com.trainer.srb.rus.core.design.R as DesignRes
 
 @Composable
