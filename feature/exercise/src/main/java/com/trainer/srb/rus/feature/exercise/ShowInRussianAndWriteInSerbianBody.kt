@@ -10,10 +10,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Text
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Text
 import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -52,7 +53,7 @@ fun ShowInRussianAndWriteInSerbianBody(
         ) {
             Text(
                 text = state.translation.russianAsString(),
-                style = MainTheme.typography.titleLarge,
+                style = MaterialTheme.typography.titleLarge,
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Center
             )
@@ -61,20 +62,23 @@ fun ShowInRussianAndWriteInSerbianBody(
                 modifier = Modifier
                     .border(
                         shape = RoundedCornerShape(10.dp),
-                        border = BorderStroke(2.dp, MainTheme.colors.Border)
+                        border = BorderStroke(2.dp, MaterialTheme.colorScheme.outline)
                     )
                     .background(
                         color = when (state.userInputValidity) {
                             ExerciseStep.ShowInRussianAndWriteInSerbian.Validity.UNDEFINED -> {
-                                MainTheme.colors.White
+                                MaterialTheme.colorScheme.background
+                                //MainTheme.colors.White
                             }
 
                             ExerciseStep.ShowInRussianAndWriteInSerbian.Validity.VALID -> {
-                                MainTheme.colors.Right
+                                MaterialTheme.colorScheme.error
+                                //MainTheme.colors.Right
                             }
 
                             ExerciseStep.ShowInRussianAndWriteInSerbian.Validity.INVALID -> {
-                                MainTheme.colors.Wrong
+                                MaterialTheme.colorScheme.error
+                                //MainTheme.colors.Wrong
                             }
                         },
                         shape = RoundedCornerShape(10.dp)
@@ -93,11 +97,11 @@ fun ShowInRussianAndWriteInSerbianBody(
                     placeholder = {
                         Text(
                             text = "Напишите на сербском",
-                            style = MainTheme.typography.titleMedium,
-                            color = MainTheme.colors.Tips,
+                            style = MaterialTheme.typography.titleMedium,
+//                            color = MainTheme.colors.Tips,
                         )
                     },
-                    textStyle = MainTheme.typography.titleMedium,
+                    textStyle = MaterialTheme.typography.titleMedium,
                     value = state.userInput,
                     onValueChange = state::userInputChanged,
                 )
@@ -115,12 +119,12 @@ fun ShowInRussianAndWriteInSerbianBody(
                     )
                     .border(
                         shape = RoundedCornerShape(10.dp),
-                        border = BorderStroke(2.dp, MainTheme.colors.Border)
+                        border = BorderStroke(2.dp, MaterialTheme.colorScheme.outline)
                     )
-                    .background(
-                        color = MainTheme.colors.Right,
-                        shape = RoundedCornerShape(10.dp)
-                    )
+//                    .background(
+//                        color = MainTheme.colors.Right,
+//                        shape = RoundedCornerShape(10.dp)
+//                    )
                     .clip(
                         shape = RoundedCornerShape(10.dp)
                     )
@@ -129,17 +133,17 @@ fun ShowInRussianAndWriteInSerbianBody(
             ) {
                 Text(
                     text = state.translation.serbianAsString(),
-                    style = MainTheme.typography.titleMedium,
+                    style = MaterialTheme.typography.titleMedium,
                 )
             }
             Spacer(modifier = Modifier.padding(5.dp))
 
             Button(
                 shape = RoundedCornerShape(10.dp),
-                colors = ButtonDefaults.buttonColors(
-                    backgroundColor = MainTheme.colors.Border,
-                    contentColor = MainTheme.colors.White,
-                ),
+//                colors = ButtonDefaults.buttonColors(
+//                    backgroundColor = MainTheme.colors.Border,
+//                    contentColor = MainTheme.colors.White,
+//                ),
                 modifier = Modifier.fillMaxWidth(),
                 enabled = state.userInput.isNotBlank() && state.userInputValidity == ExerciseStep.ShowInRussianAndWriteInSerbian.Validity.UNDEFINED,
                 onClick = {
@@ -149,24 +153,24 @@ fun ShowInRussianAndWriteInSerbianBody(
             ) {
                 Text(
                     text = "Проверить",
-                    style = MainTheme.typography.displayMedium
+                    style = MaterialTheme.typography.displayMedium
                 )
             }
         }
 
         Button(
             shape = RoundedCornerShape(10.dp),
-            colors = ButtonDefaults.buttonColors(
-                backgroundColor = MainTheme.colors.Buttons,
-                contentColor = MainTheme.colors.White,
-            ),
+//            colors = ButtonDefaults.buttonColors(
+//                backgroundColor = MainTheme.colors.Buttons,
+//                contentColor = MainTheme.colors.White,
+//            ),
             modifier = Modifier.fillMaxWidth(),
             onClick = onNext,
             enabled = state.userInputValidity != ExerciseStep.ShowInRussianAndWriteInSerbian.Validity.UNDEFINED
         ) {
             Text(
                 text = "Далее",
-                style = MainTheme.typography.displayMedium
+                style = MaterialTheme.typography.displayMedium
             )
         }
     }
@@ -179,23 +183,27 @@ fun ShowInRussianAndWriteInSerbianBody(
 @Preview(apiLevel = 33)
 @Composable
 fun ShowInRussianAndWriteInSerbianBodyPreview() {
-    ShowInRussianAndWriteInSerbianBody(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(20.dp),
-        onNext = {},
-        state = ExerciseStep.ShowInRussianAndWriteInSerbian(
-            translation = Translation(
-                source = Word.Serbian(
-                    latinValue = "kašika",
-                    cyrillicValue = "кашика"
-                ),
-                translations = listOf(
-                    Word.Russian(value = "ложка")
-                ),
-                type = TranslationSourceType.USER,
-                learningStatus = LearningStatus.Unknown()
+    MainTheme(
+        dynamicColor = false
+    ) {
+        ShowInRussianAndWriteInSerbianBody(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(20.dp),
+            onNext = {},
+            state = ExerciseStep.ShowInRussianAndWriteInSerbian(
+                translation = Translation(
+                    source = Word.Serbian(
+                        latinValue = "kašika",
+                        cyrillicValue = "кашика"
+                    ),
+                    translations = listOf(
+                        Word.Russian(value = "ложка")
+                    ),
+                    type = TranslationSourceType.USER,
+                    learningStatus = LearningStatus.Unknown()
+                )
             )
-        ),
-    )
+        )
+    }
 }

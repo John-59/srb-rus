@@ -13,8 +13,6 @@ fun MainScreen(
     navController: NavHostController,
     viewModel: MainScreenViewModel = hiltViewModel()
 ) {
-//    val navController = rememberNavController()
-
     Scaffold(
         bottomBar = {
             BottomNavBar(
@@ -29,7 +27,7 @@ fun MainScreen(
         Surface(
             modifier = Modifier.padding(padding)
         ) {
-            MainNavHost(
+            MainScreenNavHost(
                 navController = navController
             )
         }

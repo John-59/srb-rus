@@ -5,7 +5,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Text
+import androidx.compose.material3.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -59,11 +60,11 @@ private fun Word(
         Column {
             Text(
                 text = translation.serbianAsString(),
-                style = MainTheme.typography.titleMedium
+                style = MaterialTheme.typography.titleMedium
             )
             Text(
                 text = translation.russianAsString(),
-                style = MainTheme.typography.titleSmall
+                style = MaterialTheme.typography.titleSmall
             )
         }
     }
@@ -72,23 +73,27 @@ private fun Word(
 @Preview(apiLevel = 33)
 @Composable
 fun ShowInSerbianWithTranslationBodyPreview() {
-    ShowInSerbianWithTranslationBody(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(20.dp),
-        onNext = {},
-        onAlreadyKnow = {},
-        onDontWantLearn = {},
-        translation = Translation(
-            source = Word.Serbian(
-                latinValue = "kašika",
-                cyrillicValue = "кашика"
-            ),
-            translations = listOf(
-                Word.Russian(value = "ложка")
-            ),
-            type = TranslationSourceType.USER,
-            learningStatus = LearningStatus.Unknown()
+    MainTheme(
+        dynamicColor = false
+    ) {
+        ShowInSerbianWithTranslationBody(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(20.dp),
+            onNext = {},
+            onAlreadyKnow = {},
+            onDontWantLearn = {},
+            translation = Translation(
+                source = Word.Serbian(
+                    latinValue = "kašika",
+                    cyrillicValue = "кашика"
+                ),
+                translations = listOf(
+                    Word.Russian(value = "ложка")
+                ),
+                type = TranslationSourceType.USER,
+                learningStatus = LearningStatus.Unknown()
+            )
         )
-    )
+    }
 }

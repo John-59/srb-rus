@@ -1,21 +1,21 @@
 package com.trainer.srb.rus.feature.exercise
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
+import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.trainer.srb.rus.core.design.MainTheme
-import com.trainer.srb.rus.core.design.R as DesignRes
+import com.trainer.srb.rus.core.design.SrIcons
 
 @Composable
 fun ExerciseTopBar(
@@ -24,29 +24,29 @@ fun ExerciseTopBar(
     onSkip: () -> Unit,
     onExit: () -> Unit
 ) {
+    val spacerWidth = Modifier.padding(5.dp)
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Image(
-            painter = painterResource(id = DesignRes.drawable.close),
+        Icon(
+            imageVector = SrIcons.Close,
             contentDescription = null,
+            tint = MaterialTheme.colorScheme.error,
             modifier = Modifier.clickable {
                 onExit()
             }
         )
-        Spacer(modifier = Modifier.padding(5.dp))
+        Spacer(spacerWidth)
         LinearProgressIndicator(
             modifier = Modifier.weight(2f),
             progress = progress,
-            trackColor = MainTheme.colors.Dark_40,
-            color = MainTheme.colors.Border
         )
-        Spacer(modifier = Modifier.padding(5.dp))
+        Spacer(spacerWidth)
         Text(
             text = "Пропустить",
-            style = MainTheme.typography.displayMedium,
-            color = MainTheme.colors.Border,
+            style = MaterialTheme.typography.displayMedium,
+            color = MaterialTheme.colorScheme.primary,
             modifier = Modifier.clickable {
                 onSkip()
             }
@@ -57,10 +57,14 @@ fun ExerciseTopBar(
 @Preview(apiLevel = 33)
 @Composable
 fun LearnTopBarPreview() {
-    ExerciseTopBar(
-        progress = 0.7f,
-        modifier = Modifier.fillMaxWidth(),
-        onSkip = {},
-        onExit = {}
-    )
+    MainTheme(
+        dynamicColor = false
+    ) {
+        ExerciseTopBar(
+            progress = 0.7f,
+            modifier = Modifier.fillMaxWidth(),
+            onSkip = {},
+            onExit = {}
+        )
+    }
 }

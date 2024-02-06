@@ -10,6 +10,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -39,16 +40,16 @@ fun FinishBody(
         }
         Button(
             shape = RoundedCornerShape(10.dp),
-            colors = ButtonDefaults.buttonColors(
-                backgroundColor = MainTheme.colors.Buttons,
-                contentColor = MainTheme.colors.White,
-            ),
+//            colors = ButtonDefaults.buttonColors(
+//                backgroundColor = MainTheme.colors.Buttons,
+//                contentColor = MainTheme.colors.White,
+//            ),
             modifier = Modifier.fillMaxWidth(),
             onClick = onNext
         ) {
             Text(
                 text = "Упражнение закончено",
-                style = MainTheme.typography.displayMedium
+                style = MaterialTheme.typography.displayMedium
             )
         }
     }

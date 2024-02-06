@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,10 +38,11 @@ fun SearchAndAdd(
         modifier = modifier
             .border(
                 shape = RoundedCornerShape(10.dp),
-                border = BorderStroke(2.dp, MainTheme.colors.Border)
+                border = BorderStroke(2.dp, MaterialTheme.colorScheme.outline)
+//                    MainTheme.colors.Border)
             )
             .background(
-                color = MainTheme.colors.White,
+                color = MaterialTheme.colorScheme.background,
                 shape = RoundedCornerShape(10.dp)
             )
             .clip(
@@ -69,13 +71,13 @@ fun SearchAndAdd(
             placeholder = {
                 Text(
                     text = "Поиск слов",
-                    style = MainTheme.typography.displayMedium.copy(
+                    style = MaterialTheme.typography.displayMedium.copy(
                         baselineShift = BaselineShift(-0.2f)
                     ),
-                    color = MainTheme.colors.Tips,
+//                    color = MainTheme.colors.Tips,
                 )
             },
-            textStyle = MainTheme.typography.displayMedium.copy(
+            textStyle = MaterialTheme.typography.displayMedium.copy(
                 baselineShift = BaselineShift(-0.2f)
             ),
             value = value,

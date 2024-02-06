@@ -8,42 +8,20 @@ import com.trainer.srb.rus.feature.editword.navigation.navigateToEditWord
 import com.trainer.srb.rus.feature.addword.navigation.navigateToAddWord
 import com.trainer.srb.rus.feature.learn.LearnScreen
 import com.trainer.srb.rus.feature.learn.navigation.LearnScreenDestination
-import com.trainer.srb.rus.feature.exercise.navigation.navigateToExercise
 import com.trainer.srb.rus.feature.dictionary.SearchScreen
 import com.trainer.srb.rus.feature.dictionary.navigation.SearchScreenDestination
-import com.trainer.srb.rus.feature.dictionary.navigation.navigateToSearch
 
 @Composable
-fun MainNavHost(
+fun MainScreenNavHost(
     navController: NavHostController,
 ) {
     NavHost(
         navController = navController,
         startDestination = LearnScreenDestination.route
     ) {
-//        composable(MainScreenDestination.route) {
-//            MainScreen(
-//                navController = navController
-//            )
-//        }
         composable(LearnScreenDestination.route) {
-            LearnScreen(
-                navigateToSearch = {
-                    navController.navigateToSearch()//HomeScreenDestination.route)
-                },
-                navigateToLearn = {
-                    navController.navigateToExercise(it, LearnScreenDestination.route)
-                }
-            )
+            LearnScreen()
         }
-//        composable(
-//            route = LearnDestination.routeWithArgs,
-//            arguments = LearnDestination.arguments
-//        ) {
-//            LearnScreen(
-//                onFinished = navController::navigateToHome
-//            )
-//        }
         composable(SearchScreenDestination.route) {
             SearchScreen(
                 navigateToAddWord = {

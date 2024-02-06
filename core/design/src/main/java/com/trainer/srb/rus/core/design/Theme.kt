@@ -3,14 +3,16 @@ package com.trainer.srb.rus.core.design
 import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.ReadOnlyComposable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.SideEffect
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
@@ -19,17 +21,35 @@ import androidx.core.view.WindowCompat
 private val DarkColorScheme = darkColorScheme(
     primary = Colors.Purple80,
     secondary = Colors.PurpleGrey80,
-    tertiary = Colors.Pink80
+    tertiary = Colors.Pink80,
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary =  Colors.White,//Purple40,
-    secondary = Colors.PurpleGrey40,
-    tertiary = Colors.Pink40
+    primary = Colors.PrimaryBlue,
+    onPrimary = Colors.White,
+
+    inversePrimary = Colors.Green,
+
+    surface = Colors.White,
+    onSurface = Colors.Black,
+
+    background = Colors.White,
+    onBackground = Colors.Black,
+
+    outline = Colors.PrimaryBlue,
+
+    surfaceVariant = Colors.Dark_40,
+    
+    error = Colors.Red,
+
+//    surfaceTint = Colors.White
+
+    secondaryContainer = Colors.LightBlue
 
     /* Other default colors to override
+    secondary = Colors.PurpleGrey40,
+    tertiary = Colors.Pink40,
     background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
     onPrimary = Color.White,
     onSecondary = Color.White,
     onTertiary = Color.White,
@@ -50,7 +70,6 @@ fun MainTheme(
             val context = LocalContext.current
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
-
         darkTheme -> DarkColorScheme
         else -> LightColorScheme
     }
@@ -58,22 +77,26 @@ fun MainTheme(
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            window.statusBarColor = colorScheme.primary.toArgb()
+            window.statusBarColor = colorScheme.background.toArgb()
             WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !darkTheme
         }
     }
 
-    MaterialTheme(
-        colorScheme = colorScheme,
-        typography = Typography,
-        content = content
-    )
+//    CompositionLocalProvider(
+//        LocalContentColor provides Color.Red
+//    ) {
+        MaterialTheme(
+            colorScheme = colorScheme,
+            typography = Typography,
+            content = content
+        )
+//    }
 }
 
-object MainTheme {
-    val colors = Colors
-
-    val typography = Typography
-
-    val sizes = Sizes
-}
+//object MainTheme {
+//    val colors = Colors
+//
+//    val typography = Typography
+//
+//    val sizes = Sizes
+//}

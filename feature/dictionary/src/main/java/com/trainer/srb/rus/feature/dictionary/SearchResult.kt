@@ -18,6 +18,7 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.FractionalThreshold
 import androidx.compose.material.SwipeToDismiss
 import androidx.compose.material.rememberDismissState
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
@@ -121,9 +122,11 @@ private fun ItemSwipeBackground(
         modifier = modifier
             .background(
                 color = if (direction == DismissDirection.EndToStart) {
-                    MainTheme.colors.Delete
+                    MaterialTheme.colorScheme.error
+                    //MainTheme.colors.Delete
                 } else {
-                   MainTheme.colors.Right
+                   //MainTheme.colors.Right
+                       MaterialTheme.colorScheme.primaryContainer
                 },
                 shape = RoundedCornerShape(10.dp)
             ),
@@ -177,10 +180,14 @@ private fun ItemSwipeLearnAgainBackgroundPreview() {
 @Preview(apiLevel = 33)
 @Composable
 private fun SearchResultPreview() {
-    SearchResult(
-        onRemoveTranslation = {},
-        onAddToLearn = {},
-        onEdit = {},
-        innerWords = translationsExample
-    )
+    MainTheme(
+        dynamicColor = false
+    ) {
+        SearchResult(
+            onRemoveTranslation = {},
+            onAddToLearn = {},
+            onEdit = {},
+            innerWords = translationsExample
+        )
+    }
 }

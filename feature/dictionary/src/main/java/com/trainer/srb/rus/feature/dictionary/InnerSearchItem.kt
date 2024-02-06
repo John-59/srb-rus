@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -48,12 +50,13 @@ fun InnerSearchItem(
         modifier = modifier
             .border(
                 shape = RoundedCornerShape(10.dp),
-                border = BorderStroke(2.dp, MainTheme.colors.Border)
+                border = BorderStroke(2.dp, MaterialTheme.colorScheme.outline)
+                    //MainTheme.colors.Border)
             )
-            .background(
-                color = MainTheme.colors.White,
-                shape = RoundedCornerShape(10.dp)
-            )
+        .background(
+            color = MaterialTheme.colorScheme.surface,
+            shape = RoundedCornerShape(10.dp)
+        )
             .clip(
                 shape = RoundedCornerShape(10.dp)
             ),
@@ -66,16 +69,16 @@ fun InnerSearchItem(
         ) {
             Text(
                 text = serbian,
-                style = MainTheme.typography.displayMedium
+                style = MaterialTheme.typography.displayMedium //MainTheme.typography.displayMedium
             )
             Text(
                 text = russian,
-                style = MainTheme.typography.displaySmall
+                style = MaterialTheme.typography.displaySmall
             )
             LinearProgressIndicator(
                 progress = translation.getProgress(),
-                trackColor = MainTheme.colors.Dark_40,
-                color = MainTheme.colors.Right,
+//                trackColor = MainTheme.colors.Dark_40,
+//                color = MainTheme.colors.Right,
                 modifier = Modifier.fillMaxWidth()
             )
         }
@@ -94,76 +97,92 @@ fun InnerSearchItem(
 @Preview(apiLevel = 33)
 @Composable
 private fun InnerSearchItemPreviewOne() {
-    InnerSearchItem(
-        translation = Translation(
-            source = Word.Serbian(
-                latinValue = "kiša",
-                cyrillicValue = "киша"
+    MainTheme(
+        dynamicColor = false
+    ) {
+        InnerSearchItem(
+            translation = Translation(
+                source = Word.Serbian(
+                    latinValue = "kiša",
+                    cyrillicValue = "киша"
+                ),
+                translations = listOf(
+                    Word.Russian(value = "дождь")
+                ),
+                type = TranslationSourceType.USER,
+                learningStatus = LearningStatus.AlreadyKnow()
             ),
-            translations = listOf(
-                Word.Russian(value = "дождь")
-            ),
-            type = TranslationSourceType.USER,
-            learningStatus = LearningStatus.AlreadyKnow()
-        ),
-        onEdit = {}
-    )
+            onEdit = {}
+        )
+    }
 }
 
 @Preview(apiLevel = 33)
 @Composable
 private fun InnerSearchItemPreviewTwo() {
-    InnerSearchItem(
-        translation = Translation(
-            source = Word.Serbian(
-                latinValue = "već",
-                cyrillicValue = "већ"
+    MainTheme(
+        dynamicColor = false
+    ) {
+        InnerSearchItem(
+            translation = Translation(
+                source = Word.Serbian(
+                    latinValue = "već",
+                    cyrillicValue = "већ"
+                ),
+                translations = listOf(
+                    Word.Russian(value = "уже"),
+                    Word.Russian(value = "а")
+                ),
+                type = TranslationSourceType.USER,
+                learningStatus = LearningStatus.New()
             ),
-            translations = listOf(
-                Word.Russian(value = "уже"),
-                Word.Russian(value = "а")
-            ),
-            type = TranslationSourceType.USER,
-            learningStatus = LearningStatus.New()
-        ),
-        onEdit = {}
-    )
+            onEdit = {}
+        )
+    }
 }
 
 @Preview(apiLevel = 33)
 @Composable
 private fun InnerSearchItemPreviewThree() {
-    InnerSearchItem(
-        translation = Translation(
-            source = Word.Serbian(
-                latinValue = "šargarepa",
-                cyrillicValue = ""
+    MainTheme(
+        dynamicColor = false
+    ) {
+        InnerSearchItem(
+            translation = Translation(
+                source = Word.Serbian(
+                    latinValue = "šargarepa",
+                    cyrillicValue = ""
+                ),
+                translations = listOf(
+                    Word.Russian(value = "морковь"),
+                ),
+                type = TranslationSourceType.USER,
+                learningStatus = LearningStatus.NextDay()
             ),
-            translations = listOf(
-                Word.Russian(value = "морковь"),
-            ),
-            type = TranslationSourceType.USER,
-            learningStatus = LearningStatus.NextDay()
-        ),
-        onEdit = {}
-    )
+            onEdit = {}
+        )
+    }
 }
 
 @Preview(apiLevel = 33)
 @Composable
 private fun InnerSearchItemPreviewFour() {
-    InnerSearchItem(
-        translation = Translation(
-            source = Word.Serbian(
-                latinValue = "",
-                cyrillicValue = "књига"
+    MainTheme(
+        dynamicColor = false
+    ) {
+        InnerSearchItem(
+            translation = Translation(
+                source = Word.Serbian(
+                    latinValue = "",
+                    cyrillicValue = "књига"
+                ),
+                translations = listOf(
+                    Word.Russian(value = "книга"),
+                ),
+                type = TranslationSourceType.USER,
+                learningStatus = LearningStatus.AfterTwoWeeks()
             ),
-            translations = listOf(
-                Word.Russian(value = "книга"),
-            ),
-            type = TranslationSourceType.USER,
-            learningStatus = LearningStatus.AfterTwoWeeks()
-        ),
-        onEdit = {}
-    )
+            onEdit = {}
+        )
+    }
 }

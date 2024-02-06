@@ -10,6 +10,7 @@ import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -28,7 +29,7 @@ fun ExitExerciseConfirmationDialog(
         Surface(
             modifier = modifier
                 .background(
-                    color = MainTheme.colors.Background,
+                    color = MaterialTheme.colorScheme.background,
                     shape = RoundedCornerShape(10.dp)
                 )
                 .clip(
@@ -39,16 +40,16 @@ fun ExitExerciseConfirmationDialog(
             Column {
                 Text(
                     text = "Закончить упражнение?",
-                    style = MainTheme.typography.titleMedium
+                    style = MaterialTheme.typography.titleMedium
                 )
                 Row {
                     Spacer(modifier = Modifier.weight(2f))
                     Button(
                         shape = RoundedCornerShape(10.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            backgroundColor = MainTheme.colors.Buttons,
-                            contentColor = MainTheme.colors.White,
-                        ),
+//                        colors = ButtonDefaults.buttonColors(
+//                            backgroundColor = MaterialTheme.colorScheme // MainTheme.colors.Buttons,
+//                            contentColor = MainTheme.colors.White,
+//                        ),
                         onClick = onCancel
                     ) {
                         Text(
@@ -57,10 +58,10 @@ fun ExitExerciseConfirmationDialog(
                     }
                     Button(
                         shape = RoundedCornerShape(10.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            backgroundColor = MainTheme.colors.Buttons,
-                            contentColor = MainTheme.colors.White,
-                        ),
+//                        colors = ButtonDefaults.buttonColors(
+//                            backgroundColor = MainTheme.colors.Buttons,
+//                            contentColor = MainTheme.colors.White,
+//                        ),
                         onClick = onExit,
                         modifier = Modifier.padding(start = 20.dp)
                     ) {

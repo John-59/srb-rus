@@ -10,8 +10,7 @@ import kotlinx.coroutines.flow.flow
 
 class DictionaryMock: IDictionary {
     override val translations: Flow<List<Translation<Word.Serbian, Word.Russian>>> = flow {
-        val translations = translationsExample
-        emit(translations)
+        emit(translationsExample)
     }
 
     override val isNewWords: Flow<Boolean> = emptyFlow()
@@ -44,6 +43,8 @@ class DictionaryMock: IDictionary {
         randomTranslationsCount: Int,
         vararg statuses: LearningStatusName
     ): List<Translation<Word.Serbian, Word.Russian>> {
-        return emptyList()
+        return translationsExample.filter { example ->
+            statuses.contains(example.learningStatus.name)
+        }.shuffled().take(randomTranslationsCount)
     }
 }

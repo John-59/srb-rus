@@ -8,9 +8,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Text
+import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,6 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.trainer.srb.rus.core.design.MainTheme
 import com.trainer.srb.rus.core.design.R
+import com.trainer.srb.rus.core.design.SrIcons
 
 @Composable
 fun WordActions(
@@ -33,65 +36,77 @@ fun WordActions(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Button(
+        OutlinedButton(
             onClick = onAlreadyKnow,
             modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(10.dp),
-            border = BorderStroke(2.dp, MainTheme.colors.Border),
-            colors = ButtonDefaults.buttonColors(
-                backgroundColor = MainTheme.colors.White,
-            )
+//            shape = RoundedCornerShape(10.dp),
+//            border = BorderStroke(2.dp, MaterialTheme.colorScheme.outline),
+//            colors = ButtonDefaults.buttonColors(
+//                backgroundColor = MainTheme.colors.White,
+//            )
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.ok_checkbox_green),
-                contentDescription = null
+//            Image(
+//                painter = painterResource(id = R.drawable.ok_checkbox_green),
+//                contentDescription = null
+//            )
+            Icon(
+                imageVector = SrIcons.Done,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.inversePrimary
             )
             Spacer(modifier = Modifier.width(5.dp))
             Text(
                 text = "Уже знаю это слово",
-                style = MainTheme.typography.displayMedium.copy(
-                    baselineShift = BaselineShift(-0.2f)
-                ),
+                style = MaterialTheme.typography.displayMedium,
+//                    .copy(
+////                    baselineShift = BaselineShift(-0.2f)
+//                ),
                 modifier = Modifier.fillMaxWidth()
             )
         }
         Spacer(modifier = Modifier.height(10.dp))
-        Button(
+        OutlinedButton(
             onClick = onDontWantLearn,
             modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(10.dp),
-            border = BorderStroke(2.dp, MainTheme.colors.Border),
-            colors = ButtonDefaults.buttonColors(
-                backgroundColor = MainTheme.colors.White,
-            )
+//            shape = RoundedCornerShape(10.dp),
+//            border = BorderStroke(2.dp, MaterialTheme.colorScheme.outline),
+//            colors = ButtonDefaults.buttonColors(
+//                backgroundColor = MainTheme.colors.White,
+//            )
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.cross_red),
-                contentDescription = null
+//            Image(
+//                painter = painterResource(id = R.drawable.cross_red),
+//                contentDescription = null
+//            )
+            Icon(
+                imageVector = SrIcons.Close,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.error
             )
             Spacer(modifier = Modifier.width(8.dp))
             Text(
                 text = "Не хочу учить это слово",
-                style = MainTheme.typography.displayMedium.copy(
-                    baselineShift = BaselineShift(-0.2f)
-                ),
+                style = MaterialTheme.typography.displayMedium,
+//                    .copy(
+//                    baselineShift = BaselineShift(-0.2f)
+//                ),
                 modifier = Modifier.fillMaxWidth()
             )
         }
         Spacer(modifier = Modifier.height(40.dp))
         Button(
-            shape = RoundedCornerShape(10.dp),
-            colors = ButtonDefaults.buttonColors(
-                backgroundColor = MainTheme.colors.Buttons,
-                contentColor = MainTheme.colors.White,
-            ),
+//            shape = RoundedCornerShape(10.dp),
+//            colors = ButtonDefaults.buttonColors(
+//                backgroundColor = MainTheme.colors.Buttons,
+//                contentColor = MainTheme.colors.White,
+//            ),
             modifier = Modifier.fillMaxWidth(),
             onClick = onNext,
             enabled = isNextEnabled
         ) {
             Text(
                 text = "Далее",
-                style = MainTheme.typography.displayMedium
+                style = MaterialTheme.typography.displayMedium
             )
         }
     }
@@ -100,9 +115,13 @@ fun WordActions(
 @Preview(apiLevel = 33)
 @Composable
 fun WordActionsPreview() {
-    WordActions(
-        onNext = {},
-        isNextEnabled = true,
-        onAlreadyKnow = {},
-        onDontWantLearn = {})
+    MainTheme(
+        dynamicColor = false
+    ) {
+        WordActions(
+            onNext = {},
+            isNextEnabled = true,
+            onAlreadyKnow = {},
+            onDontWantLearn = {})
+    }
 }

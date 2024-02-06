@@ -47,7 +47,9 @@ class MainActivity : ComponentActivity() {
 //                            MainNavHost(
 //                                navController = navController,
 //                            )
-                            MainScreen(navController = navController)
+                            MainScreen(
+                                navController = navController
+                            )
                         }
                     }
                     false

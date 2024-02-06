@@ -14,6 +14,7 @@ import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -62,10 +63,10 @@ fun AddWordScreen(
                 onBack()
             },
             shape = RoundedCornerShape(10.dp),
-            colors = ButtonDefaults.buttonColors(
-                backgroundColor = MainTheme.colors.Buttons,
-                contentColor = MainTheme.colors.White,
-            ),
+//            colors = ButtonDefaults.buttonColors(
+//                backgroundColor = MainTheme.colors.Buttons,
+//                contentColor = MainTheme.colors.White,
+//            ),
             enabled = viewModel.srbWord.latinValue.isNotBlank()
         ) {
             Image(
@@ -74,7 +75,7 @@ fun AddWordScreen(
             )
             Text(
                 text = "Добавить в словарь",
-                style = MainTheme.typography.displayMedium.copy(
+                style = MaterialTheme.typography.displayMedium.copy(
                     fontSize = 16.sp
                 ),
                 modifier = Modifier.padding(start = 10.dp)
@@ -154,10 +155,11 @@ private fun WordItem(
         modifier = modifier
             .border(
                 shape = RoundedCornerShape(10.dp),
-                border = BorderStroke(2.dp, MainTheme.colors.Border)
+                border = BorderStroke(2.dp, MaterialTheme.colorScheme.outline)
+//                    MainTheme.colors.Border)
             )
             .background(
-                color = MainTheme.colors.White,
+                color = MaterialTheme.colorScheme.background,
                 shape = RoundedCornerShape(10.dp)
             )
             .clip(
@@ -177,17 +179,17 @@ private fun WordItem(
                 .fillMaxWidth()
             ,
             colors = TextFieldDefaults.outlinedTextFieldColors(),
-            textStyle = MainTheme.typography.displayMedium.copy(
+            textStyle = MaterialTheme.typography.displayMedium.copy(
                 baselineShift = BaselineShift(-0.2f)
             ),
             value = value,
             placeholder = {
                 Text(
                     text = placeholder,
-                    style = MainTheme.typography.displayMedium.copy(
+                    style = MaterialTheme.typography.displayMedium.copy(
                         baselineShift = BaselineShift(-0.2f)
                     ),
-                    color = MainTheme.colors.Tips,
+//                    color = MainTheme.colors.Tips,
                 )
             },
             onValueChange = onValueChange

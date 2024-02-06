@@ -4,30 +4,24 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.trainer.srb.rus.core.dictionary.IDictionary
 import com.trainer.srb.rus.core.translation.LearningStatus
 import com.trainer.srb.rus.core.translation.Translation
 import com.trainer.srb.rus.core.translation.Word
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class ExerciseViewModel @Inject constructor(
+class ExerciseState (
     private val dictionary: IDictionary,
-    savedStateHandle: SavedStateHandle
+    exerciseType: ExerciseType
 ): ViewModel() {
 
-    private val args = ExerciseArgs(savedStateHandle)
-
-    private val exercise = Exercise.build(args.exerciseType, dictionary)
+    private val exercise = Exercise.build(exerciseType, dictionary)
 
     var progress by mutableFloatStateOf(0f)
         private set
@@ -58,7 +52,7 @@ class ExerciseViewModel @Inject constructor(
         }
     }
 
-    fun showExitConfirmation() {
+    fun confirmExit() {
         showExitConfirmation = true
     }
 

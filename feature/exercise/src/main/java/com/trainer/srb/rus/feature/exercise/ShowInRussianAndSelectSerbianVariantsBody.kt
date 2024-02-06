@@ -8,10 +8,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Text
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
@@ -64,48 +67,51 @@ private fun WordAndVariants(
         ) {
             Text(
                 text = state.translation.russianAsString(),
-                style = MainTheme.typography.titleMedium,
+                style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier.padding(bottom = 10.dp)
             )
             state.variants.forEach {
-                Button(
+                OutlinedButton(
                     onClick = {
                         state.select(it)
                     },
-                    enabled = !state.selectionIsDone,
+                    enabled = true,//!state.selectionIsDone,
                     modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(10.dp),
-                    border = BorderStroke(2.dp, MainTheme.colors.Border),
+//                    shape = RoundedCornerShape(10.dp),
+//                    border = BorderStroke(2.dp, MaterialTheme.colorScheme.outline),
                     colors = when (state.translationStates[it]) {
                         ExerciseStep.ShowInRussianAndSelectSerbianVariants.VariantState.RIGHT -> {
-                            ButtonDefaults.buttonColors(
-                                backgroundColor = MainTheme.colors.Right,
-                                disabledBackgroundColor = MainTheme.colors.Right,
-                                contentColor = MainTheme.colors.Black,
-                                disabledContentColor = MainTheme.colors.Black
+                            ButtonDefaults.outlinedButtonColors(
+                                containerColor = MaterialTheme.colorScheme.inversePrimary,
+//                                contentColor = MaterialTheme.colorScheme.inversePrimary,
+//                                MainTheme.colors.Right,
+//                                disabledBackgroundColor = MainTheme.colors.Right,
+//                                contentColor = MainTheme.colors.Black,
+//                                disabledContentColor = MainTheme.colors.Black
                             )
                         }
                         ExerciseStep.ShowInRussianAndSelectSerbianVariants.VariantState.WRONG -> {
-                            ButtonDefaults.buttonColors(
-                                backgroundColor = MainTheme.colors.Wrong,
-                                disabledBackgroundColor = MainTheme.colors.Wrong,
-                                contentColor = MainTheme.colors.Black,
-                                disabledContentColor = MainTheme.colors.Black
+                            ButtonDefaults.outlinedButtonColors(
+                                containerColor = MaterialTheme.colorScheme.error,
+//                                backgroundColor = MainTheme.colors.Wrong,
+//                                disabledBackgroundColor = MainTheme.colors.Wrong,
+//                                contentColor = MainTheme.colors.Black,
+//                                disabledContentColor = MainTheme.colors.Black
                             )
                         }
                         else -> {
-                            ButtonDefaults.buttonColors(
-                                backgroundColor = MainTheme.colors.White,
-                                disabledBackgroundColor = MainTheme.colors.White,
-                                contentColor = MainTheme.colors.Dark_80,
-                                disabledContentColor = MainTheme.colors.Dark_80
+                            ButtonDefaults.outlinedButtonColors(
+//                                backgroundColor = MainTheme.colors.White,
+//                                disabledBackgroundColor = MainTheme.colors.White,
+//                                contentColor = MainTheme.colors.Dark_80,
+//                                disabledContentColor = MainTheme.colors.Dark_80
                             )
                         }
                     }
                 ) {
                     Text(
                         text = it.serbianAsString(),
-                        style = MainTheme.typography.titleSmall,
+                        style = MaterialTheme.typography.titleSmall,
                         textAlign = TextAlign.Center
                     )
                 }
@@ -117,17 +123,47 @@ private fun WordAndVariants(
 
 @Preview(apiLevel = 33)
 @Composable
-fun ShowInRussianAndSelectSerbianVariantsBodyPreview() {
-    ShowInRussianAndSelectSerbianVariantsBody(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(20.dp),
-        onNext = {},
-        onAlreadyKnow = {},
-        onDontWantLearn = {},
-        state = ExerciseStep.ShowInRussianAndSelectSerbianVariants(
+fun BeforeSelection_ShowInRussianAndSelectSerbianVariantsBodyPreview() {
+    MainTheme(
+        dynamicColor = false
+    ) {
+        ShowInRussianAndSelectSerbianVariantsBody(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(20.dp),
+            onNext = {},
+            onAlreadyKnow = {},
+            onDontWantLearn = {},
+            state = ExerciseStep.ShowInRussianAndSelectSerbianVariants(
+                translation = translationsExample.first(),
+                others = translationsExample.take(3)
+            )
+        )
+    }
+}
+
+@Preview(apiLevel = 33)
+@Composable
+fun RightSelection_ShowInRussianAndSelectSerbianVariantsBodyPreview() {
+    MainTheme(
+        dynamicColor = false
+    ) {
+        val state = ExerciseStep.ShowInRussianAndSelectSerbianVariants(
             translation = translationsExample.first(),
             others = translationsExample.take(3)
-        ),
-    )
+        )
+        ShowInRussianAndSelectSerbianVariantsBody(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(20.dp),
+            onNext = {},
+            onAlreadyKnow = {},
+            onDontWantLearn = {},
+            state = state
+        )
+
+        LaunchedEffect(Unit) {
+            state.select(translationsExample.first())
+        }
+    }
 }
