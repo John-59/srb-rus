@@ -10,16 +10,21 @@ import com.trainer.srb.rus.core.dictionary.IDictionary
 import com.trainer.srb.rus.core.translation.LearningStatus
 import com.trainer.srb.rus.core.translation.Translation
 import com.trainer.srb.rus.core.translation.Word
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ExerciseState (
+@HiltViewModel
+class ExerciseState @Inject constructor (
     private val dictionary: IDictionary,
-    exerciseType: ExerciseType
+//    exerciseType: ExerciseType = ExerciseType.RANDOM
 ): ViewModel() {
+
+    private val exerciseType: ExerciseType = ExerciseType.RANDOM
 
     private val exercise = Exercise.build(exerciseType, dictionary)
 

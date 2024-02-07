@@ -12,8 +12,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.trainer.srb.rus.core.design.MainTheme
 import com.trainer.srb.rus.core.mocks.DictionaryMock
 import com.trainer.srb.rus.core.translation.Translation
@@ -24,7 +24,7 @@ import com.trainer.srb.rus.core.ui.ExitExerciseConfirmationDialog
 @Composable
 fun ExerciseScreen(
     onFinished: () -> Unit,
-    exerciseState: ExerciseState
+    exerciseState: ExerciseState = hiltViewModel()
 ) {
     val exerciseStep by exerciseState.state.collectAsState()
     AlertDialog(
@@ -172,7 +172,7 @@ fun LearnScreenPreview() {
             onFinished = {},
             exerciseState = ExerciseState(
                 dictionary = DictionaryMock(),
-                exerciseType = ExerciseType.RANDOM
+//                exerciseType = ExerciseType.RANDOM
             )
         )
     }

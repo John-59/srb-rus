@@ -36,7 +36,7 @@ class LearnViewModel @Inject constructor(
     fun openExercise(exerciseType: ExerciseType) {
         exerciseState = ExerciseState(
             dictionary = dictionary,
-            exerciseType = exerciseType
+//            exerciseType = exerciseType
         )
     }
 

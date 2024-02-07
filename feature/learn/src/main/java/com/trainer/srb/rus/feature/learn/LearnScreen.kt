@@ -29,6 +29,7 @@ import com.trainer.srb.rus.feature.exercise.ExerciseType
 
 @Composable
 fun LearnScreen(
+    navigateToExercise: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: LearnViewModel = hiltViewModel()
 ) {
@@ -38,7 +39,9 @@ fun LearnScreen(
         modifier = modifier
     ) {
         ExerciseSelectionBody(
-            openExercise = viewModel::openExercise,
+            openExercise = {
+                navigateToExercise()
+            }, //viewModel::openExercise,
             viewModel = viewModel,
             modifier = Modifier
                 .padding(20.dp)
@@ -62,7 +65,9 @@ private fun ExerciseSelectionBody(
 ) {
     val isNewWords by viewModel.isNewWords.collectAsState()
     val isWordsForRepeat by viewModel.isWordsForRepeat.collectAsState()
-    val spacerModifier = Modifier.width(5.dp).height(10.dp)
+    val spacerModifier = Modifier
+        .width(5.dp)
+        .height(10.dp)
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.Center,
@@ -132,7 +137,8 @@ private fun LearnScreenPreview() {
         LearnScreen(
             viewModel = LearnViewModel(
                 dictionary = DictionaryMock()
-            )
+            ),
+            navigateToExercise = {}
         )
     }
 }

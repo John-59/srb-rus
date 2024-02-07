@@ -15,9 +15,9 @@ import com.trainer.srb.rus.core.design.MainTheme
 
 @Composable
 fun BottomNavBar(
-    destinations: List<MainScreenDestination>,
-    currentDestination: MainScreenDestination,
-    onDestinationChanged: (MainScreenDestination) -> Unit
+    destinations: List<MainScreenDestination.Inner>,
+    currentDestination: MainScreenDestination.Inner?,
+    onDestinationChanged: (MainScreenDestination.Inner) -> Unit
 ) {
     Column(
         modifier = Modifier.fillMaxWidth()
@@ -60,8 +60,8 @@ fun BottomBarPreview() {
         dynamicColor = false
     ) {
         BottomNavBar(
-            destinations = MainScreenDestination.entries,
-            currentDestination = MainScreenDestination.LEARN,
+            destinations = MainScreenDestination.Inner.entries,
+            currentDestination = MainScreenDestination.Inner.LEARN,
             onDestinationChanged = {}
         )
     }

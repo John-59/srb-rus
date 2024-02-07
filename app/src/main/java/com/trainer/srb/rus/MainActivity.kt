@@ -11,7 +11,6 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.compose.rememberNavController
 import com.trainer.srb.rus.core.design.MainTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -43,13 +42,7 @@ class MainActivity : ComponentActivity() {
                 MainActivityUiState.Success -> {
                     setContent {
                         MainTheme {
-                            val navController = rememberNavController()
-//                            MainNavHost(
-//                                navController = navController,
-//                            )
-                            MainScreen(
-                                navController = navController
-                            )
+                            TopLevelNavHost()
                         }
                     }
                     false

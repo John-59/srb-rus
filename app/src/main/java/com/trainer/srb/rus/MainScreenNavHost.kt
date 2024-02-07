@@ -4,59 +4,41 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.trainer.srb.rus.feature.editword.navigation.navigateToEditWord
 import com.trainer.srb.rus.feature.addword.navigation.navigateToAddWord
-import com.trainer.srb.rus.feature.learn.LearnScreen
-import com.trainer.srb.rus.feature.learn.navigation.LearnScreenDestination
 import com.trainer.srb.rus.feature.dictionary.SearchScreen
-import com.trainer.srb.rus.feature.dictionary.navigation.SearchScreenDestination
+import com.trainer.srb.rus.feature.editword.navigation.navigateToEditWord
+import com.trainer.srb.rus.feature.learn.LearnScreen
 
 @Composable
 fun MainScreenNavHost(
     navController: NavHostController,
+    navigateToExercise: () -> Unit,
+    startDestination: MainScreenDestination.Inner
 ) {
     NavHost(
         navController = navController,
-        startDestination = LearnScreenDestination.route
+        startDestination = startDestination.route
     ) {
-        composable(LearnScreenDestination.route) {
-            LearnScreen()
+        composable(MainScreenDestination.Inner.LEARN.route) {
+            LearnScreen(
+                navigateToExercise = navigateToExercise
+            )
         }
-        composable(SearchScreenDestination.route) {
+        composable(MainScreenDestination.Inner.DICTIONARY.route) {
             SearchScreen(
-                navigateToAddWord = {
+                navigateToAddWord = { word ->
                     navController.navigateToAddWord(
-                        it,
-                        SearchScreenDestination.route
+                        word,
+                        MainScreenDestination.Inner.DICTIONARY.route
                     )
                 },
-                navigateToEditWord = {
+                navigateToEditWord = { word ->
                     navController.navigateToEditWord(
-                        it,
-                        SearchScreenDestination.route
+                        word,
+                        MainScreenDestination.Inner.DICTIONARY.route
                     )
                 }
             )
         }
-//        composable(
-//            route = AddWordDestination.routeWithArgs,
-//            arguments = AddWordDestination.arguments
-//        ) {
-//            AddWordScreen(
-//                onBack = {
-//                    navController.navigateToSearch()//SearchScreenDestination.route)
-//                }
-//            )
-//        }
-//        composable(
-//            route = EditWordDestination.routeWithArgs,
-//            arguments = EditWordDestination.arguments
-//        ) {
-//            EditWordScreen(
-//                onBack = {
-//                    navController.navigateToSearch()//SearchScreenDestination.route)
-//                }
-//            )
-//        }
     }
 }
