@@ -1,10 +1,9 @@
 package com.trainer.srb.rus.feature.exercise
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -12,68 +11,55 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.SavedStateHandle
 import com.trainer.srb.rus.core.design.MainTheme
+import com.trainer.srb.rus.core.ui.ConfirmationDialog
 import com.trainer.srb.rus.core.mocks.DictionaryMock
 import com.trainer.srb.rus.core.translation.Translation
 import com.trainer.srb.rus.core.translation.Word
-import com.trainer.srb.rus.core.ui.ExitExerciseConfirmationDialog
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ExerciseScreen(
     onFinished: () -> Unit,
-    exerciseState: ExerciseState = hiltViewModel()
+    viewModel: ExerciseViewModel = hiltViewModel()
 ) {
-    val exerciseStep by exerciseState.state.collectAsState()
-    AlertDialog(
-        onDismissRequest = {
-            if (exerciseStep is ExerciseStep.ExerciseFinished) {
-                onFinished()
-            } else {
-                exerciseState.confirmExit()
-            }
-        },
-        properties = DialogProperties(
-            usePlatformDefaultWidth = false,
-            decorFitsSystemWindows = false
-        )
-    ) {
-        Surface(
-            modifier = Modifier.fillMaxSize()
+    val exerciseStep by viewModel.state.collectAsState()
+    Surface {
+        Column(
+            modifier = Modifier.padding(20.dp)
         ) {
-            Column(
-                modifier = Modifier
-                    .padding(20.dp)
-            ) {
-                if (exerciseStep != ExerciseStep.Initialize
-                    && exerciseStep != ExerciseStep.ExerciseFinished
-                    && exerciseStep !is ExerciseStep.Error) {
-                    ExerciseTopBar(
-                        progress = exerciseState.progress,
-                        onSkip = exerciseState::next,
-                        onExit = exerciseState::confirmExit,
-                        modifier = Modifier.padding(bottom = 10.dp)
-                    )
-                }
-                Body(
-                    exerciseStep = exerciseStep,
-                    onNext = exerciseState::next,
-                    onAlreadyKnow = exerciseState::markAsAlreadyKnow,
-                    onDontWantLearn = exerciseState::markAsNotLearn,
-                    onFinished = onFinished
+            if (exerciseStep != ExerciseStep.Initialize
+                && exerciseStep != ExerciseStep.ExerciseFinished
+                && exerciseStep !is ExerciseStep.Error) {
+                ExerciseTopBar(
+                    progress = viewModel.progress,
+                    onSkip = viewModel::next,
+                    onExit = viewModel::confirmExit,
+                    modifier = Modifier.padding(bottom = 10.dp)
                 )
             }
-
-            if (exerciseState.showExitConfirmation) {
-                ExitExerciseConfirmationDialog(
-                    onCancel = exerciseState::hideExitConfirmation,
-                    onExit = onFinished,
-                )
-            }
+            Body(
+                exerciseStep = exerciseStep,
+                onNext = viewModel::next,
+                onAlreadyKnow = viewModel::markAsAlreadyKnow,
+                onDontWantLearn = viewModel::markAsNotLearn,
+                onFinished = onFinished
+            )
         }
     }
+
+    if (viewModel.showExitConfirmation) {
+        ConfirmationDialog(
+            text = "Закончить упражнение?",
+            onCancel = viewModel::hideExitConfirmation,
+            onExit = onFinished,
+        )
+    }
+
+    BackHandler(
+        onBack = viewModel::confirmExit
+    )
 }
 
 @Composable
@@ -170,9 +156,13 @@ fun LearnScreenPreview() {
     ) {
         ExerciseScreen(
             onFinished = {},
-            exerciseState = ExerciseState(
+            viewModel = ExerciseViewModel(
                 dictionary = DictionaryMock(),
-//                exerciseType = ExerciseType.RANDOM
+                savedStateHandle = SavedStateHandle(
+                    initialState = mapOf(
+                        ExerciseArgs.exerciseTypeArgName to ExerciseType.RANDOM.toString()
+                    )
+                )
             )
         )
     }

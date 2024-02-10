@@ -4,6 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.trainer.srb.rus.core.dictionary.IDictionary
@@ -19,14 +20,14 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ExerciseState @Inject constructor (
+class ExerciseViewModel @Inject constructor(
     private val dictionary: IDictionary,
-//    exerciseType: ExerciseType = ExerciseType.RANDOM
+    savedStateHandle: SavedStateHandle
 ): ViewModel() {
 
-    private val exerciseType: ExerciseType = ExerciseType.RANDOM
+    private val args = ExerciseArgs(savedStateHandle)
 
-    private val exercise = Exercise.build(exerciseType, dictionary)
+    private val exercise = Exercise.build(args.exerciseType, dictionary)
 
     var progress by mutableFloatStateOf(0f)
         private set

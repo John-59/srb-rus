@@ -32,8 +32,13 @@ fun TopLevelNavHost() {
         composable(EditWordDestination.route) {
             EditWordScreen(onBack = { /*TODO*/ })
         }
-        composable(ExerciseDestination.route) {
-            ExerciseScreen(onFinished = { /*TODO*/ })
+        composable(
+            route = ExerciseDestination.routeWithArgs,
+            arguments = ExerciseDestination.arguments
+        ) {
+            ExerciseScreen(
+                onFinished = navController::navigateToMainScreen
+            )
         }
     }
 }

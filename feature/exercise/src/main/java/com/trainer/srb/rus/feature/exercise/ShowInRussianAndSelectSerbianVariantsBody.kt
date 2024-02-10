@@ -1,18 +1,15 @@
 package com.trainer.srb.rus.feature.exercise
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Text
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -21,9 +18,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.trainer.srb.rus.core.design.MainTheme
+import com.trainer.srb.rus.core.mocks.translationsExample
 import com.trainer.srb.rus.core.translation.russianAsString
 import com.trainer.srb.rus.core.translation.serbianAsString
-import com.trainer.srb.rus.core.mocks.translationsExample
 
 @Composable
 fun ShowInRussianAndSelectSerbianVariantsBody(
@@ -75,37 +72,23 @@ private fun WordAndVariants(
                     onClick = {
                         state.select(it)
                     },
-                    enabled = true,//!state.selectionIsDone,
+                    enabled = !state.selectionIsDone,
                     modifier = Modifier.fillMaxWidth(),
-//                    shape = RoundedCornerShape(10.dp),
-//                    border = BorderStroke(2.dp, MaterialTheme.colorScheme.outline),
                     colors = when (state.translationStates[it]) {
                         ExerciseStep.ShowInRussianAndSelectSerbianVariants.VariantState.RIGHT -> {
                             ButtonDefaults.outlinedButtonColors(
-                                containerColor = MaterialTheme.colorScheme.inversePrimary,
-//                                contentColor = MaterialTheme.colorScheme.inversePrimary,
-//                                MainTheme.colors.Right,
-//                                disabledBackgroundColor = MainTheme.colors.Right,
-//                                contentColor = MainTheme.colors.Black,
-//                                disabledContentColor = MainTheme.colors.Black
+                                disabledContainerColor = MaterialTheme.colorScheme.inverseSurface,
+                                disabledContentColor = MaterialTheme.colorScheme.inverseOnSurface
                             )
                         }
                         ExerciseStep.ShowInRussianAndSelectSerbianVariants.VariantState.WRONG -> {
                             ButtonDefaults.outlinedButtonColors(
-                                containerColor = MaterialTheme.colorScheme.error,
-//                                backgroundColor = MainTheme.colors.Wrong,
-//                                disabledBackgroundColor = MainTheme.colors.Wrong,
-//                                contentColor = MainTheme.colors.Black,
-//                                disabledContentColor = MainTheme.colors.Black
+                                disabledContainerColor = MaterialTheme.colorScheme.error,
+                                disabledContentColor = MaterialTheme.colorScheme.onError
                             )
                         }
                         else -> {
-                            ButtonDefaults.outlinedButtonColors(
-//                                backgroundColor = MainTheme.colors.White,
-//                                disabledBackgroundColor = MainTheme.colors.White,
-//                                contentColor = MainTheme.colors.Dark_80,
-//                                disabledContentColor = MainTheme.colors.Dark_80
-                            )
+                            ButtonDefaults.outlinedButtonColors()
                         }
                     }
                 ) {
@@ -136,7 +119,7 @@ fun BeforeSelection_ShowInRussianAndSelectSerbianVariantsBodyPreview() {
             onDontWantLearn = {},
             state = ExerciseStep.ShowInRussianAndSelectSerbianVariants(
                 translation = translationsExample.first(),
-                others = translationsExample.take(3)
+                others = translationsExample.takeLast(3)
             )
         )
     }
@@ -150,7 +133,7 @@ fun RightSelection_ShowInRussianAndSelectSerbianVariantsBodyPreview() {
     ) {
         val state = ExerciseStep.ShowInRussianAndSelectSerbianVariants(
             translation = translationsExample.first(),
-            others = translationsExample.take(3)
+            others = translationsExample.takeLast(3)
         )
         ShowInRussianAndSelectSerbianVariantsBody(
             modifier = Modifier
@@ -164,6 +147,32 @@ fun RightSelection_ShowInRussianAndSelectSerbianVariantsBodyPreview() {
 
         LaunchedEffect(Unit) {
             state.select(translationsExample.first())
+        }
+    }
+}
+
+@Preview(apiLevel = 33)
+@Composable
+fun WrongSelection_ShowInRussianAndSelectSerbianVariantsBodyPreview() {
+    MainTheme(
+        dynamicColor = false
+    ) {
+        val state = ExerciseStep.ShowInRussianAndSelectSerbianVariants(
+            translation = translationsExample.first(),
+            others = translationsExample.takeLast(3)
+        )
+        ShowInRussianAndSelectSerbianVariantsBody(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(20.dp),
+            onNext = {},
+            onAlreadyKnow = {},
+            onDontWantLearn = {},
+            state = state
+        )
+
+        LaunchedEffect(Unit) {
+            state.select(translationsExample.last())
         }
     }
 }

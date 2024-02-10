@@ -8,11 +8,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Text
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -24,35 +24,23 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.trainer.srb.rus.core.design.MainTheme
 import com.trainer.srb.rus.core.design.SrIcons
 import com.trainer.srb.rus.core.mocks.DictionaryMock
-import com.trainer.srb.rus.feature.exercise.ExerciseScreen
 import com.trainer.srb.rus.feature.exercise.ExerciseType
 
 @Composable
 fun LearnScreen(
-    navigateToExercise: () -> Unit,
+    navigateToExercise: (ExerciseType) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: LearnViewModel = hiltViewModel()
 ) {
-    val exerciseState = viewModel.exerciseState
-
     Surface(
         modifier = modifier
     ) {
         ExerciseSelectionBody(
-            openExercise = {
-                navigateToExercise()
-            }, //viewModel::openExercise,
+            openExercise = navigateToExercise,
             viewModel = viewModel,
             modifier = Modifier
                 .padding(20.dp)
                 .fillMaxSize()
-        )
-    }
-
-    if (exerciseState != null) {
-        ExerciseScreen(
-            onFinished = viewModel::closeExercise,
-            exerciseState = exerciseState
         )
     }
 }

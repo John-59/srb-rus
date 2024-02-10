@@ -12,11 +12,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.trainer.srb.rus.feature.dictionary.navigation.navigateToSearch
+import com.trainer.srb.rus.feature.exercise.ExerciseType
 import com.trainer.srb.rus.feature.learn.navigation.navigateToLearn
 
 @Composable
 fun MainScreen(
-    navigateToExercise: () -> Unit,
+    navigateToExercise: (ExerciseType) -> Unit,
     viewModel: MainScreenViewModel = hiltViewModel()
 ) {
     val navController = rememberNavController()

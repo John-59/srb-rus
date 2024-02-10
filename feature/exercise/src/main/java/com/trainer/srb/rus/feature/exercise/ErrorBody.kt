@@ -29,8 +29,12 @@ fun ErrorBody(
 @Preview
 @Composable
 fun ErrorBodyPreview() {
-    ErrorBody(
-        message = "Что-то пошло не так.",
-        modifier = Modifier.fillMaxSize()
-    )
+    MainTheme(
+        dynamicColor = false
+    ) {
+        ErrorBody(
+            message = "Что-то пошло не так.",
+            modifier = Modifier.fillMaxSize()
+        )
+    }
 }

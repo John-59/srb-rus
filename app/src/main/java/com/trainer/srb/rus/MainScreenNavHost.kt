@@ -7,12 +7,13 @@ import androidx.navigation.compose.composable
 import com.trainer.srb.rus.feature.addword.navigation.navigateToAddWord
 import com.trainer.srb.rus.feature.dictionary.SearchScreen
 import com.trainer.srb.rus.feature.editword.navigation.navigateToEditWord
+import com.trainer.srb.rus.feature.exercise.ExerciseType
 import com.trainer.srb.rus.feature.learn.LearnScreen
 
 @Composable
 fun MainScreenNavHost(
     navController: NavHostController,
-    navigateToExercise: () -> Unit,
+    navigateToExercise: (ExerciseType) -> Unit,
     startDestination: MainScreenDestination.Inner
 ) {
     NavHost(
