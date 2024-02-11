@@ -3,6 +3,7 @@ package com.trainer.srb.rus.core.design
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.HelpCenter
 import androidx.compose.material.icons.automirrored.rounded.HelpCenter
+import androidx.compose.material.icons.outlined.AddCircle
 import androidx.compose.material.icons.outlined.Assessment
 import androidx.compose.material.icons.outlined.AutoAwesome
 import androidx.compose.material.icons.outlined.Autorenew
@@ -10,6 +11,7 @@ import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.Done
 import androidx.compose.material.icons.outlined.ErrorOutline
 import androidx.compose.material.icons.outlined.LocalLibrary
+import androidx.compose.material.icons.outlined.SaveAlt
 import androidx.compose.material.icons.outlined.School
 import androidx.compose.material.icons.outlined.Shuffle
 import androidx.compose.material.icons.rounded.Assessment
@@ -38,4 +40,7 @@ object SrIcons {
     val Done = Icons.Outlined.Done
 
     val Error = Icons.Outlined.ErrorOutline
+
+    val AddCirce = Icons.Outlined.AddCircle
+    val Save = Icons.Outlined.SaveAlt
 }

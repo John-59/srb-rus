@@ -9,7 +9,8 @@ val translationsExample = listOf(
     Translation(
         source = Word.Serbian(
             latinValue = "već",
-            cyrillicValue = "већ"
+            cyrillicValue = "већ",
+            latinId = 1
         ),
         translations = listOf(
             Word.Russian(value = "а"),
@@ -21,7 +22,8 @@ val translationsExample = listOf(
     Translation(
         source = Word.Serbian(
             latinValue = "šargarepa",
-            cyrillicValue = "шаргарепа"
+            cyrillicValue = "шаргарепа",
+            latinId = 2
         ),
         translations = listOf(
             Word.Russian(value = "морковь")
@@ -32,7 +34,8 @@ val translationsExample = listOf(
     Translation(
         source = Word.Serbian(
             latinValue = "someWord",
-            cyrillicValue = ""
+            cyrillicValue = "",
+            latinId = 3
         ),
         translations = listOf(
             Word.Russian(value = "перевод 1"),
@@ -47,7 +50,8 @@ val translationsExample = listOf(
     Translation(
         source = Word.Serbian(
             latinValue = "kiša",
-            cyrillicValue = ""
+            cyrillicValue = "",
+            latinId = 4
         ),
         translations = listOf(
             Word.Russian(value = "дождь")

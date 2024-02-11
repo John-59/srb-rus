@@ -20,7 +20,9 @@ class DictionaryMock: IDictionary {
     override val isWordsForRepeat: Flow<Boolean> = emptyFlow()
 
     override suspend fun get(serbianLatinId: Long): Translation<Word.Serbian, Word.Russian>? {
-        return null
+        return translationsExample.find {
+            it.source.latinId == serbianLatinId
+        }
     }
 
     override suspend fun search(value: String): List<Translation<Word.Serbian, Word.Russian>> {

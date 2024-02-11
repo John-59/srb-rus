@@ -1,32 +1,27 @@
 package com.trainer.srb.rus.feature.editword
 
 import androidx.annotation.DrawableRes
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Text
-import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.BaselineShift
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.trainer.srb.rus.core.design.MainTheme
-import com.trainer.srb.rus.core.ui.CustomTextField
+import com.trainer.srb.rus.core.design.SrIcons
 import com.trainer.srb.rus.core.mocks.DictionaryMock
 import com.trainer.srb.rus.core.translation.LearningStatus
 import com.trainer.srb.rus.core.translation.Translation
@@ -50,32 +45,28 @@ fun EditWordSuccessBody(
             serbianWord = state.srbWord,
             onSrbLatChange = state::srbLatinChange,
             onSrbCyrChange = state::srbCyrillicChange,
-            modifier = Modifier.padding(bottom = 10.dp)
+            modifier = Modifier.fillMaxWidth()
         )
+
+        Spacer(modifier = Modifier.height(15.dp))
 
         RussiansWords(
             russianWords = state.rusWords,
             onValueChange = state::rusChange,
             onAddRusWord = state::addRusWord,
-            modifier = Modifier.padding(bottom = 20.dp)
+            modifier = Modifier.fillMaxWidth()
         )
+
+        Spacer(modifier = Modifier.height(15.dp))
 
         Button(
             onClick = {
                 state.edit()
                 onBack()
             },
-            shape = RoundedCornerShape(10.dp),
-//            colors = ButtonDefaults.buttonColors(
-//                backgroundColor = MainTheme.colors.Buttons,
-//                contentColor = MainTheme.colors.White,
-//            ),
             enabled = state.isTranslationValid
         ) {
-            Image(
-                painter = painterResource(id = DesignRes.drawable.ok_checkbox),
-                contentDescription = null
-            )
+            Icon(imageVector = SrIcons.Save, contentDescription = null)
             Text(
                 text = "Сохранить",
                 style = MaterialTheme.typography.displayMedium.copy(
@@ -113,8 +104,9 @@ private fun RussiansWords(
                 } else {
                     "Русский"
                 },
-                modifier = Modifier.padding(bottom = 5.dp)
+                modifier = Modifier.fillMaxWidth()
             )
+            Spacer(modifier = Modifier.height(5.dp))
         }
     }
 }
@@ -133,15 +125,16 @@ private fun SerbianWord(
             value = serbianWord.latinValue,
             onValueChange = onSrbLatChange,
             placeholder = "Сербский (латиница)",
-            iconId = DesignRes.drawable.srblat
+            iconId = DesignRes.drawable.srblat,
+            modifier = Modifier.fillMaxWidth()
         )
-
+        Spacer(modifier = Modifier.height(5.dp))
         WordItem(
             value = serbianWord.cyrillicValue,
             onValueChange = onSrbCyrChange,
             placeholder = "Сербский (кириллица)",
             iconId = DesignRes.drawable.srbcyr,
-            modifier = Modifier.padding(vertical = 5.dp)
+            modifier = Modifier.fillMaxWidth()
         )
     }
 }
@@ -154,75 +147,55 @@ private fun WordItem(
     placeholder: String,
     modifier: Modifier = Modifier
 ) {
-    Row(
+    OutlinedTextField(
+        value = value,
+        onValueChange = onValueChange,
+        leadingIcon = {
+            Image(
+                painter = painterResource(iconId),
+                contentDescription = null,
+                modifier = Modifier.padding(5.dp)
+            )
+        },
+        placeholder = {
+            Text(
+                text = placeholder,
+                style = MaterialTheme.typography.displayMedium,
+                color = MaterialTheme.colorScheme.outline,
+            )
+        },
+        textStyle = MaterialTheme.typography.displayMedium,
         modifier = modifier
-            .border(
-                shape = RoundedCornerShape(10.dp),
-                border = BorderStroke(2.dp, MaterialTheme.colorScheme.outline)
-//                    MainTheme.colors.Border)
-            )
-            .background(
-                color = MaterialTheme.colorScheme.background,
-                shape = RoundedCornerShape(10.dp)
-            )
-            .clip(
-                shape = RoundedCornerShape(10.dp)
-            )
-            .fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Image(
-            painter = painterResource(iconId),
-            contentDescription = null,
-            modifier = Modifier.padding(5.dp)
-        )
-        CustomTextField(
-            modifier = Modifier
-                .padding(end = 5.dp)
-                .fillMaxWidth()
-            ,
-            colors = TextFieldDefaults.outlinedTextFieldColors(),
-            textStyle = MaterialTheme.typography.displayMedium.copy(
-                baselineShift = BaselineShift(-0.2f)
-            ),
-            value = value,
-            placeholder = {
-                Text(
-                    text = placeholder,
-                    style = MaterialTheme.typography.displayMedium.copy(
-                        baselineShift = BaselineShift(-0.2f)
-                    ),
-//                    color = MainTheme.colors.Tips,
-                )
-            },
-            onValueChange = onValueChange
-        )
-    }
+    )
 }
 
 @Preview(apiLevel = 33)
 @Composable
 private fun EditWordSuccessBodyPreview() {
     val coroutineScope = MainScope()
-    EditWordSuccessBody(
-        state = EditWordState.Success(
-            translation = Translation(
-                source = Word.Serbian(
-                    latinValue = "šargarepa",
-                    cyrillicValue = "шаргарепа"
+    MainTheme(
+        dynamicColor = false
+    ) {
+        EditWordSuccessBody(
+            state = EditWordState.Success(
+                translation = Translation(
+                    source = Word.Serbian(
+                        latinValue = "šargarepa",
+                        cyrillicValue = "шаргарепа"
+                    ),
+                    translations = listOf(
+                        Word.Russian(value = "морковь")
+                    ),
+                    type = TranslationSourceType.USER,
+                    learningStatus = LearningStatus.Unknown()
                 ),
-                translations = listOf(
-                    Word.Russian(value = "морковь")
-                ),
-                type = TranslationSourceType.USER,
-                learningStatus = LearningStatus.Unknown()
+                dictionary = DictionaryMock(),
+                coroutineScope = coroutineScope
             ),
-            dictionary = DictionaryMock(),
-            coroutineScope = coroutineScope
-        ),
-        onBack = {},
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(20.dp)
-    )
+            onBack = {},
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(20.dp)
+        )
+    }
 }

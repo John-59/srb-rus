@@ -10,6 +10,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.SavedStateHandle
+import com.trainer.srb.rus.core.design.MainTheme
 import com.trainer.srb.rus.core.mocks.DictionaryMock
 
 @Composable
@@ -21,18 +22,28 @@ fun EditWordScreen(
     EditWordBody(
         state = state,
         onBack = onBack,
-        modifier = Modifier.fillMaxSize().padding(20.dp)
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(20.dp)
     )
 }
 
 @Preview(apiLevel = 33)
 @Composable
 private fun EditWordScreenPreview() {
-    EditWordScreen(
-        onBack = {},
-        viewModel = EditWordViewModel(
-            savedStateHandle = SavedStateHandle(),
-            dictionary = DictionaryMock()
+    MainTheme(
+        dynamicColor = false
+    ) {
+        EditWordScreen(
+            onBack = {},
+            viewModel = EditWordViewModel(
+                savedStateHandle = SavedStateHandle(
+                    initialState = mapOf(
+                        EditWordArgs.latinValueIdArgName to 1L
+                    )
+                ),
+                dictionary = DictionaryMock()
+            )
         )
-    )
+    }
 }

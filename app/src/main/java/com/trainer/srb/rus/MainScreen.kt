@@ -11,6 +11,8 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.trainer.srb.rus.core.translation.Translation
+import com.trainer.srb.rus.core.translation.Word
 import com.trainer.srb.rus.feature.dictionary.navigation.navigateToSearch
 import com.trainer.srb.rus.feature.exercise.ExerciseType
 import com.trainer.srb.rus.feature.learn.navigation.navigateToLearn
@@ -18,6 +20,8 @@ import com.trainer.srb.rus.feature.learn.navigation.navigateToLearn
 @Composable
 fun MainScreen(
     navigateToExercise: (ExerciseType) -> Unit,
+    navigateToAddWord: (Word) -> Unit,
+    navigateToEditWord: (Translation<Word.Serbian, Word.Russian>) -> Unit,
     viewModel: MainScreenViewModel = hiltViewModel()
 ) {
     val navController = rememberNavController()
@@ -52,6 +56,8 @@ fun MainScreen(
             MainScreenNavHost(
                 navController = navController,
                 navigateToExercise = navigateToExercise,
+                navigateToAddWord = navigateToAddWord,
+                navigateToEditWord = navigateToEditWord,
                 startDestination = viewModel.startDestination
             )
         }

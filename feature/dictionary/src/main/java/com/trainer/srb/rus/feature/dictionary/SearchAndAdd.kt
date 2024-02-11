@@ -102,23 +102,31 @@ fun SearchAndAdd(
 @Preview(apiLevel = 33)
 @Composable
 fun SearchAndAddEmptyPreview() {
-    SearchAndAdd(
-        value = TextFieldValue(""),
-        onValueChange = {},
-        onAddClicked = {},
-        onResetSearch = {},
-        modifier = Modifier.fillMaxWidth()
-    )
+    MainTheme(
+        dynamicColor = false
+    ) {
+        SearchAndAdd(
+            value = TextFieldValue(""),
+            onValueChange = {},
+            onAddClicked = {},
+            onResetSearch = {},
+            modifier = Modifier.fillMaxWidth()
+        )
+    }
 }
 
 @Preview(apiLevel = 33)
 @Composable
 fun SearchAndAddPreview() {
-    SearchAndAdd(
-        value = TextFieldValue("lubenica"),
-        onValueChange = {},
-        onAddClicked = {},
-        onResetSearch = {},
-        modifier = Modifier.fillMaxWidth()
-    )
+    MainTheme(
+        dynamicColor = false
+    ) {
+        SearchAndAdd(
+            value = TextFieldValue("lubenica"),
+            onValueChange = {},
+            onAddClicked = {},
+            onResetSearch = {},
+            modifier = Modifier.fillMaxWidth()
+        )
+    }
 }
