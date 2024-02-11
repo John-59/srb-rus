@@ -1,27 +1,21 @@
 package com.trainer.srb.rus.feature.exercise
 
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Text
-import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.text.style.TextAlign
@@ -34,11 +28,32 @@ import com.trainer.srb.rus.core.translation.TranslationSourceType
 import com.trainer.srb.rus.core.translation.Word
 import com.trainer.srb.rus.core.translation.russianAsString
 import com.trainer.srb.rus.core.translation.serbianAsString
-import com.trainer.srb.rus.core.ui.CustomTextField
 
 @Composable
 fun ShowInRussianAndWriteInSerbianBody(
     state: ExerciseStep.ShowInRussianAndWriteInSerbian,
+    onNext: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    state.userInput
+    ShowInRussianAndWriteInSerbianBody(
+        translation = state.translation,
+        userInput = state.userInput,
+        userInputValidity = state.userInputValidity,
+        onUserInputChange = state::userInputChanged,
+        onUserInputCheck = state::checkUserInput,
+        onNext = onNext,
+        modifier = modifier
+    )
+}
+
+@Composable
+private fun ShowInRussianAndWriteInSerbianBody(
+    translation: Translation<Word.Serbian, Word.Russian>,
+    userInput: String,
+    userInputValidity: ExerciseStep.ShowInRussianAndWriteInSerbian.Validity,
+    onUserInputChange: (String) -> Unit,
+    onUserInputCheck: () -> Unit,
     onNext: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -52,103 +67,75 @@ fun ShowInRussianAndWriteInSerbianBody(
             modifier = Modifier.weight(2f)
         ) {
             Text(
-                text = state.translation.russianAsString(),
+                text = translation.russianAsString(),
                 style = MaterialTheme.typography.titleLarge,
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Center
             )
             Spacer(modifier = Modifier.padding(5.dp))
-            Box(
+
+            OutlinedTextField(
                 modifier = Modifier
-                    .border(
-                        shape = RoundedCornerShape(10.dp),
-                        border = BorderStroke(2.dp, MaterialTheme.colorScheme.outline)
-                    )
-                    .background(
-                        color = when (state.userInputValidity) {
-                            ExerciseStep.ShowInRussianAndWriteInSerbian.Validity.UNDEFINED -> {
-                                MaterialTheme.colorScheme.background
-                                //MainTheme.colors.White
-                            }
-
-                            ExerciseStep.ShowInRussianAndWriteInSerbian.Validity.VALID -> {
-                                MaterialTheme.colorScheme.error
-                                //MainTheme.colors.Right
-                            }
-
-                            ExerciseStep.ShowInRussianAndWriteInSerbian.Validity.INVALID -> {
-                                MaterialTheme.colorScheme.error
-                                //MainTheme.colors.Wrong
-                            }
-                        },
-                        shape = RoundedCornerShape(10.dp)
-                    )
-                    .clip(
-                        shape = RoundedCornerShape(10.dp)
-                    )
                     .fillMaxWidth()
-                    .padding(10.dp),
-            ) {
-                CustomTextField(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .focusRequester(focusRequester),
-                    colors = TextFieldDefaults.outlinedTextFieldColors(),
-                    placeholder = {
-                        Text(
-                            text = "Напишите на сербском",
-                            style = MaterialTheme.typography.titleMedium,
-//                            color = MainTheme.colors.Tips,
+                    .focusRequester(focusRequester),
+                placeholder = {
+                    Text(
+                        text = "Напишите на сербском",
+                        style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.outline,
+                    )
+                },
+                textStyle = MaterialTheme.typography.titleMedium,
+                value = userInput,
+                onValueChange = onUserInputChange,
+                colors = when (userInputValidity) {
+                    ExerciseStep.ShowInRussianAndWriteInSerbian.Validity.VALID -> {
+                        OutlinedTextFieldDefaults.colors(
+                            focusedContainerColor = MaterialTheme.colorScheme.inverseSurface,
+                            unfocusedContainerColor = MaterialTheme.colorScheme.inverseSurface,
                         )
-                    },
-                    textStyle = MaterialTheme.typography.titleMedium,
-                    value = state.userInput,
-                    onValueChange = state::userInputChanged,
-                )
-            }
+                    }
+                    ExerciseStep.ShowInRussianAndWriteInSerbian.Validity.INVALID -> {
+                        OutlinedTextFieldDefaults.colors(
+                            focusedContainerColor = MaterialTheme.colorScheme.error,
+                            unfocusedContainerColor = MaterialTheme.colorScheme.error
+                        )
+                    }
+                    else -> {
+                        OutlinedTextFieldDefaults.colors()
+                    }
+                },
+            )
             Spacer(modifier = Modifier.padding(5.dp))
 
-            Box(
+            OutlinedTextField(
                 modifier = Modifier
+                    .fillMaxWidth()
                     .alpha(
-                        if (state.userInputValidity == ExerciseStep.ShowInRussianAndWriteInSerbian.Validity.INVALID) {
+                        if (userInputValidity == ExerciseStep.ShowInRussianAndWriteInSerbian.Validity.INVALID) {
                             1.0f
                         } else {
                             0.0f
                         }
-                    )
-                    .border(
-                        shape = RoundedCornerShape(10.dp),
-                        border = BorderStroke(2.dp, MaterialTheme.colorScheme.outline)
-                    )
-//                    .background(
-//                        color = MainTheme.colors.Right,
-//                        shape = RoundedCornerShape(10.dp)
-//                    )
-                    .clip(
-                        shape = RoundedCornerShape(10.dp)
-                    )
-                    .fillMaxWidth()
-                    .padding(10.dp),
-            ) {
-                Text(
-                    text = state.translation.serbianAsString(),
-                    style = MaterialTheme.typography.titleMedium,
-                )
-            }
+                    ),
+                textStyle = MaterialTheme.typography.titleMedium,
+                value = translation.serbianAsString(),
+                onValueChange = {},
+                colors =  OutlinedTextFieldDefaults.colors(
+                    disabledContainerColor = MaterialTheme.colorScheme.inverseSurface,
+                    disabledTextColor = MaterialTheme.colorScheme.onSurface,
+                    disabledBorderColor = MaterialTheme.colorScheme.outline,
+                ),
+                enabled = false
+            )
             Spacer(modifier = Modifier.padding(5.dp))
 
             Button(
-                shape = RoundedCornerShape(10.dp),
-//                colors = ButtonDefaults.buttonColors(
-//                    backgroundColor = MainTheme.colors.Border,
-//                    contentColor = MainTheme.colors.White,
-//                ),
                 modifier = Modifier.fillMaxWidth(),
-                enabled = state.userInput.isNotBlank() && state.userInputValidity == ExerciseStep.ShowInRussianAndWriteInSerbian.Validity.UNDEFINED,
+                enabled = userInput.isNotBlank() && userInputValidity == ExerciseStep.ShowInRussianAndWriteInSerbian.Validity.UNDEFINED,
                 onClick = {
                     focusRequester.requestFocus()
-                    state.checkUserInput()
+                    onUserInputCheck()
                 }
             ) {
                 Text(
@@ -159,14 +146,9 @@ fun ShowInRussianAndWriteInSerbianBody(
         }
 
         Button(
-            shape = RoundedCornerShape(10.dp),
-//            colors = ButtonDefaults.buttonColors(
-//                backgroundColor = MainTheme.colors.Buttons,
-//                contentColor = MainTheme.colors.White,
-//            ),
             modifier = Modifier.fillMaxWidth(),
             onClick = onNext,
-            enabled = state.userInputValidity != ExerciseStep.ShowInRussianAndWriteInSerbian.Validity.UNDEFINED
+            enabled = userInputValidity != ExerciseStep.ShowInRussianAndWriteInSerbian.Validity.UNDEFINED
         ) {
             Text(
                 text = "Далее",
@@ -182,7 +164,7 @@ fun ShowInRussianAndWriteInSerbianBody(
 
 @Preview(apiLevel = 33)
 @Composable
-fun ShowInRussianAndWriteInSerbianBodyPreview() {
+fun BeforeChecking_ShowInRussianAndWriteInSerbianBodyPreview() {
     MainTheme(
         dynamicColor = false
     ) {
@@ -204,6 +186,68 @@ fun ShowInRussianAndWriteInSerbianBodyPreview() {
                     learningStatus = LearningStatus.Unknown()
                 )
             )
+        )
+    }
+}
+
+@Preview(apiLevel = 33)
+@Composable
+fun ValidInput_ShowInRussianAndWriteInSerbianBodyPreview() {
+    val translation = Translation(
+        source = Word.Serbian(
+            latinValue = "kašika",
+            cyrillicValue = "кашика"
+        ),
+        translations = listOf(
+            Word.Russian(value = "ложка")
+        ),
+        type = TranslationSourceType.USER,
+        learningStatus = LearningStatus.Unknown()
+    )
+    MainTheme(
+        dynamicColor = false
+    ) {
+        ShowInRussianAndWriteInSerbianBody(
+            translation = translation,
+            userInput = "kašika",
+            userInputValidity = ExerciseStep.ShowInRussianAndWriteInSerbian.Validity.VALID,
+            onUserInputChange = {},
+            onUserInputCheck = {},
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(20.dp),
+            onNext = {},
+        )
+    }
+}
+
+@Preview(apiLevel = 33)
+@Composable
+fun WrongInput_ShowInRussianAndWriteInSerbianBodyPreview() {
+    val translation = Translation(
+        source = Word.Serbian(
+            latinValue = "kašika",
+            cyrillicValue = "кашика"
+        ),
+        translations = listOf(
+            Word.Russian(value = "ложка")
+        ),
+        type = TranslationSourceType.USER,
+        learningStatus = LearningStatus.Unknown()
+    )
+    MainTheme(
+        dynamicColor = false
+    ) {
+        ShowInRussianAndWriteInSerbianBody(
+            translation = translation,
+            userInput = "wrong",
+            userInputValidity = ExerciseStep.ShowInRussianAndWriteInSerbian.Validity.INVALID,
+            onUserInputChange = {},
+            onUserInputCheck = {},
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(20.dp),
+            onNext = {},
         )
     }
 }

@@ -8,6 +8,7 @@ import androidx.compose.material.icons.outlined.AutoAwesome
 import androidx.compose.material.icons.outlined.Autorenew
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.Done
+import androidx.compose.material.icons.outlined.ErrorOutline
 import androidx.compose.material.icons.outlined.LocalLibrary
 import androidx.compose.material.icons.outlined.School
 import androidx.compose.material.icons.outlined.Shuffle
@@ -35,4 +36,6 @@ object SrIcons {
     val Close = Icons.Outlined.Close
 
     val Done = Icons.Outlined.Done
+
+    val Error = Icons.Outlined.ErrorOutline
 }
