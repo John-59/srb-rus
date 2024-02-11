@@ -6,11 +6,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Text
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -39,11 +37,6 @@ fun FinishBody(
             )
         }
         Button(
-            shape = RoundedCornerShape(10.dp),
-//            colors = ButtonDefaults.buttonColors(
-//                backgroundColor = MainTheme.colors.Buttons,
-//                contentColor = MainTheme.colors.White,
-//            ),
             modifier = Modifier.fillMaxWidth(),
             onClick = onNext
         ) {
@@ -59,8 +52,12 @@ fun FinishBody(
 @Preview(apiLevel = 33)
 @Composable
 fun FinishBodyPreview() {
-    FinishBody(
-        modifier = Modifier.fillMaxSize().padding(20.dp),
-        onNext = {}
-    )
+    MainTheme(
+        dynamicColor = false
+    ) {
+        FinishBody(
+            modifier = Modifier.fillMaxSize().padding(20.dp),
+            onNext = {}
+        )
+    }
 }
