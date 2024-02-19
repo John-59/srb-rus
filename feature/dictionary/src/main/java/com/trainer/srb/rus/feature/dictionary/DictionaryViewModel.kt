@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SearchViewModel @Inject constructor(
+class DictionaryViewModel @Inject constructor(
     private val innerDictionary: IDictionary,
     private val remoteDictionary: IRemoteDictionary
 ): ViewModel() {

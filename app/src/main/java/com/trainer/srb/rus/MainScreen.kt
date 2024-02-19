@@ -13,6 +13,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.trainer.srb.rus.core.translation.Translation
 import com.trainer.srb.rus.core.translation.Word
+import com.trainer.srb.rus.feature.about.navigation.navigateToAbout
 import com.trainer.srb.rus.feature.dictionary.navigation.navigateToSearch
 import com.trainer.srb.rus.feature.exercise.ExerciseType
 import com.trainer.srb.rus.feature.learn.navigation.navigateToLearn
@@ -44,7 +45,7 @@ fun MainScreen(
                     when (it) {
                         MainScreenDestination.Inner.LEARN -> navController.navigateToLearn()
                         MainScreenDestination.Inner.DICTIONARY -> navController.navigateToSearch()
-                        MainScreenDestination.Inner.STATISTICS -> {}
+                        MainScreenDestination.Inner.ABOUT -> navController.navigateToAbout()
                     }
                 }
             )

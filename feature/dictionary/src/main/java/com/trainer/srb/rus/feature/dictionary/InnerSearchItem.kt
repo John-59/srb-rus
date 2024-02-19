@@ -1,24 +1,16 @@
 package com.trainer.srb.rus.feature.dictionary
 
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.trainer.srb.rus.core.design.MainTheme
@@ -27,7 +19,6 @@ import com.trainer.srb.rus.core.translation.Translation
 import com.trainer.srb.rus.core.translation.TranslationSourceType
 import com.trainer.srb.rus.core.translation.Word
 import com.trainer.srb.rus.core.translation.getProgress
-import com.trainer.srb.rus.core.design.R as DesignRes
 
 @Composable
 fun InnerSearchItem(
@@ -46,50 +37,30 @@ fun InnerSearchItem(
         it.value
     }
 
-    Row(
+    Column(
         modifier = modifier
             .border(
-                shape = RoundedCornerShape(10.dp),
-                border = BorderStroke(2.dp, MaterialTheme.colorScheme.outline)
-                    //MainTheme.colors.Border)
+                width = 1.dp,
+                color = MaterialTheme.colorScheme.outline,
+                shape = OutlinedTextFieldDefaults.shape
             )
-        .background(
-            color = MaterialTheme.colorScheme.surface,
-            shape = RoundedCornerShape(10.dp)
-        )
-            .clip(
-                shape = RoundedCornerShape(10.dp)
-            ),
-        verticalAlignment = Alignment.CenterVertically
+            .padding(horizontal = 10.dp, vertical = 5.dp)
+            .clickable {
+                onEdit(translation)
+            }
     ) {
-        Column(
-            modifier = Modifier
-                .padding(horizontal = 10.dp, vertical = 5.dp)
-                .weight(2.0f)
-        ) {
-            Text(
-                text = serbian,
-                style = MaterialTheme.typography.displayMedium //MainTheme.typography.displayMedium
-            )
-            Text(
-                text = russian,
-                style = MaterialTheme.typography.displaySmall
-            )
-            LinearProgressIndicator(
-                progress = translation.getProgress(),
-//                trackColor = MainTheme.colors.Dark_40,
-//                color = MainTheme.colors.Right,
-                modifier = Modifier.fillMaxWidth()
-            )
-        }
-        Image(
-            painter = painterResource(id = DesignRes.drawable.wordindict),
-            contentDescription = null,
-            modifier = Modifier
-                .padding(end = 5.dp)
-                .clickable {
-                    onEdit(translation)
-                }
+        Text(
+            text = serbian,
+            style = MaterialTheme.typography.displayMedium //MainTheme.typography.displayMedium
+        )
+        Text(
+            text = russian,
+            style = MaterialTheme.typography.displaySmall
+        )
+        LinearProgressIndicator(
+            progress = translation.getProgress(),
+            color = MaterialTheme.colorScheme.inverseSurface,
+            modifier = Modifier.fillMaxWidth()
         )
     }
 }

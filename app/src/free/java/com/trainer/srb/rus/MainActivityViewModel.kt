@@ -3,9 +3,9 @@ package com.trainer.srb.rus
 import androidx.datastore.core.DataStore
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.trainer.srb.rus.core.utils.AppVersionProvider
 import com.trainer.srb.rus.core.repository.IPredefinedRepository
 import com.trainer.srb.rus.core.repository.IWritableRepository
+import com.trainer.srb.rus.core.utils.IAppVersionProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -18,7 +18,7 @@ class MainActivityViewModel @Inject constructor(
     private val predefinedRepository: IPredefinedRepository,
     private val writableRepository: IWritableRepository,
     private val dataStore: DataStore<UserPreferences>,
-    private val appVersionProvider: AppVersionProvider
+    private val appVersionProvider: IAppVersionProvider
 ): ViewModel() {
 
     val uiState: StateFlow<MainActivityUiState> = writableRepository.predefinedStatuses.map {

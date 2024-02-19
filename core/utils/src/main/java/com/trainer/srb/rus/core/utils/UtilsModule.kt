@@ -1,6 +1,7 @@
 package com.trainer.srb.rus.core.utils
 
 import android.content.Context
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -11,6 +12,10 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class UtilsModule {
+
+    @Singleton
+    @Binds
+    abstract fun bindAppVersionProvider(instance: AppVersionProvider): IAppVersionProvider
 
     companion object {
         @Singleton

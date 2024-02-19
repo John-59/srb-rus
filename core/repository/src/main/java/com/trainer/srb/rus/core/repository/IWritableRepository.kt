@@ -12,6 +12,14 @@ interface IWritableRepository {
 
     val predefinedStatuses: Flow<List<Pair<Long, LearningStatus>>>
 
+    val totalTranslationsCount: Flow<Int>
+
+//    val userTranslationCount: Flow<Int>
+
+    val learningTranslationsCount: Flow<Int>
+
+    val learnedTranslationsCount: Flow<Int>
+
     suspend fun get(serbianLatinId: Long): Translation<Word.Serbian, Word.Russian>?
 
     suspend fun add(translation: Translation<Word.Serbian, Word.Russian>)

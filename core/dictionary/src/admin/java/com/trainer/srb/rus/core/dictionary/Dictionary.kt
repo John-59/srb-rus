@@ -7,6 +7,7 @@ import com.trainer.srb.rus.core.translation.Translation
 import com.trainer.srb.rus.core.translation.Word
 import com.trainer.srb.rus.core.translation.canRepeat
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.transform
 import kotlinx.datetime.Clock
@@ -24,6 +25,15 @@ class Dictionary @Inject constructor(
         }
         emit(containsNew)
     }
+
+    override val totalTranslationsCount: Flow<Int> = writableRepository.totalTranslationsCount
+
+    // in admin version no users translations
+    override val userTranslationCount: Flow<Int> = emptyFlow()
+
+    override val learningTranslationsCount: Flow<Int> = writableRepository.learningTranslationsCount
+
+    override val learnedTranslationsCount: Flow<Int> = writableRepository.learnedTranslationsCount
 
     override val translationsForRepeat: Flow<List<Translation<Word.Serbian, Word.Russian>>> = translations.map {
         val now = Clock.System.now()

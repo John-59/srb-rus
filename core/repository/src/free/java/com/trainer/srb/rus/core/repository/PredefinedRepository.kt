@@ -24,6 +24,12 @@ class PredefinedRepository @Inject constructor(
         }
     }
 
+    override val totalTranslationsCount: Flow<Int> = predefinedRepositoryDao.getUsedCount()
+
+    override val learningTranslationsCount: Flow<Int> = predefinedRepositoryDao.getLearningTranslationsCount()
+
+    override val learnedTranslationsCount: Flow<Int> = predefinedRepositoryDao.getLearnedTranslationsCount()
+
     override suspend fun get(serbianLatinId: Long): Translation<Word.Serbian, Word.Russian>? {
         return withContext(Dispatchers.IO) {
             predefinedRepositoryDao.getWord(serbianLatinId)?.toTranslation(TranslationSourceType.PREDEFINED)

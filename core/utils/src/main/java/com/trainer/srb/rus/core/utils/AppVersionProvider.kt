@@ -6,9 +6,9 @@ import android.os.Build
 
 class AppVersionProvider(
     private val context: Context
-) {
+): IAppVersionProvider {
 
-    val version: String
+    override val version: String
         get() {
             val packageManager = context.packageManager
             return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -24,7 +24,7 @@ class AppVersionProvider(
             }.versionName
         }
 
-    val predefinedDatabaseVersion: Int
+    override val predefinedDatabaseVersion: Int
         get() {
             return version.getDatabaseVersion()
         }

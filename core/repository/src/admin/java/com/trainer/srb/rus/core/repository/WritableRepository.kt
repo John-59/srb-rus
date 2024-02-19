@@ -26,8 +26,17 @@ class WritableRepository @Inject constructor(
         }
     }
 
-    // not means for admin version
+    // has no meaning for admin version
     override val predefinedStatuses: Flow<List<Pair<Long, LearningStatus>>> = emptyFlow()
+
+    override val totalTranslationsCount = predefinedRepositoryDao.getTotalTranslationsCount()
+
+    // has no meaning for admin version
+//    override val userTranslationCount: Flow<Int> = emptyFlow()
+
+    override val learningTranslationsCount: Flow<Int> = predefinedRepositoryDao.getLearningTranslationsCount()
+
+    override val learnedTranslationsCount: Flow<Int> = predefinedRepositoryDao.getLearnedTranslationsCount()
 
     override suspend fun get(serbianLatinId: Long): Translation<Word.Serbian, Word.Russian>? {
         return withContext(Dispatchers.IO) {

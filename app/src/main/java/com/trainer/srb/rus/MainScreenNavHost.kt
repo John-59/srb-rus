@@ -6,7 +6,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.trainer.srb.rus.core.translation.Translation
 import com.trainer.srb.rus.core.translation.Word
-import com.trainer.srb.rus.feature.dictionary.SearchScreen
+import com.trainer.srb.rus.feature.about.AboutScreen
+import com.trainer.srb.rus.feature.dictionary.DictionaryScreen
 import com.trainer.srb.rus.feature.exercise.ExerciseType
 import com.trainer.srb.rus.feature.learn.LearnScreen
 
@@ -28,10 +29,13 @@ fun MainScreenNavHost(
             )
         }
         composable(MainScreenDestination.Inner.DICTIONARY.route) {
-            SearchScreen(
+            DictionaryScreen(
                 navigateToAddWord = navigateToAddWord,
                 navigateToEditWord = navigateToEditWord
             )
+        }
+        composable(MainScreenDestination.Inner.ABOUT.route) {
+            AboutScreen()
         }
     }
 }

@@ -15,6 +15,14 @@ interface IDictionary {
 
     val isNewWords: Flow<Boolean>
 
+    val totalTranslationsCount: Flow<Int>
+
+    val userTranslationCount: Flow<Int>
+
+    val learningTranslationsCount: Flow<Int>
+
+    val learnedTranslationsCount: Flow<Int>
+
     suspend fun get(serbianLatinId: Long): Translation<Word.Serbian, Word.Russian>?
 
     suspend fun search(value: String): List<Translation<Word.Serbian, Word.Russian>>

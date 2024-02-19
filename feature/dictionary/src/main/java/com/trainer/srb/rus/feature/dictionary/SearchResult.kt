@@ -1,7 +1,6 @@
 package com.trainer.srb.rus.feature.dictionary
 
 import android.widget.Toast
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -9,6 +8,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -18,22 +18,25 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.FractionalThreshold
 import androidx.compose.material.SwipeToDismiss
 import androidx.compose.material.rememberDismissState
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.trainer.srb.rus.core.design.MainTheme
+import com.trainer.srb.rus.core.design.SrIcons
 import com.trainer.srb.rus.core.mocks.translationsExample
 import com.trainer.srb.rus.core.translation.Translation
 import com.trainer.srb.rus.core.translation.Word
+import com.trainer.srb.rus.core.translation.getProgress
 import com.trainer.srb.rus.core.translation.serbianAsString
-import com.trainer.srb.rus.core.design.R as DesignRes
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -93,6 +96,7 @@ fun SearchResult(
                 background = {
                     currentFraction.floatValue = dismissState.progress.fraction
                      ItemSwipeBackground(
+                         learningProgress = translation.getProgress(),
                          direction = dismissState.dismissDirection,
                          modifier = Modifier
                              .padding(vertical = 5.dp)
@@ -104,6 +108,9 @@ fun SearchResult(
                         translation = translation,
                         onEdit = onEdit,
                         modifier = Modifier
+                            .background(
+                                color = MaterialTheme.colorScheme.surface
+                            )
                             .padding(vertical = 5.dp)
                             .fillMaxWidth()
                     )
@@ -115,6 +122,7 @@ fun SearchResult(
 
 @Composable
 private fun ItemSwipeBackground(
+    learningProgress: Float,
     direction: DismissDirection?,
     modifier: Modifier = Modifier
 ) {
@@ -123,12 +131,10 @@ private fun ItemSwipeBackground(
             .background(
                 color = if (direction == DismissDirection.EndToStart) {
                     MaterialTheme.colorScheme.error
-                    //MainTheme.colors.Delete
                 } else {
-                   //MainTheme.colors.Right
-                       MaterialTheme.colorScheme.primaryContainer
+                    MaterialTheme.colorScheme.inverseSurface
                 },
-                shape = RoundedCornerShape(10.dp)
+                shape = RoundedCornerShape(1.dp)
             ),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = if (direction == DismissDirection.EndToStart) {
@@ -137,44 +143,86 @@ private fun ItemSwipeBackground(
             Arrangement.Start
         }
     ) {
-        Spacer(modifier = Modifier)
-        Image(
-            painter = if (direction == DismissDirection.EndToStart) {
-                painterResource(id = DesignRes.drawable.delete)
-            } else {
-                painterResource(id = DesignRes.drawable.add_to_learn)
-            },
-            contentDescription = null,
-            modifier = Modifier.padding(horizontal = 8.dp)
-        )
+        if (direction == DismissDirection.EndToStart) {
+            Text(
+                text = "Удалить\nиз словаря",
+                style = MaterialTheme.typography.labelSmall,
+                textAlign = TextAlign.Right,
+                color = MaterialTheme.colorScheme.onError
+            )
+            Spacer(modifier = Modifier.width(5.dp))
+            Icon(
+                imageVector = SrIcons.DeleteWord,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onError
+            )
+            Spacer(modifier = Modifier.width(5.dp))
+        } else if (learningProgress == 0f) {
+            Spacer(modifier = Modifier.width(5.dp))
+            Icon(
+                imageVector = SrIcons.LearnBorder,
+                contentDescription = null,
+            )
+            Spacer(modifier = Modifier.width(5.dp))
+            Text(
+                text = "Добавить в\nизучаемые слова",
+                style = MaterialTheme.typography.labelSmall
+            )
+        } else {
+            Spacer(modifier = Modifier.width(5.dp))
+            Icon(
+                imageVector = SrIcons.Repeat,
+                contentDescription = null,
+            )
+            Spacer(modifier = Modifier.width(5.dp))
+            Text(
+                text = "Учить\nзаново",
+                style = MaterialTheme.typography.labelSmall
+            )
+        }
     }
 }
 
 @Preview(apiLevel = 33)
 @Composable
 private fun ItemSwipeDeleteBackgroundPreview() {
-    ItemSwipeBackground(
-        direction = DismissDirection.EndToStart,
-        modifier = Modifier.fillMaxWidth()
-    )
+    MainTheme(
+        dynamicColor = false
+    ) {
+        ItemSwipeBackground(
+            learningProgress = 0f,
+            direction = DismissDirection.EndToStart,
+            modifier = Modifier.fillMaxWidth()
+        )
+    }
 }
 
 @Preview(apiLevel = 33)
 @Composable
 private fun ItemSwipeAddToLearnedBackgroundPreview() {
-    ItemSwipeBackground(
-        direction = DismissDirection.StartToEnd,
-        modifier = Modifier.fillMaxWidth()
-    )
+    MainTheme(
+        dynamicColor = false
+    ) {
+        ItemSwipeBackground(
+            learningProgress = 0f,
+            direction = DismissDirection.StartToEnd,
+            modifier = Modifier.fillMaxWidth()
+        )
+    }
 }
 
 @Preview(apiLevel = 33)
 @Composable
 private fun ItemSwipeLearnAgainBackgroundPreview() {
-    ItemSwipeBackground(
-        direction = DismissDirection.StartToEnd,
-        modifier = Modifier.fillMaxWidth()
-    )
+    MainTheme(
+        dynamicColor = false
+    ) {
+        ItemSwipeBackground(
+            learningProgress = 0.3f,
+            direction = DismissDirection.StartToEnd,
+            modifier = Modifier.fillMaxWidth()
+        )
+    }
 }
 
 @Preview(apiLevel = 33)

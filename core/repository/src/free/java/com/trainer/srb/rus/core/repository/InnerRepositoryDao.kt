@@ -164,4 +164,15 @@ abstract class InnerRepositoryDao {
 
     @Query("SELECT * FROM srb_lat WHERE word LIKE :value||'%'")
     abstract suspend fun searchInSrbLat(value: String): List<SerbianToRussianWord>
+
+    @Query("SELECT COUNT(id) FROM srb_lat")
+    abstract fun getTotalTranslationsCount(): Flow<Int>
+
+    @Query("SELECT COUNT(id) FROM srb_lat WHERE status NOT IN (" +
+            "'${WordStatus.Unknown.name}', '${WordStatus.Unused.name}', '${WordStatus.DontWantLearn.name}', '${WordStatus.AlreadyKnow.name}'" +
+            ")")
+    abstract fun getLearningTranslationsCount(): Flow<Int>
+
+    @Query("SELECT COUNT(id) FROM srb_lat WHERE status = '${WordStatus.AlreadyKnow.name}'")
+    abstract fun getLearnedTranslationsCount(): Flow<Int>
 }

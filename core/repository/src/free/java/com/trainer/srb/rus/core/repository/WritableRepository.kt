@@ -37,6 +37,14 @@ class WritableRepository @Inject constructor(
             }
     }
 
+    override val totalTranslationsCount: Flow<Int> = innerRepositoryDao.getTotalTranslationsCount()
+
+//    override val userTranslationCount: Flow<Int> = totalTranslationsCount
+
+    override val learningTranslationsCount: Flow<Int> = innerRepositoryDao.getLearningTranslationsCount();
+
+    override val learnedTranslationsCount: Flow<Int> = innerRepositoryDao.getLearnedTranslationsCount()
+
     override suspend fun get(serbianLatinId: Long): Translation<Word.Serbian, Word.Russian>? {
         return withContext(Dispatchers.IO) {
             innerRepositoryDao.getWord(serbianLatinId)?.toTranslation(TranslationSourceType.USER)

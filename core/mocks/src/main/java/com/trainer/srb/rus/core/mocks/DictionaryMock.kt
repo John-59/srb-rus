@@ -15,6 +15,16 @@ class DictionaryMock: IDictionary {
 
     override val isNewWords: Flow<Boolean> = emptyFlow()
 
+    override val totalTranslationsCount: Flow<Int> = flow {
+        emit(translationsExample.count())
+    }
+
+    override val userTranslationCount: Flow<Int> = emptyFlow()
+
+    override val learningTranslationsCount: Flow<Int> = emptyFlow()
+
+    override val learnedTranslationsCount: Flow<Int> = emptyFlow()
+
     override val translationsForRepeat: Flow<List<Translation<Word.Serbian, Word.Russian>>> = emptyFlow()
 
     override val isWordsForRepeat: Flow<Boolean> = emptyFlow()

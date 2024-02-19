@@ -10,6 +10,12 @@ interface IPredefinedRepository {
 
     val usedTranslations: Flow<List<Translation<Word.Serbian, Word.Russian>>>
 
+    val totalTranslationsCount: Flow<Int>
+
+    val learningTranslationsCount: Flow<Int>
+
+    val learnedTranslationsCount: Flow<Int>
+
     suspend fun get(serbianLatinId: Long): Translation<Word.Serbian, Word.Russian>?
 
     suspend fun update(translation: Translation<Word.Serbian, Word.Russian>)

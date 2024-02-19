@@ -31,6 +31,28 @@ class Dictionary @Inject constructor(
         }
         emit(containsNew)
     }
+    override val totalTranslationsCount: Flow<Int> = combine(
+        writableRepository.totalTranslationsCount,
+        predefinedRepository.totalTranslationsCount
+    ) { userTotalTranslationsCount, predefinedTotalTranslationsCount ->
+        userTotalTranslationsCount + predefinedTotalTranslationsCount
+    }
+
+    override val userTranslationCount: Flow<Int> = writableRepository.totalTranslationsCount
+
+    override val learningTranslationsCount: Flow<Int> = combine(
+        writableRepository.learningTranslationsCount,
+        predefinedRepository.learningTranslationsCount
+    ) { userLearningCount, predefinedLearningCount ->
+        userLearningCount + predefinedLearningCount
+    }
+
+    override val learnedTranslationsCount: Flow<Int> = combine(
+        writableRepository.learnedTranslationsCount,
+        predefinedRepository.learnedTranslationsCount
+    ) { userLearnedCount, predefinedLearnedCount ->
+        userLearnedCount + predefinedLearnedCount
+    }
 
     override val translationsForRepeat: Flow<List<Translation<Word.Serbian, Word.Russian>>> = translations.map {
         val now = Clock.System.now()

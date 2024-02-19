@@ -87,6 +87,7 @@ dependencies {
     implementation(project(":feature:addword"))
     implementation(project(":feature:editword"))
     implementation(project(":feature:exercise"))
+    implementation(project(":feature:about"))
 
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")

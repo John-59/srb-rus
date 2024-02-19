@@ -2,6 +2,7 @@ package com.trainer.srb.rus.feature.dictionary
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -18,23 +19,21 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.trainer.srb.rus.core.design.MainTheme
-import com.trainer.srb.rus.core.dictionary.IRemoteDictionary
-import com.trainer.srb.rus.core.mocks.DictionaryMock
 import com.trainer.srb.rus.core.mocks.translationsExample
 import com.trainer.srb.rus.core.translation.Translation
 import com.trainer.srb.rus.core.translation.Word
 
 @Composable
-fun SearchScreen(
+fun DictionaryScreen(
     navigateToAddWord: (Word) -> Unit,
     navigateToEditWord: (Translation<Word.Serbian, Word.Russian>) -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: SearchViewModel = hiltViewModel(),
+    viewModel: DictionaryViewModel = hiltViewModel(),
 ) {
     val visibleWords by viewModel.visibleWords.collectAsState()
     val searchingWord by viewModel.searchingWord.collectAsState()
 
-    SearchBody(
+    DictionaryBody(
         visibleWords = visibleWords,
         searchingWord = searchingWord,
         navigateToAddWord = navigateToAddWord,
@@ -49,7 +48,7 @@ fun SearchScreen(
 }
 
 @Composable
-private fun SearchBody(
+private fun DictionaryBody(
     visibleWords: List<Translation<Word.Serbian, Word.Russian>>,
     searchingWord: TextFieldValue,
     navigateToAddWord: (Word) -> Unit,
@@ -72,6 +71,7 @@ private fun SearchBody(
             SearchAndAdd(
                 modifier = Modifier
                     .padding(20.dp)
+                    .fillMaxWidth()
                     .focusRequester(focusRequester),
                 value = searchingWord,
                 onValueChange = searchingWordChange,
@@ -102,7 +102,7 @@ private fun SearchBodyPreview() {
     MainTheme(
         dynamicColor = false
     ) {
-        SearchBody(
+        DictionaryBody(
             visibleWords = translationsExample,
             searchingWord = TextFieldValue(""),
             navigateToAddWord = {},
@@ -114,16 +114,4 @@ private fun SearchBodyPreview() {
             setSelectionToEnd = {}
         )
     }
-//    SearchScreen(
-//        viewModel = SearchViewModel(
-//            innerDictionary = DictionaryMock(),
-//            remoteDictionary = object : IRemoteDictionary {
-//                override fun search(value: String): List<Translation<Word.Serbian, Word.Russian>> {
-//                    return emptyList()
-//                }
-//            }
-//        ),
-//        navigateToAddWord = {},
-//        navigateToEditWord = {}
-//    )
 }

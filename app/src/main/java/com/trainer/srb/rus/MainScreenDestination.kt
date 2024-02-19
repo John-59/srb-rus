@@ -2,6 +2,7 @@ package com.trainer.srb.rus
 
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.trainer.srb.rus.core.design.SrIcons
+import com.trainer.srb.rus.feature.about.navigation.AboutScreenDestination
 import com.trainer.srb.rus.feature.dictionary.navigation.SearchScreenDestination
 import com.trainer.srb.rus.feature.learn.navigation.LearnScreenDestination
 
@@ -26,8 +27,8 @@ object MainScreenDestination {
             unselectedIcon = SrIcons.DictionaryBorder,
             text = "Словарь"
         ),
-        STATISTICS(
-            route = "",
+        ABOUT(
+            route = AboutScreenDestination.route,
             selectedIcon = SrIcons.Statistics,
             unselectedIcon = SrIcons.StatisticsBorder,
             text = "Статистика"
