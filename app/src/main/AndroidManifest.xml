@@ -11,13 +11,13 @@
         android:label="${appLabel}"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Srbrus"
+        android:theme="@style/Theme.Srbrus.Splash"
         tools:targetApi="31">
         <activity
             android:name=".MainActivity"
             android:windowSoftInputMode="adjustResize"
             android:exported="true"
-            android:theme="@style/Theme.Srbrus">
+            android:theme="@style/Theme.Srbrus.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

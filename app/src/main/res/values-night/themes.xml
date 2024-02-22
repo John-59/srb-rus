@@ -4,11 +4,8 @@
     <style name="Theme.Srbrus" parent="android:Theme.Material.NoActionBar" />
 
     <style name="Theme.Srbrus.Splash" parent="Theme.SplashScreen">
-        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-        <item name="android:windowTranslucentNavigation">false</item>
-        <item name="android:navigationBarColor">@color/ic_launcher_background_tint</item>
-
         <item name="windowSplashScreenBackground">@color/ic_launcher_background_tint</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/logo</item>
         <item name="postSplashScreenTheme">@style/Theme.Srbrus</item>
         <item name="android:windowLightStatusBar">false</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="27">false</item>
