@@ -1,5 +1,6 @@
 package com.trainer.srb.rus.feature.exercise
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -30,23 +32,26 @@ fun ShowInRussianAndSelectSerbianVariantsBody(
     onDontWantLearn: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column(
-        modifier = modifier,
-        horizontalAlignment = Alignment.CenterHorizontally,
+    Surface(
+        modifier = modifier
     ) {
-        WordAndVariants(
-            state = state,
-            modifier = Modifier
-                .weight(2.0f)
-                .fillMaxWidth()
-        )
-        WordActions(
-            isNextEnabled = state.selectionIsDone,
-            onNext = onNext,
-            onAlreadyKnow = onAlreadyKnow,
-            onDontWantLearn = onDontWantLearn,
-            modifier = Modifier.fillMaxWidth()
-        )
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            WordAndVariants(
+                state = state,
+                modifier = Modifier
+                    .weight(2.0f)
+                    .fillMaxWidth()
+            )
+            WordActions(
+                isNextEnabled = state.selectionIsDone,
+                onNext = onNext,
+                onAlreadyKnow = onAlreadyKnow,
+                onDontWantLearn = onDontWantLearn,
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
     }
 }
 
@@ -125,6 +130,27 @@ fun BeforeSelection_ShowInRussianAndSelectSerbianVariantsBodyPreview() {
     }
 }
 
+@Preview(apiLevel = 33, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+fun BeforeSelection_ShowInRussianAndSelectSerbianVariantsBodyNightPreview() {
+    MainTheme(
+        dynamicColor = false
+    ) {
+        ShowInRussianAndSelectSerbianVariantsBody(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(20.dp),
+            onNext = {},
+            onAlreadyKnow = {},
+            onDontWantLearn = {},
+            state = ExerciseStep.ShowInRussianAndSelectSerbianVariants(
+                translation = translationsExample.first(),
+                others = translationsExample.takeLast(3)
+            )
+        )
+    }
+}
+
 @Preview(apiLevel = 33)
 @Composable
 fun RightSelection_ShowInRussianAndSelectSerbianVariantsBodyPreview() {
@@ -151,9 +177,61 @@ fun RightSelection_ShowInRussianAndSelectSerbianVariantsBodyPreview() {
     }
 }
 
+@Preview(apiLevel = 33, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+fun RightSelection_ShowInRussianAndSelectSerbianVariantsBodyNightPreview() {
+    MainTheme(
+        dynamicColor = false
+    ) {
+        val state = ExerciseStep.ShowInRussianAndSelectSerbianVariants(
+            translation = translationsExample.first(),
+            others = translationsExample.takeLast(3)
+        )
+        ShowInRussianAndSelectSerbianVariantsBody(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(20.dp),
+            onNext = {},
+            onAlreadyKnow = {},
+            onDontWantLearn = {},
+            state = state
+        )
+
+        LaunchedEffect(Unit) {
+            state.select(translationsExample.first())
+        }
+    }
+}
+
 @Preview(apiLevel = 33)
 @Composable
 fun WrongSelection_ShowInRussianAndSelectSerbianVariantsBodyPreview() {
+    MainTheme(
+        dynamicColor = false
+    ) {
+        val state = ExerciseStep.ShowInRussianAndSelectSerbianVariants(
+            translation = translationsExample.first(),
+            others = translationsExample.takeLast(3)
+        )
+        ShowInRussianAndSelectSerbianVariantsBody(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(20.dp),
+            onNext = {},
+            onAlreadyKnow = {},
+            onDontWantLearn = {},
+            state = state
+        )
+
+        LaunchedEffect(Unit) {
+            state.select(translationsExample.last())
+        }
+    }
+}
+
+@Preview(apiLevel = 33, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+fun WrongSelection_ShowInRussianAndSelectSerbianVariantsNightBodyPreview() {
     MainTheme(
         dynamicColor = false
     ) {

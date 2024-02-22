@@ -1,5 +1,6 @@
 package com.trainer.srb.rus.core.ui
 
+import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,6 +12,7 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -40,28 +42,30 @@ fun ConfirmationDialog(
             )
             .padding(10.dp)
     ) {
-        Column {
-            Text(
-                text = text,
-                style = MaterialTheme.typography.titleMedium
-            )
-            Spacer(spacerModifier)
-            Row {
-                Spacer(modifier = Modifier.weight(2f))
-                Button(
-                    onClick = onCancel
-                ) {
-                    Text(
-                        text = "Нет"
-                    )
-                }
+        Surface {
+            Column {
+                Text(
+                    text = text,
+                    style = MaterialTheme.typography.titleMedium
+                )
                 Spacer(spacerModifier)
-                Button(
-                    onClick = onExit,
-                ) {
-                    Text(
-                        text = "Да"
-                    )
+                Row {
+                    Spacer(modifier = Modifier.weight(2f))
+                    Button(
+                        onClick = onCancel
+                    ) {
+                        Text(
+                            text = "Нет"
+                        )
+                    }
+                    Spacer(spacerModifier)
+                    Button(
+                        onClick = onExit,
+                    ) {
+                        Text(
+                            text = "Да"
+                        )
+                    }
                 }
             }
         }
@@ -71,6 +75,20 @@ fun ConfirmationDialog(
 @Preview(apiLevel = 33)
 @Composable
 private fun ExitExerciseConfirmationDialogPreview() {
+    MainTheme(
+        dynamicColor = false
+    ) {
+        ConfirmationDialog(
+            text = "Закончить упражнение?",
+            onExit = {},
+            onCancel = {}
+        )
+    }
+}
+
+@Preview(apiLevel = 33, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+private fun ExitExerciseConfirmationDialogNightPreview() {
     MainTheme(
         dynamicColor = false
     ) {

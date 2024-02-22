@@ -19,6 +19,12 @@ private val DarkColorScheme = darkColorScheme(
     primary = Colors.Purple80,
     secondary = Colors.PurpleGrey80,
     tertiary = Colors.Pink80,
+
+    inverseSurface = Colors.Green,
+    inverseOnSurface = Colors.Black,
+
+    error = Colors.Red,
+    onError = Colors.White,
 )
 
 private val LightColorScheme = lightColorScheme(

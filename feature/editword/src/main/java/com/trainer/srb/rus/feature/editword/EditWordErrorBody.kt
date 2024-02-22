@@ -1,16 +1,17 @@
 package com.trainer.srb.rus.feature.editword
 
-import androidx.compose.foundation.layout.Box
+import android.content.res.Configuration
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Text
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.trainer.srb.rus.core.design.MainTheme
 
 @Composable
@@ -18,23 +19,43 @@ fun EditWordErrorBody(
     message: String,
     modifier: Modifier = Modifier
 ) {
-    Box(
-        modifier = modifier,
-        contentAlignment = Alignment.Center
+    Surface(
+        modifier = modifier
     ) {
-        Text(
-            text = message,
-            style = MaterialTheme.typography.titleMedium,
-            textAlign = TextAlign.Center
-        )
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = message,
+                style = MaterialTheme.typography.displayMedium,
+                textAlign = TextAlign.Center
+            )
+        }
     }
 }
 
 @Preview(apiLevel = 33)
 @Composable
 private fun EditWordErrorBodyPreview() {
-    EditWordErrorBody(
-        message = "Не найден перевод с идентификатором = -1",
-        modifier = Modifier.fillMaxSize().padding(20.dp)
-    )
+    MainTheme(
+        dynamicColor = false
+    ) {
+        EditWordErrorBody(
+            message = "Не найден перевод с идентификатором = -1",
+        )
+    }
+}
+
+@Preview(apiLevel = 33, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+private fun EditWordErrorBodyNightPreview() {
+    MainTheme(
+        dynamicColor = false
+    ) {
+        EditWordErrorBody(
+            message = "Не найден перевод с идентификатором = -1",
+        )
+    }
 }

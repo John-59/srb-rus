@@ -1,5 +1,6 @@
 package com.trainer.srb.rus.feature.learn
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -119,6 +120,21 @@ private fun ExerciseSelectionBody(
 @Preview(apiLevel = 33)
 @Composable
 private fun LearnScreenPreview() {
+    MainTheme(
+        dynamicColor = false
+    ) {
+        LearnScreen(
+            viewModel = LearnViewModel(
+                dictionary = DictionaryMock()
+            ),
+            navigateToExercise = {}
+        )
+    }
+}
+
+@Preview(apiLevel = 33, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+private fun LearnScreenNightPreview() {
     MainTheme(
         dynamicColor = false
     ) {

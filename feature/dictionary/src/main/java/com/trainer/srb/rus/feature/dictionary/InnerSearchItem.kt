@@ -1,5 +1,6 @@
 package com.trainer.srb.rus.feature.dictionary
 
+import android.content.res.Configuration
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -155,5 +157,30 @@ private fun InnerSearchItemPreviewFour() {
             ),
             onEdit = {}
         )
+    }
+}
+
+@Preview(apiLevel = 33, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+private fun InnerSearchItemPreviewFourNight() {
+    MainTheme(
+        dynamicColor = false
+    ) {
+        Surface {
+            InnerSearchItem(
+                translation = Translation(
+                    source = Word.Serbian(
+                        latinValue = "",
+                        cyrillicValue = "књига"
+                    ),
+                    translations = listOf(
+                        Word.Russian(value = "книга"),
+                    ),
+                    type = TranslationSourceType.USER,
+                    learningStatus = LearningStatus.AfterTwoWeeks()
+                ),
+                onEdit = {}
+            )
+        }
     }
 }

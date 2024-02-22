@@ -18,7 +18,7 @@ class EditWordViewModel @Inject constructor(
 
     private val args = EditWordArgs(savedStateHandle)
 
-    val state = flow<EditWordState> {
+    val state = flow {
         val translation = dictionary.get(args.latinValueId)
         val state = if (translation == null) {
             EditWordState.Error("Не найден перевод с идентификатором = ${args.latinValueId}")

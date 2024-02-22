@@ -1,11 +1,13 @@
 package com.trainer.srb.rus.feature.exercise
 
+import android.content.res.Configuration
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Text
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -40,6 +42,7 @@ fun ExerciseTopBar(
         Spacer(spacerWidth)
         LinearProgressIndicator(
             modifier = Modifier.weight(2f),
+            color = MaterialTheme.colorScheme.inverseSurface,
             progress = progress,
         )
         Spacer(spacerWidth)
@@ -56,7 +59,7 @@ fun ExerciseTopBar(
 
 @Preview(apiLevel = 33)
 @Composable
-fun LearnTopBarPreview() {
+private fun LearnTopBarPreview() {
     MainTheme(
         dynamicColor = false
     ) {
@@ -66,5 +69,22 @@ fun LearnTopBarPreview() {
             onSkip = {},
             onExit = {}
         )
+    }
+}
+
+@Preview(apiLevel = 33, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+fun LearnTopBarNightPreview() {
+    MainTheme(
+        dynamicColor = false
+    ) {
+        Surface {
+            ExerciseTopBar(
+                progress = 0.7f,
+                modifier = Modifier.fillMaxWidth(),
+                onSkip = {},
+                onExit = {}
+            )
+        }
     }
 }

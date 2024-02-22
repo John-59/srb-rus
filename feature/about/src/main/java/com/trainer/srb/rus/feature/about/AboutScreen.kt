@@ -1,5 +1,6 @@
 package com.trainer.srb.rus.feature.about
 
+import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -7,6 +8,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -31,41 +33,64 @@ fun AboutScreen(
     val learningCount by viewModel.learningTranslationsCount.collectAsState()
     val learnedCount by viewModel.learnedTranslationsCount.collectAsState()
 
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-        modifier = Modifier.fillMaxSize()
-    ) {
-        Image(
-            painter = painterResource(id = DesignRes.drawable.logo_primary),
-            contentDescription = null
-        )
-        Text(
-            text = "Тренажер сербских слов",
-            style = MaterialTheme.typography.titleLarge
-        )
-        Text(
-            text = "Версия приложения: ${viewModel.appVersion}"
-        )
-        Spacer(modifier = Modifier.height(10.dp))
-        Text(
-            text = "Всего слов в словаре: $totalCount"
-        )
-        Text(
-            text = "Слов добавленных пользователем: $userCount"
-        )
-        Text(
-            text = "Слов в процессе изучения: $learningCount"
-        )
-        Text(
-            text = "Выучено слов: $learnedCount"
-        )
+    Surface {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier.fillMaxSize()
+        ) {
+            Image(
+                painter = painterResource(id = DesignRes.drawable.logo_primary),
+                contentDescription = null
+            )
+            Text(
+                text = "Тренажер сербских слов",
+                style = MaterialTheme.typography.titleLarge
+            )
+            Text(
+                text = "Версия приложения: ${viewModel.appVersion}"
+            )
+            Spacer(modifier = Modifier.height(10.dp))
+            Text(
+                text = "Всего слов в словаре: $totalCount"
+            )
+            Text(
+                text = "Слов добавленных пользователем: $userCount"
+            )
+            Text(
+                text = "Слов в процессе изучения: $learningCount"
+            )
+            Text(
+                text = "Выучено слов: $learnedCount"
+            )
+        }
     }
 }
 
 @Preview(apiLevel = 33)
 @Composable
 fun AboutScreenPreview() {
+    MainTheme(
+        dynamicColor = false
+    ) {
+        AboutScreen(
+            viewModel = AboutViewModel(
+                appVersionProvider = object : IAppVersionProvider {
+                    override val version: String
+                        get() = "0.4.19"
+                    override val predefinedDatabaseVersion: Int
+                        get() = 19
+
+                },
+                dictionary = DictionaryMock()
+            )
+        )
+    }
+}
+
+@Preview(apiLevel = 33, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+fun AboutScreenNightPreview() {
     MainTheme(
         dynamicColor = false
     ) {

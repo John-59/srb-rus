@@ -1,9 +1,11 @@
 package com.trainer.srb.rus.feature.addword
 
+import android.content.res.Configuration
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -11,6 +13,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -29,53 +32,56 @@ import com.trainer.srb.rus.core.design.R as DesignRes
 
 @Composable
 fun AddWordScreen(
-    modifier: Modifier = Modifier,
     viewModel: AddWordViewModel = hiltViewModel(),
     onBack: () -> Unit
 ) {
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(20.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+    Surface(
+        modifier = Modifier.fillMaxSize()
     ) {
-
-        SerbianWord(
-            serbianWord = viewModel.srbWord,
-            onSrbLatChange = viewModel::srbLatinChange,
-            onSrbCyrChange = viewModel::srbCyrillicChange,
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(modifier = Modifier.height(15.dp))
-
-        RussiansWords(
-            russianWords = viewModel.rusWords,
-            onValueChange = viewModel::rusChange,
-            onAddRusWord = viewModel::addRusWord,
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(modifier = Modifier.height(15.dp))
-
-        Button(
-            onClick = {
-                viewModel.add()
-                onBack()
-            },
-            enabled = viewModel.srbWord.latinValue.isNotBlank()
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(20.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Icon(
-                imageVector = SrIcons.AddCirce,
-                contentDescription = null
+
+            SerbianWord(
+                serbianWord = viewModel.srbWord,
+                onSrbLatChange = viewModel::srbLatinChange,
+                onSrbCyrChange = viewModel::srbCyrillicChange,
+                modifier = Modifier.fillMaxWidth()
             )
-            Text(
-                text = "Добавить в словарь",
-                style = MaterialTheme.typography.displayMedium.copy(
-                    fontSize = 16.sp
-                ),
-                modifier = Modifier.padding(start = 10.dp)
+
+            Spacer(modifier = Modifier.height(15.dp))
+
+            RussiansWords(
+                russianWords = viewModel.rusWords,
+                onValueChange = viewModel::rusChange,
+                onAddRusWord = viewModel::addRusWord,
+                modifier = Modifier.fillMaxWidth()
             )
+
+            Spacer(modifier = Modifier.height(15.dp))
+
+            Button(
+                onClick = {
+                    viewModel.add()
+                    onBack()
+                },
+                enabled = viewModel.srbWord.latinValue.isNotBlank()
+            ) {
+                Icon(
+                    imageVector = SrIcons.AddCirce,
+                    contentDescription = null
+                )
+                Text(
+                    text = "Добавить в словарь",
+                    style = MaterialTheme.typography.displayMedium.copy(
+                        fontSize = 16.sp
+                    ),
+                    modifier = Modifier.padding(start = 10.dp)
+                )
+            }
         }
     }
 }
@@ -174,6 +180,22 @@ private fun WordItem(
 @Composable
 @Preview(apiLevel = 33)
 private fun AddWordScreenPreview() {
+    MainTheme(
+        dynamicColor = false
+    ) {
+        AddWordScreen(
+            viewModel = AddWordViewModel(
+                savedStateHandle = SavedStateHandle(),
+                dictionary = DictionaryMock()
+            ),
+            onBack = {}
+        )
+    }
+}
+
+@Composable
+@Preview(apiLevel = 33, uiMode = Configuration.UI_MODE_NIGHT_YES)
+private fun AddWordScreenNightPreview() {
     MainTheme(
         dynamicColor = false
     ) {

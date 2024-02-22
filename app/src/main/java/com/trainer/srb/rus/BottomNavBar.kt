@@ -1,5 +1,6 @@
 package com.trainer.srb.rus
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Divider
@@ -56,6 +57,20 @@ fun BottomNavBar(
 @Preview(apiLevel = 33)
 @Composable
 fun BottomBarPreview() {
+    MainTheme(
+        dynamicColor = false
+    ) {
+        BottomNavBar(
+            destinations = MainScreenDestination.Inner.entries,
+            currentDestination = MainScreenDestination.Inner.LEARN,
+            onDestinationChanged = {}
+        )
+    }
+}
+
+@Preview(apiLevel = 33, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+fun BottomBarNightPreview() {
     MainTheme(
         dynamicColor = false
     ) {

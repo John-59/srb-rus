@@ -1,5 +1,6 @@
 package com.trainer.srb.rus.feature.dictionary
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -99,6 +100,26 @@ private fun DictionaryBody(
 @Preview(apiLevel = 33)
 @Composable
 private fun SearchBodyPreview() {
+    MainTheme(
+        dynamicColor = false
+    ) {
+        DictionaryBody(
+            visibleWords = translationsExample,
+            searchingWord = TextFieldValue(""),
+            navigateToAddWord = {},
+            navigateToEditWord = {},
+            searchingWordChange = {},
+            resetSearch = {},
+            removeTranslation = {},
+            addToLearn = {},
+            setSelectionToEnd = {}
+        )
+    }
+}
+
+@Preview(apiLevel = 33, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+private fun SearchBodyNightPreview() {
     MainTheme(
         dynamicColor = false
     ) {

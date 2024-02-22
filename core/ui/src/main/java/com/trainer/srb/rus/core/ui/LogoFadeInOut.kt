@@ -9,7 +9,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.material.Text
+import androidx.compose.material3.Text
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -18,17 +18,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import com.trainer.srb.rus.core.design.MainTheme
 import com.trainer.srb.rus.core.design.R as DesignRes
 
 @Composable
 fun LogoFadeInOut(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    initialAlpha: Float = 0F,
+    targetAlpha: Float = 1F
 ) {
     val infiniteTransition = rememberInfiniteTransition(label = "")
     val alpha by infiniteTransition.animateFloat(
-        initialValue = 0F,
-        targetValue = 1F,
+        initialValue = initialAlpha,
+        targetValue = targetAlpha,
         animationSpec = infiniteRepeatable(
             animation = tween(1000, easing = LinearEasing),
             repeatMode = RepeatMode.Reverse
@@ -40,7 +41,7 @@ fun LogoFadeInOut(
         modifier = modifier.alpha(alpha)
     ){
         Image(
-            painter = painterResource(id = DesignRes.drawable.waiter_logo),
+            painter = painterResource(id = DesignRes.drawable.logo_primary),
             contentDescription = null,
         )
         Text(
@@ -53,5 +54,8 @@ fun LogoFadeInOut(
 @Preview(apiLevel = 33)
 @Composable
 fun LogoFadeInOutPreview() {
-    LogoFadeInOut()
+    LogoFadeInOut(
+        initialAlpha = 1F,
+        targetAlpha = 0F
+    )
 }

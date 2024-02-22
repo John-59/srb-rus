@@ -1,5 +1,6 @@
 package com.trainer.srb.rus.feature.dictionary
 
+import android.content.res.Configuration
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -20,6 +21,7 @@ import androidx.compose.material.SwipeToDismiss
 import androidx.compose.material.rememberDismissState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableFloatStateOf
@@ -162,22 +164,26 @@ private fun ItemSwipeBackground(
             Icon(
                 imageVector = SrIcons.LearnBorder,
                 contentDescription = null,
+                tint = MaterialTheme.colorScheme.inverseOnSurface
             )
             Spacer(modifier = Modifier.width(5.dp))
             Text(
                 text = "Добавить в\nизучаемые слова",
-                style = MaterialTheme.typography.labelSmall
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.inverseOnSurface
             )
         } else {
             Spacer(modifier = Modifier.width(5.dp))
             Icon(
                 imageVector = SrIcons.Repeat,
                 contentDescription = null,
+                tint = MaterialTheme.colorScheme.inverseOnSurface
             )
             Spacer(modifier = Modifier.width(5.dp))
             Text(
                 text = "Учить\nзаново",
-                style = MaterialTheme.typography.labelSmall
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.inverseOnSurface
             )
         }
     }
@@ -197,6 +203,22 @@ private fun ItemSwipeDeleteBackgroundPreview() {
     }
 }
 
+@Preview(apiLevel = 33, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+private fun ItemSwipeDeleteBackgroundNightPreview() {
+    MainTheme(
+        dynamicColor = false
+    ) {
+        Surface {
+            ItemSwipeBackground(
+                learningProgress = 0f,
+                direction = DismissDirection.EndToStart,
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
+    }
+}
+
 @Preview(apiLevel = 33)
 @Composable
 private fun ItemSwipeAddToLearnedBackgroundPreview() {
@@ -208,6 +230,22 @@ private fun ItemSwipeAddToLearnedBackgroundPreview() {
             direction = DismissDirection.StartToEnd,
             modifier = Modifier.fillMaxWidth()
         )
+    }
+}
+
+@Preview(apiLevel = 33, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+private fun ItemSwipeAddToLearnedBackgroundNightPreview() {
+    MainTheme(
+        dynamicColor = false
+    ) {
+        Surface {
+            ItemSwipeBackground(
+                learningProgress = 0f,
+                direction = DismissDirection.StartToEnd,
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
     }
 }
 
@@ -225,6 +263,22 @@ private fun ItemSwipeLearnAgainBackgroundPreview() {
     }
 }
 
+@Preview(apiLevel = 33, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+private fun ItemSwipeLearnAgainBackgroundNightPreview() {
+    MainTheme(
+        dynamicColor = false
+    ) {
+        Surface {
+            ItemSwipeBackground(
+                learningProgress = 0.3f,
+                direction = DismissDirection.StartToEnd,
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
+    }
+}
+
 @Preview(apiLevel = 33)
 @Composable
 private fun SearchResultPreview() {
@@ -237,5 +291,22 @@ private fun SearchResultPreview() {
             onEdit = {},
             innerWords = translationsExample
         )
+    }
+}
+
+@Preview(apiLevel = 33, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+private fun SearchResultNightPreview() {
+    MainTheme(
+        dynamicColor = false
+    ) {
+        Surface {
+            SearchResult(
+                onRemoveTranslation = {},
+                onAddToLearn = {},
+                onEdit = {},
+                innerWords = translationsExample
+            )
+        }
     }
 }

@@ -1,31 +1,61 @@
 package com.trainer.srb.rus.feature.editword
 
-import androidx.compose.foundation.layout.Box
+import android.content.res.Configuration
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
+import com.trainer.srb.rus.core.design.MainTheme
 import com.trainer.srb.rus.core.ui.LogoFadeInOut
 
 @Composable
 fun EditWordInitializeBody(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    initialAlpha: Float = 0f,
+    targetAlpha: Float = 1f
 ) {
-    Box(
-        modifier = modifier,
-        contentAlignment = Alignment.Center
+    Surface(
+        modifier = modifier
     ) {
-        LogoFadeInOut()
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier.fillMaxSize()
+        ) {
+            LogoFadeInOut(
+                initialAlpha = initialAlpha,
+                targetAlpha = targetAlpha
+            )
+        }
     }
 }
 
 @Preview(apiLevel = 33)
 @Composable
 private fun EditWordInitializeBodyPreview() {
-    EditWordInitializeBody(
-        modifier = Modifier.fillMaxSize().padding(20.dp)
-    )
+    MainTheme(
+        dynamicColor = false
+    ) {
+        EditWordInitializeBody(
+            initialAlpha = 1f,
+            targetAlpha = 0f
+        )
+    }
+}
+
+@Preview(apiLevel = 33, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+private fun EditWordInitializeBodyNightPreview() {
+    MainTheme(
+        dynamicColor = false
+    ) {
+        EditWordInitializeBody(
+            initialAlpha = 1f,
+            targetAlpha = 0f
+        )
+    }
 }

@@ -1,5 +1,6 @@
 package com.trainer.srb.rus.feature.exercise
 
+import android.content.res.Configuration
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -25,7 +26,9 @@ fun ExerciseScreen(
     viewModel: ExerciseViewModel = hiltViewModel()
 ) {
     val exerciseStep by viewModel.state.collectAsState()
-    Surface {
+    Surface(
+        modifier = Modifier.fillMaxSize()
+    ) {
         Column(
             modifier = Modifier.padding(20.dp)
         ) {
@@ -151,6 +154,26 @@ private fun Body(
 @Preview(apiLevel = 33)
 @Composable
 fun LearnScreenPreview() {
+    MainTheme(
+        dynamicColor = false
+    ) {
+        ExerciseScreen(
+            onFinished = {},
+            viewModel = ExerciseViewModel(
+                dictionary = DictionaryMock(),
+                savedStateHandle = SavedStateHandle(
+                    initialState = mapOf(
+                        ExerciseArgs.exerciseTypeArgName to ExerciseType.RANDOM.toString()
+                    )
+                )
+            )
+        )
+    }
+}
+
+@Preview(apiLevel = 33, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+fun LearnScreenNightPreview() {
     MainTheme(
         dynamicColor = false
     ) {
