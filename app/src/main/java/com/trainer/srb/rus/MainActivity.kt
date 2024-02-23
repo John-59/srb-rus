@@ -39,14 +39,15 @@ class MainActivity : ComponentActivity() {
         splashScreen.setKeepOnScreenCondition {
             when (uiState) {
                 MainActivityUiState.Loading -> true
-                MainActivityUiState.Success -> {
-                    setContent {
-                        MainTheme {
-                            TopLevelNavHost()
-                        }
-                    }
-                    false
-                }
+                MainActivityUiState.Success -> false
+            }
+        }
+
+        setContent {
+            MainTheme(
+                dynamicColor = false
+            ) {
+                TopLevelNavHost()
             }
         }
     }
