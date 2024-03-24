@@ -5,7 +5,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 
 @Database(
-    version = 21, // don't forget also change app version in app module gradle file
+    version = 22, // don't forget also change app version in app module gradle file
     exportSchema = true,
     entities = [
         SerbianLatinWord::class,
