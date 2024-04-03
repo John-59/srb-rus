@@ -1,21 +1,21 @@
 [versions]
 
-androidxComposeBom = "2024.01.00"
+androidxComposeBom = "2024.03.00"
 androidxCoreKtx = "1.12.0"
 androidxCoreSplashscreen = "1.0.1"
 androidxDatastore = "1.0.0"
 androidGradlePlugin = "8.2.2"
-androidxHiltNavigationCompose = "1.1.0"
+androidxHiltNavigationCompose = "1.2.0"
 androidxRoom = "2.6.1"
 androidxTestEspressoCore = "3.5.1"
 androidxTestExtJunit = "1.1.5"
 
 daggerHiltAndroid = "2.50"
 
-firebaseBom = "32.7.1"
+firebaseBom = "32.8.0"
 firebaseCrashlyticsPlugin = "2.9.9"
 
-gmsPlugin = "4.4.0"
+gmsPlugin = "4.4.1"
 
 junit = "4.13.2"
 
