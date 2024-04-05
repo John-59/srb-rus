@@ -24,4 +24,10 @@ class LearnViewModel @Inject constructor(
         initialValue = false,
         started = SharingStarted.WhileSubscribed()
     )
+
+    val isUnknownWords = dictionary.isUnknownWords.stateIn(
+        scope = viewModelScope,
+        initialValue = false,
+        started = SharingStarted.WhileSubscribed()
+    )
 }

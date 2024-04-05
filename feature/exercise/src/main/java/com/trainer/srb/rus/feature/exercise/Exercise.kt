@@ -1,6 +1,7 @@
 package com.trainer.srb.rus.feature.exercise
 
 import com.trainer.srb.rus.core.dictionary.IDictionary
+import com.trainer.srb.rus.core.translation.LearningStatusName
 import com.trainer.srb.rus.core.translation.Translation
 import com.trainer.srb.rus.core.translation.Word
 
@@ -21,9 +22,23 @@ sealed interface Exercise {
         ): Exercise {
             return when (exerciseType) {
                 ExerciseType.UNDEFINED -> ExerciseUndefined
-                ExerciseType.RANDOM -> ExerciseRandom(dictionary)
+                ExerciseType.RANDOM -> {
+                    val statuses = LearningStatusName.entries.minus(
+                        listOf(
+                            LearningStatusName.ALREADY_KNOW,
+                            LearningStatusName.DONT_WANT_LEARN,
+                            LearningStatusName.UNUSED)
+                    ).toTypedArray()
+                    ExerciseRandom(dictionary, statuses)
+                }
                 ExerciseType.NEW -> ExerciseNew(dictionary)
                 ExerciseType.REPEAT -> ExerciseRepeat(dictionary)
+                ExerciseType.UNKNOWN -> {
+                    val statuses = arrayOf(
+                        LearningStatusName.UNKNOWN
+                    )
+                    ExerciseRandom(dictionary, statuses)
+                }
             }
         }
     }

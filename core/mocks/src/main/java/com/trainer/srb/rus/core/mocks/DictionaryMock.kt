@@ -1,19 +1,33 @@
 package com.trainer.srb.rus.core.mocks
 
 import com.trainer.srb.rus.core.dictionary.IDictionary
+import com.trainer.srb.rus.core.translation.LearningStatus
 import com.trainer.srb.rus.core.translation.LearningStatusName
 import com.trainer.srb.rus.core.translation.Translation
 import com.trainer.srb.rus.core.translation.Word
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.transform
 
 class DictionaryMock: IDictionary {
     override val translations: Flow<List<Translation<Word.Serbian, Word.Russian>>> = flow {
         emit(translationsExample)
     }
 
-    override val isNewWords: Flow<Boolean> = emptyFlow()
+    override val isNewWords: Flow<Boolean> = translations.transform {
+        val isNew = it.any { translation ->
+            translation.learningStatus is LearningStatus.New
+        }
+        emit(isNew)
+    }
+
+    override val isUnknownWords: Flow<Boolean> = translations.transform {
+        val containsUnknown = it.any { translation ->
+            translation.learningStatus is LearningStatus.Unknown
+        }
+        emit(containsUnknown)
+    }
 
     override val totalTranslationsCount: Flow<Int> = flow {
         emit(translationsExample.count())

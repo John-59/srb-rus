@@ -1,6 +1,7 @@
 package com.trainer.srb.rus.core.design
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.HelpOutline
 import androidx.compose.material.icons.automirrored.outlined.PlaylistAdd
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.AddCircle
@@ -31,6 +32,7 @@ object SrIcons {
 
     val Random = Icons.Outlined.Shuffle
     val New = Icons.Outlined.AutoAwesome
+    val Unknown = Icons.AutoMirrored.Outlined.PlaylistAdd
     val Repeat = Icons.Outlined.Autorenew
 
     val Close = Icons.Outlined.Close
@@ -44,4 +46,6 @@ object SrIcons {
 
     val AddWord = Icons.AutoMirrored.Outlined.PlaylistAdd
     val DeleteWord = Icons.Outlined.Delete
+
+    val Help = Icons.AutoMirrored.Outlined.HelpOutline
 }

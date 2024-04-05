@@ -7,6 +7,7 @@ import com.trainer.srb.rus.core.translation.Word
 
 class ExerciseRandom(
     private val dictionary: IDictionary,
+    private val learningStatuses: Array<LearningStatusName>
 ): Exercise {
 
     private var totalStepsCount: Int = 0
@@ -35,13 +36,7 @@ class ExerciseRandom(
 
     override suspend fun next(): ExerciseStep {
         if (needInit) {
-            val statuses = LearningStatusName.entries.minus(
-                listOf(
-                    LearningStatusName.ALREADY_KNOW,
-                    LearningStatusName.DONT_WANT_LEARN,
-                    LearningStatusName.UNUSED)
-            ).toTypedArray()
-            dictionary.getRandom(learningWordsCount, *statuses).forEach {
+            dictionary.getRandom(learningWordsCount, *learningStatuses).forEach {
                 wordToExerciseStepType[it] = ArrayDeque(exerciseStepTypes)
                 wordToCompletedSteps[it] = mutableListOf()
             }

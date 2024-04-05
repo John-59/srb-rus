@@ -15,6 +15,8 @@ interface IDictionary {
 
     val isNewWords: Flow<Boolean>
 
+    val isUnknownWords: Flow<Boolean>
+
     val totalTranslationsCount: Flow<Int>
 
     val userTranslationCount: Flow<Int>

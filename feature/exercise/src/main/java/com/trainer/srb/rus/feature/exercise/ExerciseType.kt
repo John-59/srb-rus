@@ -4,5 +4,6 @@ enum class ExerciseType {
     UNDEFINED,
     RANDOM,
     NEW,
-    REPEAT
+    REPEAT,
+    UNKNOWN
 }
