@@ -1,7 +1,7 @@
 package com.trainer.srb.rus.feature.learn
 
-import android.content.res.Configuration
 import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -23,8 +23,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.trainer.srb.rus.core.design.MainTheme
 import com.trainer.srb.rus.core.design.SrIcons
@@ -76,6 +77,16 @@ fun RepeatWords(
                                 text = "Повторение слов",
                                 style = MaterialTheme.typography.displayMedium
                             )
+                            Row(
+                                modifier = Modifier.fillMaxSize(),
+                                horizontalArrangement = Arrangement.End,
+                                verticalAlignment = Alignment.Bottom
+                            ) {
+                                Text(
+                                    text = (it + 1).toString(),
+                                    style = MaterialTheme.typography.displaySmall
+                                )
+                            }
                         }
                     }
                     Spacer(modifier = Modifier.width(10.dp))
@@ -91,56 +102,22 @@ fun RepeatWords(
     }
 }
 
-@Preview
+@PreviewLightDark
 @Composable
 private fun RepeatWordsPreview() {
     MainTheme(dynamicColor = false) {
-        RepeatWords(
-            repeatExercisesCount = 2,
-            openExercise = {}
-        )
-    }
-}
-
-@Preview
-@Composable
-private fun RepeatWordsDisabledPreview() {
-    MainTheme(dynamicColor = false) {
-        RepeatWords(
-            repeatExercisesCount = 0,
-            openExercise = {}
-        )
-    }
-}
-
-@Preview
-@Composable
-private fun RepeatWordsWithHelpPreview() {
-    MainTheme(dynamicColor = false) {
-        RepeatWords(
-            repeatExercisesCount = 1,
-            openExercise = {},
-            initialHelpVisibility = true
-        )
-    }
-}
-
-@Preview(apiLevel = 33, uiMode = Configuration.UI_MODE_NIGHT_YES)
-@Composable
-private fun RepeatWordsNightPreview() {
-    MainTheme(dynamicColor = false) {
         Surface {
             RepeatWords(
-                repeatExercisesCount = 1,
+                repeatExercisesCount = 2,
                 openExercise = {}
             )
         }
     }
 }
 
-@Preview(apiLevel = 33, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@PreviewLightDark
 @Composable
-private fun RepeatWordsDisabledNightPreview() {
+private fun RepeatWordsDisabledPreview() {
     MainTheme(dynamicColor = false) {
         Surface {
             RepeatWords(
@@ -151,13 +128,13 @@ private fun RepeatWordsDisabledNightPreview() {
     }
 }
 
-@Preview(apiLevel = 33, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@PreviewLightDark
 @Composable
-private fun RepeatWordsWithHelpNightPreview() {
+private fun RepeatWordsWithHelpPreview() {
     MainTheme(dynamicColor = false) {
         Surface {
             RepeatWords(
-                repeatExercisesCount = 3,
+                repeatExercisesCount = 1,
                 openExercise = {},
                 initialHelpVisibility = true
             )
