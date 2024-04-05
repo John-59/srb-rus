@@ -8,12 +8,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.trainer.srb.rus.core.design.MainTheme
 import com.trainer.srb.rus.core.design.R as DesignRes
@@ -23,40 +24,45 @@ fun FinishBody(
     onNext: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column(
-        modifier = modifier,
-        horizontalAlignment = Alignment.CenterHorizontally
+    Surface(
+        modifier = modifier
     ) {
-        Box (
-            contentAlignment = Alignment.Center,
-            modifier = Modifier.weight(2.0f)
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Image(
-                painter = painterResource(id = DesignRes.drawable.finish),
-                contentDescription = null,
-            )
-        }
-        Button(
-            modifier = Modifier.fillMaxWidth(),
-            onClick = onNext
-        ) {
-            Text(
-                text = "Упражнение закончено",
-                style = MaterialTheme.typography.displayMedium
-            )
+            Box (
+                contentAlignment = Alignment.Center,
+                modifier = Modifier.weight(2.0f)
+            ) {
+                Image(
+                    painter = painterResource(id = DesignRes.drawable.finish),
+                    contentDescription = null,
+                )
+            }
+            Button(
+                modifier = Modifier.fillMaxWidth(),
+                onClick = onNext
+            ) {
+                Text(
+                    text = "Упражнение закончено",
+                    style = MaterialTheme.typography.displayMedium
+                )
+            }
         }
     }
-
 }
 
-@Preview(apiLevel = 33)
+@PreviewLightDark
 @Composable
 fun FinishBodyPreview() {
     MainTheme(
         dynamicColor = false
     ) {
         FinishBody(
-            modifier = Modifier.fillMaxSize().padding(20.dp),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(20.dp),
             onNext = {}
         )
     }

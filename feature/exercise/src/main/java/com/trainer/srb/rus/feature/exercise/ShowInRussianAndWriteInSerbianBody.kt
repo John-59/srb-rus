@@ -1,6 +1,5 @@
 package com.trainer.srb.rus.feature.exercise
 
-import android.content.res.Configuration
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -20,7 +19,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.trainer.srb.rus.core.design.MainTheme
 import com.trainer.srb.rus.core.exercise.ExerciseStep
@@ -171,7 +170,7 @@ private fun ShowInRussianAndWriteInSerbianBody(
     }
 }
 
-@Preview(apiLevel = 33)
+@PreviewLightDark
 @Composable
 private fun BeforeChecking_ShowInRussianAndWriteInSerbianBodyPreview() {
     MainTheme(
@@ -196,32 +195,7 @@ private fun BeforeChecking_ShowInRussianAndWriteInSerbianBodyPreview() {
     }
 }
 
-@Preview(apiLevel = 33, uiMode = Configuration.UI_MODE_NIGHT_YES)
-@Composable
-private fun BeforeChecking_ShowInRussianAndWriteInSerbianBodyNightPreview() {
-    MainTheme(
-        dynamicColor = false
-    ) {
-        ShowInRussianAndWriteInSerbianBody(
-            onNext = {},
-            state = ExerciseStep.ShowInRussianAndWriteInSerbian(
-                translation = Translation(
-                    source = Word.Serbian(
-                        latinValue = "kašika",
-                        cyrillicValue = "кашика"
-                    ),
-                    translations = listOf(
-                        Word.Russian(value = "ложка")
-                    ),
-                    type = TranslationSourceType.USER,
-                    learningStatus = LearningStatus.Unknown()
-                )
-            )
-        )
-    }
-}
-
-@Preview(apiLevel = 33)
+@PreviewLightDark
 @Composable
 private fun ValidInput_ShowInRussianAndWriteInSerbianBodyPreview() {
     val translation = Translation(
@@ -249,65 +223,9 @@ private fun ValidInput_ShowInRussianAndWriteInSerbianBodyPreview() {
     }
 }
 
-@Preview(apiLevel = 33, uiMode = Configuration.UI_MODE_NIGHT_YES)
-@Composable
-private fun ValidInput_ShowInRussianAndWriteInSerbianBodyNightPreview() {
-    val translation = Translation(
-        source = Word.Serbian(
-            latinValue = "kašika",
-            cyrillicValue = "кашика"
-        ),
-        translations = listOf(
-            Word.Russian(value = "ложка")
-        ),
-        type = TranslationSourceType.USER,
-        learningStatus = LearningStatus.Unknown()
-    )
-    MainTheme(
-        dynamicColor = false
-    ) {
-        ShowInRussianAndWriteInSerbianBody(
-            translation = translation,
-            userInput = "kašika",
-            userInputValidity = ExerciseStep.ShowInRussianAndWriteInSerbian.Validity.VALID,
-            onUserInputChange = {},
-            onUserInputCheck = {},
-            onNext = {},
-        )
-    }
-}
-
-@Preview(apiLevel = 33)
+@PreviewLightDark
 @Composable
 private fun WrongInput_ShowInRussianAndWriteInSerbianBodyPreview() {
-    val translation = Translation(
-        source = Word.Serbian(
-            latinValue = "kašika",
-            cyrillicValue = "кашика"
-        ),
-        translations = listOf(
-            Word.Russian(value = "ложка")
-        ),
-        type = TranslationSourceType.USER,
-        learningStatus = LearningStatus.Unknown()
-    )
-    MainTheme(
-        dynamicColor = false
-    ) {
-        ShowInRussianAndWriteInSerbianBody(
-            translation = translation,
-            userInput = "wrong",
-            userInputValidity = ExerciseStep.ShowInRussianAndWriteInSerbian.Validity.INVALID,
-            onUserInputChange = {},
-            onUserInputCheck = {},
-            onNext = {},
-        )
-    }
-}
-
-@Preview(apiLevel = 33, uiMode = Configuration.UI_MODE_NIGHT_YES)
-@Composable
-private fun WrongInput_ShowInRussianAndWriteInSerbianBodyNightPreview() {
     val translation = Translation(
         source = Word.Serbian(
             latinValue = "kašika",

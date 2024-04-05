@@ -1,6 +1,5 @@
 package com.trainer.srb.rus.feature.exercise
 
-import android.content.res.Configuration
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,17 +9,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.SavedStateHandle
 import com.trainer.srb.rus.core.design.MainTheme
 import com.trainer.srb.rus.core.exercise.ExerciseStep
 import com.trainer.srb.rus.core.exercise.ExerciseType
-import com.trainer.srb.rus.core.ui.ConfirmationDialog
 import com.trainer.srb.rus.core.mocks.DictionaryMock
 import com.trainer.srb.rus.core.translation.Translation
 import com.trainer.srb.rus.core.translation.Word
+import com.trainer.srb.rus.core.ui.ConfirmationDialog
 
 @Composable
 fun ExerciseScreen(
@@ -153,29 +152,9 @@ private fun Body(
     }
 }
 
-@Preview(apiLevel = 33)
+@PreviewLightDark
 @Composable
 fun LearnScreenPreview() {
-    MainTheme(
-        dynamicColor = false
-    ) {
-        ExerciseScreen(
-            onFinished = {},
-            viewModel = ExerciseViewModel(
-                dictionary = DictionaryMock(),
-                savedStateHandle = SavedStateHandle(
-                    initialState = mapOf(
-                        ExerciseArgs.exerciseTypeArgName to ExerciseType.RANDOM.toString()
-                    )
-                )
-            )
-        )
-    }
-}
-
-@Preview(apiLevel = 33, uiMode = Configuration.UI_MODE_NIGHT_YES)
-@Composable
-fun LearnScreenNightPreview() {
     MainTheme(
         dynamicColor = false
     ) {

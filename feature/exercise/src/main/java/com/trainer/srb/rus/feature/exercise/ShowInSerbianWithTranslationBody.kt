@@ -1,6 +1,5 @@
 package com.trainer.srb.rus.feature.exercise
 
-import android.content.res.Configuration
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,7 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.trainer.srb.rus.core.design.MainTheme
 import com.trainer.srb.rus.core.translation.LearningStatus
 import com.trainer.srb.rus.core.translation.Translation
@@ -74,34 +73,9 @@ private fun Word(
     }
 }
 
-@Preview(apiLevel = 33)
+@PreviewLightDark
 @Composable
 fun ShowInSerbianWithTranslationBodyPreview() {
-    MainTheme(
-        dynamicColor = false
-    ) {
-        ShowInSerbianWithTranslationBody(
-            onNext = {},
-            onAlreadyKnow = {},
-            onDontWantLearn = {},
-            translation = Translation(
-                source = Word.Serbian(
-                    latinValue = "kašika",
-                    cyrillicValue = "кашика"
-                ),
-                translations = listOf(
-                    Word.Russian(value = "ложка")
-                ),
-                type = TranslationSourceType.USER,
-                learningStatus = LearningStatus.Unknown()
-            )
-        )
-    }
-}
-
-@Preview(apiLevel = 33, uiMode = Configuration.UI_MODE_NIGHT_YES)
-@Composable
-fun ShowInSerbianWithTranslationBodyNightPreview() {
     MainTheme(
         dynamicColor = false
     ) {

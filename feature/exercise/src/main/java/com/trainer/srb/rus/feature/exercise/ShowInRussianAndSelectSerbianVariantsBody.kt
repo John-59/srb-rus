@@ -1,6 +1,5 @@
 package com.trainer.srb.rus.feature.exercise
 
-import android.content.res.Configuration
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -17,7 +16,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.trainer.srb.rus.core.design.MainTheme
 import com.trainer.srb.rus.core.exercise.ExerciseStep
@@ -110,7 +109,7 @@ private fun WordAndVariants(
     }
 }
 
-@Preview(apiLevel = 33)
+@PreviewLightDark
 @Composable
 fun BeforeSelection_ShowInRussianAndSelectSerbianVariantsBodyPreview() {
     MainTheme(
@@ -131,28 +130,7 @@ fun BeforeSelection_ShowInRussianAndSelectSerbianVariantsBodyPreview() {
     }
 }
 
-@Preview(apiLevel = 33, uiMode = Configuration.UI_MODE_NIGHT_YES)
-@Composable
-fun BeforeSelection_ShowInRussianAndSelectSerbianVariantsBodyNightPreview() {
-    MainTheme(
-        dynamicColor = false
-    ) {
-        ShowInRussianAndSelectSerbianVariantsBody(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(20.dp),
-            onNext = {},
-            onAlreadyKnow = {},
-            onDontWantLearn = {},
-            state = ExerciseStep.ShowInRussianAndSelectSerbianVariants(
-                translation = translationsExample.first(),
-                others = translationsExample.takeLast(3)
-            )
-        )
-    }
-}
-
-@Preview(apiLevel = 33)
+@PreviewLightDark
 @Composable
 fun RightSelection_ShowInRussianAndSelectSerbianVariantsBodyPreview() {
     MainTheme(
@@ -178,61 +156,9 @@ fun RightSelection_ShowInRussianAndSelectSerbianVariantsBodyPreview() {
     }
 }
 
-@Preview(apiLevel = 33, uiMode = Configuration.UI_MODE_NIGHT_YES)
-@Composable
-fun RightSelection_ShowInRussianAndSelectSerbianVariantsBodyNightPreview() {
-    MainTheme(
-        dynamicColor = false
-    ) {
-        val state = ExerciseStep.ShowInRussianAndSelectSerbianVariants(
-            translation = translationsExample.first(),
-            others = translationsExample.takeLast(3)
-        )
-        ShowInRussianAndSelectSerbianVariantsBody(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(20.dp),
-            onNext = {},
-            onAlreadyKnow = {},
-            onDontWantLearn = {},
-            state = state
-        )
-
-        LaunchedEffect(Unit) {
-            state.select(translationsExample.first())
-        }
-    }
-}
-
-@Preview(apiLevel = 33)
+@PreviewLightDark
 @Composable
 fun WrongSelection_ShowInRussianAndSelectSerbianVariantsBodyPreview() {
-    MainTheme(
-        dynamicColor = false
-    ) {
-        val state = ExerciseStep.ShowInRussianAndSelectSerbianVariants(
-            translation = translationsExample.first(),
-            others = translationsExample.takeLast(3)
-        )
-        ShowInRussianAndSelectSerbianVariantsBody(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(20.dp),
-            onNext = {},
-            onAlreadyKnow = {},
-            onDontWantLearn = {},
-            state = state
-        )
-
-        LaunchedEffect(Unit) {
-            state.select(translationsExample.last())
-        }
-    }
-}
-
-@Preview(apiLevel = 33, uiMode = Configuration.UI_MODE_NIGHT_YES)
-@Composable
-fun WrongSelection_ShowInRussianAndSelectSerbianVariantsNightBodyPreview() {
     MainTheme(
         dynamicColor = false
     ) {

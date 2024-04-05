@@ -1,13 +1,12 @@
 package com.trainer.srb.rus.feature.exercise
 
-import android.content.res.Configuration
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.trainer.srb.rus.core.design.MainTheme
 import com.trainer.srb.rus.core.ui.LogoFadeInOut
 
@@ -32,7 +31,7 @@ fun InitializeBody(
     }
 }
 
-@Preview(apiLevel = 33)
+@PreviewLightDark
 @Composable
 fun InitializeBodyPreview() {
     MainTheme(
@@ -40,18 +39,6 @@ fun InitializeBodyPreview() {
     ) {
         InitializeBody(
             initialAlpha = 1f,
-        )
-    }
-}
-
-@Preview(apiLevel = 33, uiMode = Configuration.UI_MODE_NIGHT_YES)
-@Composable
-fun InitializeBodyNightPreview() {
-    MainTheme(
-        dynamicColor = false
-    ) {
-        InitializeBody(
-            initialAlpha = 1f
         )
     }
 }
