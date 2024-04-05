@@ -15,7 +15,7 @@ import com.trainer.srb.rus.core.translation.Translation
 import com.trainer.srb.rus.core.translation.Word
 import com.trainer.srb.rus.feature.about.navigation.navigateToAbout
 import com.trainer.srb.rus.feature.dictionary.navigation.navigateToSearch
-import com.trainer.srb.rus.feature.exercise.ExerciseType
+import com.trainer.srb.rus.core.exercise.ExerciseType
 import com.trainer.srb.rus.feature.learn.navigation.navigateToLearn
 
 @Composable

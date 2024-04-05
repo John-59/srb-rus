@@ -3,7 +3,7 @@ package com.trainer.srb.rus.feature.exercise.navigation
 import android.net.Uri
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
-import com.trainer.srb.rus.feature.exercise.ExerciseType
+import com.trainer.srb.rus.core.exercise.ExerciseType
 
 fun NavHostController.navigateToExercise(
     exerciseType: ExerciseType,

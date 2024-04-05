@@ -15,6 +15,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.SavedStateHandle
 import com.trainer.srb.rus.core.design.MainTheme
+import com.trainer.srb.rus.core.exercise.ExerciseStep
+import com.trainer.srb.rus.core.exercise.ExerciseType
 import com.trainer.srb.rus.core.ui.ConfirmationDialog
 import com.trainer.srb.rus.core.mocks.DictionaryMock
 import com.trainer.srb.rus.core.translation.Translation

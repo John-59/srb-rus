@@ -1,6 +1,7 @@
 package com.trainer.srb.rus.feature.learn
 
 import android.content.res.Configuration
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -8,6 +9,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -28,7 +31,7 @@ import com.trainer.srb.rus.core.design.SrIcons
 
 @Composable
 fun RepeatWords(
-    enabled: Boolean,
+    repeatExercisesCount: Int,
     openExercise: () -> Unit,
     initialHelpVisibility: Boolean = false
 ) {
@@ -47,32 +50,42 @@ fun RepeatWords(
                     contentDescription = null,
                 )
             }
-            Button(
-                onClick = openExercise,
-                modifier = Modifier.size(130.dp),
-                contentPadding = PaddingValues(14.dp),
-                shape = ShapeDefaults.Small,
-                enabled = enabled
+            Row(
+                modifier = Modifier.horizontalScroll(
+                    rememberScrollState()
+                )
             ) {
-                Column(
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    Icon(
-                        imageVector = SrIcons.Repeat,
-                        contentDescription = null
-                    )
-                    Spacer(Modifier.height(10.dp))
-                    Text(
-                        text = "Повторение слов",
-                        style = MaterialTheme.typography.displayMedium
-                    )
+                val buttonsCount = repeatExercisesCount.coerceAtLeast(1)
+                repeat(buttonsCount) {
+                    Button(
+                        onClick = openExercise,
+                        modifier = Modifier.size(130.dp),
+                        contentPadding = PaddingValues(14.dp),
+                        shape = ShapeDefaults.Small,
+                        enabled = repeatExercisesCount > 0
+                    ) {
+                        Column(
+                            modifier = Modifier.fillMaxSize()
+                        ) {
+                            Icon(
+                                imageVector = SrIcons.Repeat,
+                                contentDescription = null
+                            )
+                            Spacer(Modifier.height(10.dp))
+                            Text(
+                                text = "Повторение слов",
+                                style = MaterialTheme.typography.displayMedium
+                            )
+                        }
+                    }
+                    Spacer(modifier = Modifier.width(10.dp))
                 }
             }
         }
         if (showHelp) {
             Spacer(modifier = Modifier.height(5.dp))
             Text(
-                text = "Повторение слов, которые вы уже учили.",
+                text = "Повторение слов, которые вы уже учили. Каждая карточка содержит по семь слов, которые вам надо повторить сегодня.",
             )
         }
     }
@@ -83,7 +96,7 @@ fun RepeatWords(
 private fun RepeatWordsPreview() {
     MainTheme(dynamicColor = false) {
         RepeatWords(
-            enabled = true,
+            repeatExercisesCount = 2,
             openExercise = {}
         )
     }
@@ -94,7 +107,7 @@ private fun RepeatWordsPreview() {
 private fun RepeatWordsDisabledPreview() {
     MainTheme(dynamicColor = false) {
         RepeatWords(
-            enabled = false,
+            repeatExercisesCount = 0,
             openExercise = {}
         )
     }
@@ -105,7 +118,7 @@ private fun RepeatWordsDisabledPreview() {
 private fun RepeatWordsWithHelpPreview() {
     MainTheme(dynamicColor = false) {
         RepeatWords(
-            enabled = true,
+            repeatExercisesCount = 1,
             openExercise = {},
             initialHelpVisibility = true
         )
@@ -118,7 +131,7 @@ private fun RepeatWordsNightPreview() {
     MainTheme(dynamicColor = false) {
         Surface {
             RepeatWords(
-                enabled = true,
+                repeatExercisesCount = 1,
                 openExercise = {}
             )
         }
@@ -131,7 +144,7 @@ private fun RepeatWordsDisabledNightPreview() {
     MainTheme(dynamicColor = false) {
         Surface {
             RepeatWords(
-                enabled = false,
+                repeatExercisesCount = 0,
                 openExercise = {}
             )
         }
@@ -144,7 +157,7 @@ private fun RepeatWordsWithHelpNightPreview() {
     MainTheme(dynamicColor = false) {
         Surface {
             RepeatWords(
-                enabled = true,
+                repeatExercisesCount = 3,
                 openExercise = {},
                 initialHelpVisibility = true
             )

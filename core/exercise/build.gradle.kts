@@ -1,12 +1,10 @@
 plugins {
     alias(libs.plugins.android.library)
-    alias(libs.plugins.dagger.hilt.android)
     alias(libs.plugins.kotlin.android)
-    kotlin("kapt")
 }
 
 android {
-    namespace = "com.trainer.srb.rus.feature.learn"
+    namespace = "com.trainer.srb.rus.core.exercise"
     compileSdk = 34
 
     defaultConfig {
@@ -52,33 +50,17 @@ android {
     }
 }
 
-kapt {
-    correctErrorTypes = true
-}
-
 dependencies {
 
-    implementation(project(":core:ui"))
     implementation(project(":core:dictionary"))
-    implementation(project(":core:exercise"))
     implementation(project(":core:translation"))
-    implementation(project(":core:design"))
-    implementation(project(":core:mocks"))
 
     implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.hilt.navigation.compose)
-    implementation(libs.dagger.hilt.android)
-    implementation(libs.kotlinx.datetime)
 
     implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.compose.material3)
-    implementation(libs.androidx.compose.ui)
-    implementation(libs.androidx.compose.ui.tooling)
-    implementation(libs.androidx.compose.ui.tooling.preview)
+    implementation(libs.androidx.compose.runtime)
 
     testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.test.espresso.core)
     androidTestImplementation(libs.androidx.test.ext.junit)
-
-    kapt(libs.dagger.hilt.android.compliler)
+    androidTestImplementation(libs.androidx.test.espresso.core)
 }

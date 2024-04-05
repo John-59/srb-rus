@@ -78,6 +78,7 @@ dependencies {
 
     implementation(project(":core:design"))
     implementation(project(":core:dictionary"))
+    implementation(project(":core:exercise"))
     implementation(project(":core:translation"))
     implementation(project(":core:repository"))
     implementation(project(":core:utils"))

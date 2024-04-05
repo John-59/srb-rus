@@ -25,6 +25,12 @@ class Dictionary @Inject constructor(
         }
         emit(containsNew)
     }
+    override val isUnknownWords = writableRepository.translations.transform {
+        val containsUnknown = it.any { translation ->
+            translation.learningStatus is LearningStatus.Unknown
+        }
+        emit(containsUnknown)
+    }
 
     override val totalTranslationsCount: Flow<Int> = writableRepository.totalTranslationsCount
 

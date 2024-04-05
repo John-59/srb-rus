@@ -1,4 +1,4 @@
-package com.trainer.srb.rus.feature.exercise
+package com.trainer.srb.rus.core.exercise
 
 import com.trainer.srb.rus.core.dictionary.IDictionary
 import com.trainer.srb.rus.core.translation.LearningStatusName

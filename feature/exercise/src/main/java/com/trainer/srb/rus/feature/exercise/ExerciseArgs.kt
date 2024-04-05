@@ -2,6 +2,7 @@ package com.trainer.srb.rus.feature.exercise
 
 import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
+import com.trainer.srb.rus.core.exercise.ExerciseType
 
 class ExerciseArgs(
     val exerciseType: ExerciseType

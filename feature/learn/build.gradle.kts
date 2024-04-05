@@ -60,6 +60,7 @@ dependencies {
 
     implementation(project(":core:design"))
     implementation(project(":core:dictionary"))
+    implementation(project(":core:exercise"))
     implementation(project(":core:mocks"))
     implementation(project(":core:ui"))
     implementation(project(":feature:exercise"))

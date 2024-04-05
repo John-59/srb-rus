@@ -8,7 +8,7 @@ import com.trainer.srb.rus.core.translation.Translation
 import com.trainer.srb.rus.core.translation.Word
 import com.trainer.srb.rus.feature.about.AboutScreen
 import com.trainer.srb.rus.feature.dictionary.DictionaryScreen
-import com.trainer.srb.rus.feature.exercise.ExerciseType
+import com.trainer.srb.rus.core.exercise.ExerciseType
 import com.trainer.srb.rus.feature.learn.LearnScreen
 
 @Composable

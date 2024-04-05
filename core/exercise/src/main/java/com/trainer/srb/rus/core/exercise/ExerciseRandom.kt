@@ -1,11 +1,18 @@
-package com.trainer.srb.rus.feature.exercise
+package com.trainer.srb.rus.core.exercise
 
 import com.trainer.srb.rus.core.dictionary.IDictionary
+import com.trainer.srb.rus.core.translation.LearningStatusName
 import com.trainer.srb.rus.core.translation.Translation
 import com.trainer.srb.rus.core.translation.Word
-import kotlinx.coroutines.flow.firstOrNull
 
-class ExerciseRepeat(private val dictionary: IDictionary): Exercise {
+class ExerciseRandom(
+    private val dictionary: IDictionary,
+    private val learningStatuses: Array<LearningStatusName>
+): Exercise {
+
+    companion object {
+        const val WORDS_IN_EXERCISE = 7
+    }
 
     private var totalStepsCount: Int = 0
     private var _progress: Float = 0f
@@ -15,27 +22,28 @@ class ExerciseRepeat(private val dictionary: IDictionary): Exercise {
     override val completedSteps: Map<Translation<Word.Serbian, Word.Russian>, List<ExerciseStep>>
         get() = wordToCompletedSteps
 
-    private val learningWordsCount = 7
-
     private val exerciseStepTypes = listOf(
+        ExerciseStepType.ShowTranslation,
         ExerciseStepType.ChoosingFromSerbianVariants(variantsCount = 4),
 //        LearningStep.ChoosingFromRussianVariants(variantsCount = 4),
 //        LearningStep.WriteInSerbianFromPredefinedLetters,
         ExerciseStepType.WriteInSerbian
     )
 
-    private val wordToExerciseStepTypes = mutableMapOf<Translation<Word.Serbian, Word.Russian>, ArrayDeque<ExerciseStepType>>()
+    private val wordToExerciseStepType = mutableMapOf<Translation<Word.Serbian, Word.Russian>, ArrayDeque<ExerciseStepType>>()
 
     private val wordToCompletedSteps = mutableMapOf<Translation<Word.Serbian, Word.Russian>, MutableList<ExerciseStep>>()
 
+    private var needInit = true
+
     override suspend fun next(): ExerciseStep {
-        if (wordToExerciseStepTypes.isEmpty()) {
-            val translationsForRepeat = dictionary.translationsForRepeat.firstOrNull()
-            translationsForRepeat?.shuffled()?.take(learningWordsCount)?.forEach {
-                wordToExerciseStepTypes[it] = ArrayDeque(exerciseStepTypes)
+        if (needInit) {
+            dictionary.getRandom(WORDS_IN_EXERCISE, *learningStatuses).forEach {
+                wordToExerciseStepType[it] = ArrayDeque(exerciseStepTypes)
                 wordToCompletedSteps[it] = mutableListOf()
             }
-            totalStepsCount = wordToExerciseStepTypes.count().coerceAtMost(learningWordsCount) * exerciseStepTypes.count()
+            totalStepsCount = wordToExerciseStepType.count().coerceAtMost(WORDS_IN_EXERCISE) * exerciseStepTypes.count()
+            needInit = false
         }
         return getNextWord().let {
             val (word, stepQueue) = it ?: (null to null)
@@ -49,7 +57,7 @@ class ExerciseRepeat(private val dictionary: IDictionary): Exercise {
     }
 
     override fun remove(translation: Translation<Word.Serbian, Word.Russian>) {
-        wordToExerciseStepTypes.remove(translation)
+        wordToExerciseStepType.remove(translation)
         wordToCompletedSteps.remove(translation)
         updateProgress()
     }
@@ -99,19 +107,19 @@ class ExerciseRepeat(private val dictionary: IDictionary): Exercise {
     }
 
     private fun getNextWord(): Pair<Translation<Word.Serbian, Word.Russian>, ArrayDeque<ExerciseStepType>>? {
-        val randomWord = wordToExerciseStepTypes.filter {
+        val randomWord = wordToExerciseStepType.filter {
             !it.value.isEmpty()
         }.keys.randomOrNull()
         if (randomWord == null) {
             return null
         } else {
-            val learningStepQueue = wordToExerciseStepTypes[randomWord] ?: return null
+            val learningStepQueue = wordToExerciseStepType[randomWord] ?: return null
             return randomWord to learningStepQueue
         }
     }
 
     private fun updateProgress() {
-        val remainingStepsCount = wordToExerciseStepTypes.map {
+        val remainingStepsCount = wordToExerciseStepType.map {
             it.value.count()
         }.sum()
         _progress = if (totalStepsCount == 0) {

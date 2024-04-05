@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.trainer.srb.rus.core.design.MainTheme
 import com.trainer.srb.rus.core.mocks.DictionaryMock
-import com.trainer.srb.rus.feature.exercise.ExerciseType
+import com.trainer.srb.rus.core.exercise.ExerciseType
 
 @Composable
 fun LearnScreen(
@@ -48,8 +48,9 @@ private fun ExerciseSelectionBody(
     viewModel: LearnViewModel
 ) {
     val isNewWords by viewModel.isNewWords.collectAsState()
-    val isWordsForRepeat by viewModel.isWordsForRepeat.collectAsState()
     val isUnknownWords by viewModel.isUnknownWords.collectAsState()
+    val repeatExercisesCount by viewModel.repeatExercisesCount.collectAsState()
+
     val spacerModifier = Modifier
         .width(10.dp)
         .height(10.dp)
@@ -81,7 +82,7 @@ private fun ExerciseSelectionBody(
         )
         Spacer(spacerModifier)
         RepeatWords(
-            enabled = isWordsForRepeat,
+            repeatExercisesCount = repeatExercisesCount,
             openExercise = {
                 openExercise(ExerciseType.REPEAT)
             }

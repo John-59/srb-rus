@@ -20,6 +20,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.trainer.srb.rus.core.design.MainTheme
+import com.trainer.srb.rus.core.exercise.ExerciseStep
 import com.trainer.srb.rus.core.mocks.translationsExample
 import com.trainer.srb.rus.core.translation.russianAsString
 import com.trainer.srb.rus.core.translation.serbianAsString

@@ -1,14 +1,15 @@
-package com.trainer.srb.rus.feature.exercise
+package com.trainer.srb.rus.core.exercise
 
 import com.trainer.srb.rus.core.dictionary.IDictionary
-import com.trainer.srb.rus.core.translation.LearningStatusName
 import com.trainer.srb.rus.core.translation.Translation
 import com.trainer.srb.rus.core.translation.Word
+import kotlinx.coroutines.flow.firstOrNull
 
-class ExerciseRandom(
-    private val dictionary: IDictionary,
-    private val learningStatuses: Array<LearningStatusName>
-): Exercise {
+class ExerciseRepeat(private val dictionary: IDictionary): Exercise {
+
+    companion object {
+        const val WORDS_IN_EXERCISE = 7
+    }
 
     private var totalStepsCount: Int = 0
     private var _progress: Float = 0f
@@ -18,30 +19,25 @@ class ExerciseRandom(
     override val completedSteps: Map<Translation<Word.Serbian, Word.Russian>, List<ExerciseStep>>
         get() = wordToCompletedSteps
 
-    private val learningWordsCount = 7
-
     private val exerciseStepTypes = listOf(
-        ExerciseStepType.ShowTranslation,
         ExerciseStepType.ChoosingFromSerbianVariants(variantsCount = 4),
 //        LearningStep.ChoosingFromRussianVariants(variantsCount = 4),
 //        LearningStep.WriteInSerbianFromPredefinedLetters,
         ExerciseStepType.WriteInSerbian
     )
 
-    private val wordToExerciseStepType = mutableMapOf<Translation<Word.Serbian, Word.Russian>, ArrayDeque<ExerciseStepType>>()
+    private val wordToExerciseStepTypes = mutableMapOf<Translation<Word.Serbian, Word.Russian>, ArrayDeque<ExerciseStepType>>()
 
     private val wordToCompletedSteps = mutableMapOf<Translation<Word.Serbian, Word.Russian>, MutableList<ExerciseStep>>()
 
-    private var needInit = true
-
     override suspend fun next(): ExerciseStep {
-        if (needInit) {
-            dictionary.getRandom(learningWordsCount, *learningStatuses).forEach {
-                wordToExerciseStepType[it] = ArrayDeque(exerciseStepTypes)
+        if (wordToExerciseStepTypes.isEmpty()) {
+            val translationsForRepeat = dictionary.translationsForRepeat.firstOrNull()
+            translationsForRepeat?.shuffled()?.take(WORDS_IN_EXERCISE)?.forEach {
+                wordToExerciseStepTypes[it] = ArrayDeque(exerciseStepTypes)
                 wordToCompletedSteps[it] = mutableListOf()
             }
-            totalStepsCount = wordToExerciseStepType.count().coerceAtMost(learningWordsCount) * exerciseStepTypes.count()
-            needInit = false
+            totalStepsCount = wordToExerciseStepTypes.count().coerceAtMost(WORDS_IN_EXERCISE) * exerciseStepTypes.count()
         }
         return getNextWord().let {
             val (word, stepQueue) = it ?: (null to null)
@@ -55,7 +51,7 @@ class ExerciseRandom(
     }
 
     override fun remove(translation: Translation<Word.Serbian, Word.Russian>) {
-        wordToExerciseStepType.remove(translation)
+        wordToExerciseStepTypes.remove(translation)
         wordToCompletedSteps.remove(translation)
         updateProgress()
     }
@@ -105,19 +101,19 @@ class ExerciseRandom(
     }
 
     private fun getNextWord(): Pair<Translation<Word.Serbian, Word.Russian>, ArrayDeque<ExerciseStepType>>? {
-        val randomWord = wordToExerciseStepType.filter {
+        val randomWord = wordToExerciseStepTypes.filter {
             !it.value.isEmpty()
         }.keys.randomOrNull()
         if (randomWord == null) {
             return null
         } else {
-            val learningStepQueue = wordToExerciseStepType[randomWord] ?: return null
+            val learningStepQueue = wordToExerciseStepTypes[randomWord] ?: return null
             return randomWord to learningStepQueue
         }
     }
 
     private fun updateProgress() {
-        val remainingStepsCount = wordToExerciseStepType.map {
+        val remainingStepsCount = wordToExerciseStepTypes.map {
             it.value.count()
         }.sum()
         _progress = if (totalStepsCount == 0) {

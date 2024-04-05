@@ -3,6 +3,7 @@ package com.trainer.srb.rus.feature.exercise
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.trainer.srb.rus.core.exercise.ExerciseStep
 
 @Composable
 fun ShowInSerbianAndSelectRussianVariantsBody(

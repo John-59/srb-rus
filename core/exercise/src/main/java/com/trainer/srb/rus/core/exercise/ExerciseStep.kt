@@ -1,4 +1,4 @@
-package com.trainer.srb.rus.feature.exercise
+package com.trainer.srb.rus.core.exercise
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateMapOf

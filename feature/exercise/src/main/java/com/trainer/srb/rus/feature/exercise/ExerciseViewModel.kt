@@ -8,6 +8,12 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.trainer.srb.rus.core.dictionary.IDictionary
+import com.trainer.srb.rus.core.exercise.Exercise
+import com.trainer.srb.rus.core.exercise.ExerciseNew
+import com.trainer.srb.rus.core.exercise.ExerciseRandom
+import com.trainer.srb.rus.core.exercise.ExerciseRepeat
+import com.trainer.srb.rus.core.exercise.ExerciseStep
+import com.trainer.srb.rus.core.exercise.ExerciseUndefined
 import com.trainer.srb.rus.core.translation.LearningStatus
 import com.trainer.srb.rus.core.translation.Translation
 import com.trainer.srb.rus.core.translation.Word

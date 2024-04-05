@@ -3,10 +3,14 @@ package com.trainer.srb.rus.feature.learn
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.trainer.srb.rus.core.dictionary.IDictionary
+import com.trainer.srb.rus.core.exercise.ExerciseRepeat
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
+import kotlin.math.ceil
 
 @HiltViewModel
 class LearnViewModel @Inject constructor(
@@ -19,15 +23,19 @@ class LearnViewModel @Inject constructor(
         started = SharingStarted.WhileSubscribed()
     )
 
-    var isWordsForRepeat = dictionary.isWordsForRepeat.stateIn(
+    val isUnknownWords = dictionary.isUnknownWords.stateIn(
         scope = viewModelScope,
         initialValue = false,
         started = SharingStarted.WhileSubscribed()
     )
 
-    val isUnknownWords = dictionary.isUnknownWords.stateIn(
+    val repeatExercisesCount = flow {
+        val wordsCount = dictionary.translationsForRepeat.firstOrNull()?.count() ?: 0
+        val exercisesCount = wordsCount.toFloat() / ExerciseRepeat.WORDS_IN_EXERCISE
+        emit(ceil(exercisesCount).toInt())
+    }.stateIn(
         scope = viewModelScope,
-        initialValue = false,
+        initialValue = 0,
         started = SharingStarted.WhileSubscribed()
     )
 }
