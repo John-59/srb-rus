@@ -32,28 +32,28 @@ import com.trainer.srb.rus.core.translation.serbianAsString
 
 @Composable
 fun ShowInRussianAndWriteInSerbianBody(
-    state: ExerciseStep.ShowInRussianAndWriteInSerbian,
+    state: ExerciseStepState.ShowInRussianAndWriteInSerbian,
     onNext: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    ShowInRussianAndWriteInSerbianBody(
+    InnerBody(
         translation = state.translation,
         userInput = state.userInput,
-        userInputValidity = state.userInputValidity,
-        onUserInputChange = state::userInputChanged,
-        onUserInputCheck = state::checkUserInput,
+        validity = state.validity,
+        onUserInputChange = state::onUserInputChanged,
+        validateUserInput = state::validateUserInput,
         onNext = onNext,
         modifier = modifier
     )
 }
 
 @Composable
-private fun ShowInRussianAndWriteInSerbianBody(
+private fun InnerBody(
     translation: Translation<Word.Serbian, Word.Russian>,
     userInput: String,
-    userInputValidity: ExerciseStep.ShowInRussianAndWriteInSerbian.Validity,
+    validity: Boolean?,
     onUserInputChange: (String) -> Unit,
-    onUserInputCheck: () -> Unit,
+    validateUserInput: () -> Unit,
     onNext: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -91,8 +91,8 @@ private fun ShowInRussianAndWriteInSerbianBody(
                     textStyle = MaterialTheme.typography.titleMedium,
                     value = userInput,
                     onValueChange = onUserInputChange,
-                    colors = when (userInputValidity) {
-                        ExerciseStep.ShowInRussianAndWriteInSerbian.Validity.VALID -> {
+                    colors = when (validity) {
+                        true -> {
                             OutlinedTextFieldDefaults.colors(
                                 focusedContainerColor = MaterialTheme.colorScheme.inverseSurface,
                                 unfocusedContainerColor = MaterialTheme.colorScheme.inverseSurface,
@@ -100,7 +100,7 @@ private fun ShowInRussianAndWriteInSerbianBody(
                                 unfocusedTextColor = MaterialTheme.colorScheme.inverseOnSurface,
                             )
                         }
-                        ExerciseStep.ShowInRussianAndWriteInSerbian.Validity.INVALID -> {
+                        false -> {
                             OutlinedTextFieldDefaults.colors(
                                 focusedContainerColor = MaterialTheme.colorScheme.error,
                                 unfocusedContainerColor = MaterialTheme.colorScheme.error,
@@ -119,7 +119,7 @@ private fun ShowInRussianAndWriteInSerbianBody(
                     modifier = Modifier
                         .fillMaxWidth()
                         .alpha(
-                            if (userInputValidity == ExerciseStep.ShowInRussianAndWriteInSerbian.Validity.INVALID) {
+                            if (validity == false) {
                                 1.0f
                             } else {
                                 0.0f
@@ -139,10 +139,10 @@ private fun ShowInRussianAndWriteInSerbianBody(
 
                 Button(
                     modifier = Modifier.fillMaxWidth(),
-                    enabled = userInput.isNotBlank() && userInputValidity == ExerciseStep.ShowInRussianAndWriteInSerbian.Validity.UNDEFINED,
+                    enabled = userInput.isNotBlank() && validity == null,
                     onClick = {
                         focusRequester.requestFocus()
-                        onUserInputCheck()
+                        validateUserInput()
                     }
                 ) {
                     Text(
@@ -155,7 +155,7 @@ private fun ShowInRussianAndWriteInSerbianBody(
             Button(
                 modifier = Modifier.fillMaxWidth(),
                 onClick = onNext,
-                enabled = userInputValidity != ExerciseStep.ShowInRussianAndWriteInSerbian.Validity.UNDEFINED
+                enabled = validity != null
             ) {
                 Text(
                     text = "Далее",
@@ -178,17 +178,19 @@ private fun BeforeChecking_ShowInRussianAndWriteInSerbianBodyPreview() {
     ) {
         ShowInRussianAndWriteInSerbianBody(
             onNext = {},
-            state = ExerciseStep.ShowInRussianAndWriteInSerbian(
-                translation = Translation(
-                    source = Word.Serbian(
-                        latinValue = "kašika",
-                        cyrillicValue = "кашика"
-                    ),
-                    translations = listOf(
-                        Word.Russian(value = "ложка")
-                    ),
-                    type = TranslationSourceType.USER,
-                    learningStatus = LearningStatus.Unknown()
+            state = ExerciseStepState.ShowInRussianAndWriteInSerbian(
+                ExerciseStep.ShowInRussianAndWriteInSerbian(
+                    translation = Translation(
+                        source = Word.Serbian(
+                            latinValue = "kašika",
+                            cyrillicValue = "кашика"
+                        ),
+                        translations = listOf(
+                            Word.Russian(value = "ложка")
+                        ),
+                        type = TranslationSourceType.USER,
+                        learningStatus = LearningStatus.Unknown()
+                    )
                 )
             )
         )
@@ -212,12 +214,12 @@ private fun ValidInput_ShowInRussianAndWriteInSerbianBodyPreview() {
     MainTheme(
         dynamicColor = false
     ) {
-        ShowInRussianAndWriteInSerbianBody(
+        InnerBody(
             translation = translation,
             userInput = "kašika",
-            userInputValidity = ExerciseStep.ShowInRussianAndWriteInSerbian.Validity.VALID,
+            validity = true,
             onUserInputChange = {},
-            onUserInputCheck = {},
+            validateUserInput = {},
             onNext = {},
         )
     }
@@ -240,12 +242,12 @@ private fun WrongInput_ShowInRussianAndWriteInSerbianBodyPreview() {
     MainTheme(
         dynamicColor = false
     ) {
-        ShowInRussianAndWriteInSerbianBody(
+        InnerBody(
             translation = translation,
             userInput = "wrong",
-            userInputValidity = ExerciseStep.ShowInRussianAndWriteInSerbian.Validity.INVALID,
+            validity = false,
             onUserInputChange = {},
-            onUserInputCheck = {},
+            validateUserInput = {},
             onNext = {},
         )
     }

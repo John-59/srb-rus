@@ -41,12 +41,15 @@ class ExerciseViewModel @Inject constructor(
     var showExitConfirmation by mutableStateOf(false)
         private set
 
-    private val _state = MutableStateFlow<ExerciseStep>(ExerciseStep.Initialize)
-    val state: StateFlow<ExerciseStep> = _state.stateIn(
+    private val _state = MutableStateFlow<ExerciseStepState>(ExerciseStepState.Initialize)
+    val state: StateFlow<ExerciseStepState> = _state.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(),
-        initialValue = ExerciseStep.Initialize
+        initialValue = ExerciseStepState.Initialize
     )
+
+    var showTopBar by mutableStateOf(true)
+        private set
 
     init {
         next()
@@ -55,9 +58,12 @@ class ExerciseViewModel @Inject constructor(
     fun next() {
         viewModelScope.launch {
             exercise.next().also {
-                _state.value = it
+                _state.value = ExerciseStepState.create(it)
+                showTopBar = it != ExerciseStep.Initialize
+                    && it !is ExerciseStep.Finished
+                    && it !is ExerciseStep.Error
                 progress = exercise.progress
-                if (it is ExerciseStep.ExerciseFinished) {
+                if (it is ExerciseStep.Finished) {
                     updateLearningStatuses()
                 }
             }

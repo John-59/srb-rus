@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.trainer.srb.rus.core.design.MainTheme
+import com.trainer.srb.rus.core.exercise.ExerciseStep
 import com.trainer.srb.rus.core.translation.LearningStatus
 import com.trainer.srb.rus.core.translation.Translation
 import com.trainer.srb.rus.core.translation.TranslationSourceType
@@ -21,7 +22,7 @@ import com.trainer.srb.rus.core.translation.serbianAsString
 
 @Composable
 fun ShowInSerbianWithTranslationBody(
-    translation: Translation<Word.Serbian, Word.Russian>,
+    state: ExerciseStepState.ShowInSerbianWithTranslation,
     onNext: () -> Unit,
     onAlreadyKnow: () -> Unit,
     onDontWantLearn: () -> Unit,
@@ -35,7 +36,7 @@ fun ShowInSerbianWithTranslationBody(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Word(
-                translation = translation,
+                translation = state.translation,
                 modifier = Modifier
                     .weight(2.0f)
                     .fillMaxWidth()
@@ -83,17 +84,21 @@ fun ShowInSerbianWithTranslationBodyPreview() {
             onNext = {},
             onAlreadyKnow = {},
             onDontWantLearn = {},
-            translation = Translation(
-                source = Word.Serbian(
-                    latinValue = "kašika",
-                    cyrillicValue = "кашика"
-                ),
-                translations = listOf(
-                    Word.Russian(value = "ложка")
-                ),
-                type = TranslationSourceType.USER,
-                learningStatus = LearningStatus.Unknown()
-            )
+            state = ExerciseStepState.ShowInSerbianWithTranslation(
+                ExerciseStep.ShowInSerbianWithTranslation(
+                    translation = Translation(
+                        source = Word.Serbian(
+                            latinValue = "kašika",
+                            cyrillicValue = "кашика"
+                        ),
+                        translations = listOf(
+                            Word.Russian(value = "ложка")
+                        ),
+                        type = TranslationSourceType.USER,
+                        learningStatus = LearningStatus.Unknown()
+                    )
+                )
+            ),
         )
     }
 }

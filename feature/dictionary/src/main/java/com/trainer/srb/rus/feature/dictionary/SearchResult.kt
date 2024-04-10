@@ -1,6 +1,5 @@
 package com.trainer.srb.rus.feature.dictionary
 
-import android.content.res.Configuration
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -30,7 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.trainer.srb.rus.core.design.MainTheme
 import com.trainer.srb.rus.core.design.SrIcons
@@ -39,6 +38,7 @@ import com.trainer.srb.rus.core.translation.Translation
 import com.trainer.srb.rus.core.translation.Word
 import com.trainer.srb.rus.core.translation.getProgress
 import com.trainer.srb.rus.core.translation.serbianAsString
+import com.trainer.srb.rus.core.ui.InnerSearchItem
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -189,7 +189,7 @@ private fun ItemSwipeBackground(
     }
 }
 
-@Preview(apiLevel = 33)
+@PreviewLightDark
 @Composable
 private fun ItemSwipeDeleteBackgroundPreview() {
     MainTheme(
@@ -203,23 +203,7 @@ private fun ItemSwipeDeleteBackgroundPreview() {
     }
 }
 
-@Preview(apiLevel = 33, uiMode = Configuration.UI_MODE_NIGHT_YES)
-@Composable
-private fun ItemSwipeDeleteBackgroundNightPreview() {
-    MainTheme(
-        dynamicColor = false
-    ) {
-        Surface {
-            ItemSwipeBackground(
-                learningProgress = 0f,
-                direction = DismissDirection.EndToStart,
-                modifier = Modifier.fillMaxWidth()
-            )
-        }
-    }
-}
-
-@Preview(apiLevel = 33)
+@PreviewLightDark
 @Composable
 private fun ItemSwipeAddToLearnedBackgroundPreview() {
     MainTheme(
@@ -233,23 +217,7 @@ private fun ItemSwipeAddToLearnedBackgroundPreview() {
     }
 }
 
-@Preview(apiLevel = 33, uiMode = Configuration.UI_MODE_NIGHT_YES)
-@Composable
-private fun ItemSwipeAddToLearnedBackgroundNightPreview() {
-    MainTheme(
-        dynamicColor = false
-    ) {
-        Surface {
-            ItemSwipeBackground(
-                learningProgress = 0f,
-                direction = DismissDirection.StartToEnd,
-                modifier = Modifier.fillMaxWidth()
-            )
-        }
-    }
-}
-
-@Preview(apiLevel = 33)
+@PreviewLightDark
 @Composable
 private fun ItemSwipeLearnAgainBackgroundPreview() {
     MainTheme(
@@ -263,40 +231,9 @@ private fun ItemSwipeLearnAgainBackgroundPreview() {
     }
 }
 
-@Preview(apiLevel = 33, uiMode = Configuration.UI_MODE_NIGHT_YES)
-@Composable
-private fun ItemSwipeLearnAgainBackgroundNightPreview() {
-    MainTheme(
-        dynamicColor = false
-    ) {
-        Surface {
-            ItemSwipeBackground(
-                learningProgress = 0.3f,
-                direction = DismissDirection.StartToEnd,
-                modifier = Modifier.fillMaxWidth()
-            )
-        }
-    }
-}
-
-@Preview(apiLevel = 33)
+@PreviewLightDark
 @Composable
 private fun SearchResultPreview() {
-    MainTheme(
-        dynamicColor = false
-    ) {
-        SearchResult(
-            onRemoveTranslation = {},
-            onAddToLearn = {},
-            onEdit = {},
-            innerWords = translationsExample
-        )
-    }
-}
-
-@Preview(apiLevel = 33, uiMode = Configuration.UI_MODE_NIGHT_YES)
-@Composable
-private fun SearchResultNightPreview() {
     MainTheme(
         dynamicColor = false
     ) {

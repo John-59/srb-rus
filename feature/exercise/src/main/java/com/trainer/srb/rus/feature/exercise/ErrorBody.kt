@@ -11,10 +11,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.trainer.srb.rus.core.design.MainTheme
+import com.trainer.srb.rus.core.exercise.ExerciseStep
 
 @Composable
 fun ErrorBody(
-    message: String,
+    state: ExerciseStepState.Error,
     modifier: Modifier = Modifier
 ) {
     Surface(
@@ -26,7 +27,7 @@ fun ErrorBody(
             modifier = Modifier.fillMaxSize()
         ) {
             Text(
-                text = message,
+                text = state.message,
                 style = MaterialTheme.typography.displayMedium
             )
         }
@@ -41,7 +42,9 @@ fun ErrorBodyPreview() {
         dynamicColor = false
     ) {
         ErrorBody(
-            message = "Что-то пошло не так.",
+            state = ExerciseStepState.Error(
+                ExerciseStep.Error("Что-то пошло не так.")
+            ),
             modifier = Modifier.fillMaxSize()
         )
     }

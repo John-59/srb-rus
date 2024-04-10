@@ -16,6 +16,11 @@ class ExerciseRepeat(private val dictionary: IDictionary): Exercise {
     override val progress: Float
         get() = _progress
 
+    /**
+     * All words from exercise.
+     */
+    private val translations: MutableList<Translation<Word.Serbian, Word.Russian>> = mutableListOf()
+
     override val completedSteps: Map<Translation<Word.Serbian, Word.Russian>, List<ExerciseStep>>
         get() = wordToCompletedSteps
 
@@ -34,6 +39,7 @@ class ExerciseRepeat(private val dictionary: IDictionary): Exercise {
         if (wordToExerciseStepTypes.isEmpty()) {
             val translationsForRepeat = dictionary.translationsForRepeat.firstOrNull()
             translationsForRepeat?.shuffled()?.take(WORDS_IN_EXERCISE)?.forEach {
+                translations.add(it)
                 wordToExerciseStepTypes[it] = ArrayDeque(exerciseStepTypes)
                 wordToCompletedSteps[it] = mutableListOf()
             }
@@ -62,7 +68,7 @@ class ExerciseRepeat(private val dictionary: IDictionary): Exercise {
     ): ExerciseStep {
         val step = stepQueue?.removeFirstOrNull()
         return if (word == null) {
-            ExerciseStep.ExerciseFinished
+            ExerciseStep.Finished(translations)
         } else {
             when (step) {
                 is ExerciseStepType.ChoosingFromSerbianVariants -> {
@@ -94,7 +100,7 @@ class ExerciseRepeat(private val dictionary: IDictionary): Exercise {
                 }
 
                 null -> {
-                    ExerciseStep.ExerciseFinished
+                    ExerciseStep.Finished(translations)
                 }
             }
         }

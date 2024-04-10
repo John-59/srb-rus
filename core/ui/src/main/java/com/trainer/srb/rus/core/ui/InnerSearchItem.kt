@@ -1,6 +1,5 @@
-package com.trainer.srb.rus.feature.dictionary
+package com.trainer.srb.rus.core.ui
 
-import android.content.res.Configuration
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -13,7 +12,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.trainer.srb.rus.core.design.MainTheme
 import com.trainer.srb.rus.core.translation.LearningStatus
@@ -67,102 +66,85 @@ fun InnerSearchItem(
     }
 }
 
-@Preview(apiLevel = 33)
+@PreviewLightDark
 @Composable
 private fun InnerSearchItemPreviewOne() {
     MainTheme(
         dynamicColor = false
     ) {
-        InnerSearchItem(
-            translation = Translation(
-                source = Word.Serbian(
-                    latinValue = "kiša",
-                    cyrillicValue = "киша"
+        Surface {
+            InnerSearchItem(
+                translation = Translation(
+                    source = Word.Serbian(
+                        latinValue = "kiša",
+                        cyrillicValue = "киша"
+                    ),
+                    translations = listOf(
+                        Word.Russian(value = "дождь")
+                    ),
+                    type = TranslationSourceType.USER,
+                    learningStatus = LearningStatus.AlreadyKnow()
                 ),
-                translations = listOf(
-                    Word.Russian(value = "дождь")
-                ),
-                type = TranslationSourceType.USER,
-                learningStatus = LearningStatus.AlreadyKnow()
-            ),
-            onEdit = {}
-        )
+                onEdit = {}
+            )
+        }
     }
 }
 
-@Preview(apiLevel = 33)
+@PreviewLightDark
 @Composable
 private fun InnerSearchItemPreviewTwo() {
     MainTheme(
         dynamicColor = false
     ) {
-        InnerSearchItem(
-            translation = Translation(
-                source = Word.Serbian(
-                    latinValue = "već",
-                    cyrillicValue = "већ"
+        Surface {
+            InnerSearchItem(
+                translation = Translation(
+                    source = Word.Serbian(
+                        latinValue = "već",
+                        cyrillicValue = "већ"
+                    ),
+                    translations = listOf(
+                        Word.Russian(value = "уже"),
+                        Word.Russian(value = "а")
+                    ),
+                    type = TranslationSourceType.USER,
+                    learningStatus = LearningStatus.New()
                 ),
-                translations = listOf(
-                    Word.Russian(value = "уже"),
-                    Word.Russian(value = "а")
-                ),
-                type = TranslationSourceType.USER,
-                learningStatus = LearningStatus.New()
-            ),
-            onEdit = {}
-        )
+                onEdit = {}
+            )
+        }
     }
 }
 
-@Preview(apiLevel = 33)
+@PreviewLightDark
 @Composable
 private fun InnerSearchItemPreviewThree() {
     MainTheme(
         dynamicColor = false
     ) {
-        InnerSearchItem(
-            translation = Translation(
-                source = Word.Serbian(
-                    latinValue = "šargarepa",
-                    cyrillicValue = ""
+        Surface {
+            InnerSearchItem(
+                translation = Translation(
+                    source = Word.Serbian(
+                        latinValue = "šargarepa",
+                        cyrillicValue = ""
+                    ),
+                    translations = listOf(
+                        Word.Russian(value = "морковь"),
+                    ),
+                    type = TranslationSourceType.USER,
+                    learningStatus = LearningStatus.NextDay()
                 ),
-                translations = listOf(
-                    Word.Russian(value = "морковь"),
-                ),
-                type = TranslationSourceType.USER,
-                learningStatus = LearningStatus.NextDay()
-            ),
-            onEdit = {}
-        )
+                onEdit = {}
+            )
+        }
     }
 }
 
-@Preview(apiLevel = 33)
+@PreviewLightDark
 @Composable
 private fun InnerSearchItemPreviewFour() {
-    MainTheme(
-        dynamicColor = false
-    ) {
-        InnerSearchItem(
-            translation = Translation(
-                source = Word.Serbian(
-                    latinValue = "",
-                    cyrillicValue = "књига"
-                ),
-                translations = listOf(
-                    Word.Russian(value = "книга"),
-                ),
-                type = TranslationSourceType.USER,
-                learningStatus = LearningStatus.AfterTwoWeeks()
-            ),
-            onEdit = {}
-        )
-    }
-}
-
-@Preview(apiLevel = 33, uiMode = Configuration.UI_MODE_NIGHT_YES)
-@Composable
-private fun InnerSearchItemPreviewFourNight() {
     MainTheme(
         dynamicColor = false
     ) {

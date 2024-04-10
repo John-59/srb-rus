@@ -21,12 +21,46 @@ import androidx.compose.ui.unit.dp
 import com.trainer.srb.rus.core.design.MainTheme
 import com.trainer.srb.rus.core.exercise.ExerciseStep
 import com.trainer.srb.rus.core.mocks.translationsExample
-import com.trainer.srb.rus.core.translation.russianAsString
+import com.trainer.srb.rus.core.translation.Translation
+import com.trainer.srb.rus.core.translation.Word
 import com.trainer.srb.rus.core.translation.serbianAsString
 
 @Composable
 fun ShowInRussianAndSelectSerbianVariantsBody(
-    state: ExerciseStep.ShowInRussianAndSelectSerbianVariants,
+    state: ExerciseStepState.ShowInRussianAndSelectSerbianVariants,
+    onNext: () -> Unit,
+    onAlreadyKnow: () -> Unit,
+    onDontWantLearn: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    InnerBody(
+        russianWord = state.russian,
+        variants = state.variants,
+        selectionIsDone = state.selectionIsDone,
+        select = state::select,
+        checkSelection = {
+            if (state.isValid(it)) {
+                true
+            } else if (state.isWrong(it)) {
+                false
+            } else {
+                null
+        }
+        },
+        onNext = onNext,
+        onAlreadyKnow = onAlreadyKnow,
+        onDontWantLearn = onDontWantLearn,
+        modifier = modifier
+    )
+}
+
+@Composable
+private fun InnerBody(
+    russianWord: String,
+    variants: List<Translation<Word.Serbian, Word.Russian>>,
+    selectionIsDone: Boolean,
+    select: (Translation<Word.Serbian, Word.Russian>) -> Unit,
+    checkSelection: (Translation<Word.Serbian, Word.Russian>) -> Boolean?,
     onNext: () -> Unit,
     onAlreadyKnow: () -> Unit,
     onDontWantLearn: () -> Unit,
@@ -39,13 +73,17 @@ fun ShowInRussianAndSelectSerbianVariantsBody(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             WordAndVariants(
-                state = state,
+                russianWord = russianWord,
+                variants = variants,
+                selectionIsDone = selectionIsDone,
+                select = select,
+                checkSelection = checkSelection,
                 modifier = Modifier
                     .weight(2.0f)
                     .fillMaxWidth()
             )
             WordActions(
-                isNextEnabled = state.selectionIsDone,
+                isNextEnabled = selectionIsDone,
                 onNext = onNext,
                 onAlreadyKnow = onAlreadyKnow,
                 onDontWantLearn = onDontWantLearn,
@@ -57,7 +95,11 @@ fun ShowInRussianAndSelectSerbianVariantsBody(
 
 @Composable
 private fun WordAndVariants(
-    state: ExerciseStep.ShowInRussianAndSelectSerbianVariants,
+    russianWord: String,
+    variants: List<Translation<Word.Serbian, Word.Russian>>,
+    selectionIsDone: Boolean,
+    select: (Translation<Word.Serbian, Word.Russian>) -> Unit,
+    checkSelection: (Translation<Word.Serbian, Word.Russian>) -> Boolean?,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -68,33 +110,27 @@ private fun WordAndVariants(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
-                text = state.translation.russianAsString(),
+                text = russianWord,
                 style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier.padding(bottom = 10.dp)
             )
-            state.variants.forEach {
+            variants.forEach {
                 OutlinedButton(
                     onClick = {
-                        state.select(it)
+                        select(it)
                     },
-                    enabled = !state.selectionIsDone,
+                    enabled = !selectionIsDone,
                     modifier = Modifier.fillMaxWidth(),
-                    colors = when (state.translationStates[it]) {
-                        ExerciseStep.ShowInRussianAndSelectSerbianVariants.VariantState.RIGHT -> {
-                            ButtonDefaults.outlinedButtonColors(
-                                disabledContainerColor = MaterialTheme.colorScheme.inverseSurface,
-                                disabledContentColor = MaterialTheme.colorScheme.inverseOnSurface
-                            )
-                        }
-                        ExerciseStep.ShowInRussianAndSelectSerbianVariants.VariantState.WRONG -> {
-                            ButtonDefaults.outlinedButtonColors(
-                                disabledContainerColor = MaterialTheme.colorScheme.error,
-                                disabledContentColor = MaterialTheme.colorScheme.onError
-                            )
-                        }
-                        else -> {
-                            ButtonDefaults.outlinedButtonColors()
-                        }
+                    colors = when (checkSelection(it)) {
+                        true -> ButtonDefaults.outlinedButtonColors(
+                            disabledContainerColor = MaterialTheme.colorScheme.inverseSurface,
+                            disabledContentColor = MaterialTheme.colorScheme.inverseOnSurface
+                        )
+                        false -> ButtonDefaults.outlinedButtonColors(
+                            disabledContainerColor = MaterialTheme.colorScheme.error,
+                            disabledContentColor = MaterialTheme.colorScheme.onError
+                        )
+                        null -> ButtonDefaults.outlinedButtonColors()
                     }
                 ) {
                     Text(
@@ -115,6 +151,12 @@ fun BeforeSelection_ShowInRussianAndSelectSerbianVariantsBodyPreview() {
     MainTheme(
         dynamicColor = false
     ) {
+        val state = ExerciseStepState.ShowInRussianAndSelectSerbianVariants(
+            ExerciseStep.ShowInRussianAndSelectSerbianVariants(
+                translation = translationsExample.first(),
+                others = translationsExample.takeLast(3)
+            )
+        )
         ShowInRussianAndSelectSerbianVariantsBody(
             modifier = Modifier
                 .fillMaxSize()
@@ -122,10 +164,7 @@ fun BeforeSelection_ShowInRussianAndSelectSerbianVariantsBodyPreview() {
             onNext = {},
             onAlreadyKnow = {},
             onDontWantLearn = {},
-            state = ExerciseStep.ShowInRussianAndSelectSerbianVariants(
-                translation = translationsExample.first(),
-                others = translationsExample.takeLast(3)
-            )
+            state = state
         )
     }
 }
@@ -136,9 +175,11 @@ fun RightSelection_ShowInRussianAndSelectSerbianVariantsBodyPreview() {
     MainTheme(
         dynamicColor = false
     ) {
-        val state = ExerciseStep.ShowInRussianAndSelectSerbianVariants(
-            translation = translationsExample.first(),
-            others = translationsExample.takeLast(3)
+        val state = ExerciseStepState.ShowInRussianAndSelectSerbianVariants(
+            ExerciseStep.ShowInRussianAndSelectSerbianVariants(
+                translation = translationsExample.first(),
+                others = translationsExample.takeLast(3)
+            )
         )
         ShowInRussianAndSelectSerbianVariantsBody(
             modifier = Modifier
@@ -162,9 +203,11 @@ fun WrongSelection_ShowInRussianAndSelectSerbianVariantsBodyPreview() {
     MainTheme(
         dynamicColor = false
     ) {
-        val state = ExerciseStep.ShowInRussianAndSelectSerbianVariants(
-            translation = translationsExample.first(),
-            others = translationsExample.takeLast(3)
+        val state = ExerciseStepState.ShowInRussianAndSelectSerbianVariants(
+            ExerciseStep.ShowInRussianAndSelectSerbianVariants(
+                translation = translationsExample.first(),
+                others = translationsExample.takeLast(3)
+            )
         )
         ShowInRussianAndSelectSerbianVariantsBody(
             modifier = Modifier

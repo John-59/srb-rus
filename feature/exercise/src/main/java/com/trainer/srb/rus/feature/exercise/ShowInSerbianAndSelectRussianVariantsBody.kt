@@ -2,23 +2,25 @@ package com.trainer.srb.rus.feature.exercise
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.trainer.srb.rus.core.exercise.ExerciseStep
 
 @Composable
 fun ShowInSerbianAndSelectRussianVariantsBody(
-    state: ExerciseStep.ShowInSerbianAndSelectRussianVariants,
+    state: ExerciseStepState.ShowInSerbianAndSelectRussianVariants,
     onNext: () -> Unit,
     modifier: Modifier = Modifier
 ) {
 
 }
 
-@Preview(apiLevel = 33)
+@PreviewLightDark
 @Composable
 fun ShowInSerbianAndSelectRussianVariantsBodyPreview() {
     ShowInSerbianAndSelectRussianVariantsBody(
-        state = ExerciseStep.ShowInSerbianAndSelectRussianVariants(),
+        state = ExerciseStepState.ShowInSerbianAndSelectRussianVariants(
+            ExerciseStep.ShowInSerbianAndSelectRussianVariants()
+        ),
         onNext = {}
     )
 }

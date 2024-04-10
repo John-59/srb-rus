@@ -11,8 +11,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
+import com.trainer.srb.rus.core.design.MainTheme
+import com.trainer.srb.rus.core.exercise.ExerciseStep
 import com.trainer.srb.rus.core.translation.LearningStatus
 import com.trainer.srb.rus.core.translation.Translation
 import com.trainer.srb.rus.core.translation.TranslationSourceType
@@ -20,7 +22,7 @@ import com.trainer.srb.rus.core.translation.Word
 
 @Composable
 fun ShowInRussianAndConstructFromPredefinedLettersBody(
-    translation: Translation<Word.Serbian, Word.Russian>,
+    state: ExerciseStepState.ShowInRussianAndConstructFromPredefinedLetters,
     onNext: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -30,7 +32,9 @@ fun ShowInRussianAndConstructFromPredefinedLettersBody(
     ) {
         Text(
             text = "Слово на русском и написать из предложенных букв",
-            modifier = Modifier.weight(2.0f).fillMaxWidth()
+            modifier = Modifier
+                .weight(2.0f)
+                .fillMaxWidth()
         )
         Actions(
             onNext = onNext,
@@ -80,22 +84,30 @@ private fun Actions(
     }
 }
 
-@Preview(apiLevel = 33)
+@PreviewLightDark
 @Composable
 fun ShowInRussianAndConstructFromPredefinedLettersBodyPreview() {
-    ShowInRussianAndConstructFromPredefinedLettersBody(
-        modifier = Modifier.fillMaxSize().padding(20.dp),
-        onNext = {},
-        translation = Translation(
-            source = Word.Serbian(
-                latinValue = "kašika",
-                cyrillicValue = "кашика"
+    MainTheme(dynamicColor = false) {
+        ShowInRussianAndConstructFromPredefinedLettersBody(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(20.dp),
+            onNext = {},
+            state = ExerciseStepState.ShowInRussianAndConstructFromPredefinedLetters(
+                ExerciseStep.ShowInRussianAndConstructFromPredefinedLetters(
+                    translation = Translation(
+                        source = Word.Serbian(
+                            latinValue = "kašika",
+                            cyrillicValue = "кашика"
+                        ),
+                        translations = listOf(
+                            Word.Russian(value = "ложка")
+                        ),
+                        type = TranslationSourceType.USER,
+                        learningStatus = LearningStatus.Unknown()
+                    )
+                )
             ),
-            translations = listOf(
-                Word.Russian(value = "ложка")
-            ),
-            type = TranslationSourceType.USER,
-            learningStatus = LearningStatus.Unknown()
         )
-    )
+    }
 }

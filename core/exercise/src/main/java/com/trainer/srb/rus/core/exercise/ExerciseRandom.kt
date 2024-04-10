@@ -19,6 +19,11 @@ class ExerciseRandom(
     override val progress: Float
         get() = _progress
 
+    /**
+     * All words from exercise.
+     */
+    private val translations: MutableList<Translation<Word.Serbian, Word.Russian>> = mutableListOf()
+
     override val completedSteps: Map<Translation<Word.Serbian, Word.Russian>, List<ExerciseStep>>
         get() = wordToCompletedSteps
 
@@ -39,6 +44,7 @@ class ExerciseRandom(
     override suspend fun next(): ExerciseStep {
         if (needInit) {
             dictionary.getRandom(WORDS_IN_EXERCISE, *learningStatuses).forEach {
+                translations.add(it)
                 wordToExerciseStepType[it] = ArrayDeque(exerciseStepTypes)
                 wordToCompletedSteps[it] = mutableListOf()
             }
@@ -68,7 +74,7 @@ class ExerciseRandom(
     ): ExerciseStep {
         val step = stepQueue?.removeFirstOrNull()
         return if (word == null) {
-            ExerciseStep.ExerciseFinished
+            ExerciseStep.Finished(translations)
         } else {
             when (step) {
                 is ExerciseStepType.ChoosingFromSerbianVariants -> {
@@ -100,7 +106,7 @@ class ExerciseRandom(
                 }
 
                 null -> {
-                    ExerciseStep.ExerciseFinished
+                    ExerciseStep.Finished(translations)
                 }
             }
         }

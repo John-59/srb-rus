@@ -14,7 +14,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.SavedStateHandle
 import com.trainer.srb.rus.core.design.MainTheme
-import com.trainer.srb.rus.core.exercise.ExerciseStep
 import com.trainer.srb.rus.core.exercise.ExerciseType
 import com.trainer.srb.rus.core.mocks.DictionaryMock
 import com.trainer.srb.rus.core.translation.Translation
@@ -26,16 +25,14 @@ fun ExerciseScreen(
     onFinished: () -> Unit,
     viewModel: ExerciseViewModel = hiltViewModel()
 ) {
-    val exerciseStep by viewModel.state.collectAsState()
+    val exerciseStepState by viewModel.state.collectAsState()
     Surface(
         modifier = Modifier.fillMaxSize()
     ) {
         Column(
             modifier = Modifier.padding(20.dp)
         ) {
-            if (exerciseStep != ExerciseStep.Initialize
-                && exerciseStep != ExerciseStep.ExerciseFinished
-                && exerciseStep !is ExerciseStep.Error) {
+            if (viewModel.showTopBar) {
                 ExerciseTopBar(
                     progress = viewModel.progress,
                     onSkip = viewModel::next,
@@ -44,7 +41,7 @@ fun ExerciseScreen(
                 )
             }
             Body(
-                exerciseStep = exerciseStep,
+                exerciseStepState = exerciseStepState,
                 onNext = viewModel::next,
                 onAlreadyKnow = viewModel::markAsAlreadyKnow,
                 onDontWantLearn = viewModel::markAsNotLearn,
@@ -68,83 +65,84 @@ fun ExerciseScreen(
 
 @Composable
 private fun Body(
-    exerciseStep: ExerciseStep,
+    exerciseStepState: ExerciseStepState,
     onNext: () -> Unit,
     onAlreadyKnow: (translation: Translation<Word.Serbian, Word.Russian>) -> Unit,
     onDontWantLearn: (translation: Translation<Word.Serbian, Word.Russian>) -> Unit,
     onFinished: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    when (exerciseStep) {
-        ExerciseStep.Initialize -> {
+    when (exerciseStepState) {
+        ExerciseStepState.Initialize -> {
             InitializeBody(modifier = modifier)
         }
 
-        is ExerciseStep.ShowInRussianAndConstructFromPredefinedLetters -> {
+        is ExerciseStepState.ShowInRussianAndConstructFromPredefinedLetters -> {
             ShowInRussianAndConstructFromPredefinedLettersBody(
-                translation = exerciseStep.translation,
+                state = exerciseStepState,
                 onNext = onNext,
                 modifier = modifier
             )
         }
 
-        is ExerciseStep.ShowInRussianAndSelectSerbianVariants -> {
+        is ExerciseStepState.ShowInRussianAndSelectSerbianVariants -> {
             ShowInRussianAndSelectSerbianVariantsBody(
-                state = exerciseStep,
+                state = exerciseStepState,
                 onNext = onNext,
                 onAlreadyKnow = {
-                    onAlreadyKnow(exerciseStep.translation)
+                    onAlreadyKnow(exerciseStepState.translation)
                     onNext()
                 },
                 onDontWantLearn = {
-                    onDontWantLearn(exerciseStep.translation)
+                    onDontWantLearn(exerciseStepState.translation)
                     onNext()
                 },
                 modifier = modifier
             )
         }
 
-        is ExerciseStep.ShowInSerbianAndSelectRussianVariants -> {
+        is ExerciseStepState.ShowInSerbianAndSelectRussianVariants -> {
             ShowInSerbianAndSelectRussianVariantsBody(
-                state = exerciseStep,
+                state = exerciseStepState,
                 onNext = onNext,
                 modifier = modifier
             )
         }
 
-        is ExerciseStep.ShowInRussianAndWriteInSerbian -> {
+        is ExerciseStepState.ShowInRussianAndWriteInSerbian -> {
             ShowInRussianAndWriteInSerbianBody(
-                state = exerciseStep,
+                state = exerciseStepState,
                 onNext = onNext,
                 modifier = modifier
             )
         }
 
-        is ExerciseStep.ShowInSerbianWithTranslation -> {
+        is ExerciseStepState.ShowInSerbianWithTranslation -> {
             ShowInSerbianWithTranslationBody(
-                translation = exerciseStep.translation,
+                state = exerciseStepState,
                 onNext = onNext,
                 onAlreadyKnow = {
-                    onAlreadyKnow(exerciseStep.translation)
+                    onAlreadyKnow(exerciseStepState.translation)
                     onNext()
                 },
                 onDontWantLearn = {
-                    onDontWantLearn(exerciseStep.translation)
+                    onDontWantLearn(exerciseStepState.translation)
                     onNext()
                 },
                 modifier = modifier
             )
         }
 
-        is ExerciseStep.Error -> {
+        is ExerciseStepState.Error -> {
             ErrorBody(
-                message = exerciseStep.message,
+                state = exerciseStepState,
                 modifier = modifier.fillMaxSize()
             )
         }
 
-        ExerciseStep.ExerciseFinished -> {
+        is ExerciseStepState.Finished -> {
             FinishBody(
+                state = exerciseStepState,
                 onNext = onFinished,
                 modifier = modifier.fillMaxSize()
             )

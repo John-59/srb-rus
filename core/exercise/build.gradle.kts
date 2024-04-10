@@ -42,12 +42,6 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-    buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.8"
-    }
 }
 
 dependencies {
@@ -56,9 +50,7 @@ dependencies {
     implementation(project(":core:translation"))
 
     implementation(libs.androidx.core.ktx)
-
-    implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.compose.runtime)
+    implementation(libs.kotlinx.coroutines.core)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)

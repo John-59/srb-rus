@@ -41,8 +41,10 @@ android {
 dependencies {
 
     implementation(project(":core:design"))
+    implementation(project(":core:translation"))
 
     implementation(libs.androidx.core.ktx)
+    implementation(libs.kotlinx.datetime)
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.material3)
