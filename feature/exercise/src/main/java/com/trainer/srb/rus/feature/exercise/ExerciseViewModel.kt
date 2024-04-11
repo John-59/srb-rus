@@ -58,7 +58,7 @@ class ExerciseViewModel @Inject constructor(
     fun next() {
         viewModelScope.launch {
             exercise.next().also {
-                _state.value = ExerciseStepState.create(it)
+                _state.value = ExerciseStepState.create(it, viewModelScope)
                 showTopBar = it != ExerciseStep.Initialize
                     && it !is ExerciseStep.Finished
                     && it !is ExerciseStep.Error

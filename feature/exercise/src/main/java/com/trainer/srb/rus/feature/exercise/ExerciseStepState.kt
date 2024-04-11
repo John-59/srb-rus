@@ -8,6 +8,10 @@ import com.trainer.srb.rus.core.exercise.ExerciseStep
 import com.trainer.srb.rus.core.translation.Translation
 import com.trainer.srb.rus.core.translation.Word
 import com.trainer.srb.rus.core.translation.russianAsString
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.stateIn
 
 /**
  * UI-state of exercise step.
@@ -18,13 +22,16 @@ sealed class ExerciseStepState {
         /**
          * Create UI-state by step.
          */
-        fun create(step: ExerciseStep): ExerciseStepState {
+        fun create(
+            step: ExerciseStep,
+            coroutineScope: CoroutineScope
+        ): ExerciseStepState {
             return when (step) {
                 is ExerciseStep.Error -> {
                     Error(step)
                 }
                 is ExerciseStep.Finished -> {
-                    Finished(step)
+                    Finished(step, coroutineScope)
                 }
                 ExerciseStep.Initialize -> {
                     Initialize
@@ -67,18 +74,50 @@ sealed class ExerciseStepState {
     /**
      * The exercise is finished.
      */
-    class Finished(step: ExerciseStep.Finished): ExerciseStepState() {
+    class Finished(
+        step: ExerciseStep.Finished,
+        coroutineScope: CoroutineScope
+    ): ExerciseStepState() {
+
+        private val _learnedWords = MutableStateFlow(step.translations)
 
         /**
-         * All words from the exercise.
+         * Words that were learned in the exercise.
          */
-        val translations = step.translations
+        val learnedWords = _learnedWords.stateIn(
+            scope = coroutineScope,
+            initialValue = step.translations,
+            started = SharingStarted.WhileSubscribed()
+        )
+
+        private val _repeatAgainWords =
+            MutableStateFlow<List<Translation<Word.Serbian, Word.Russian>>>(
+                emptyList()
+            )
+
+        /**
+         * Words selected by the user to repeat again.
+         */
+        val repeatAgainWords = _repeatAgainWords.stateIn(
+            scope = coroutineScope,
+            initialValue = emptyList(),
+            started = SharingStarted.WhileSubscribed()
+        )
 
         /**
          * Add the translation to exercise "Repeat again".
          */
         fun repeatAgain(translation: Translation<Word.Serbian, Word.Russian>) {
+            _learnedWords.value -= translation
+            _repeatAgainWords.value += translation
+        }
 
+        /**
+         * Remove the translation from the list of words that the user wants to repeat again.
+         */
+        fun notRepeatAgain(translation: Translation<Word.Serbian, Word.Russian>) {
+            _learnedWords.value += translation
+            _repeatAgainWords.value -= translation
         }
     }
 
