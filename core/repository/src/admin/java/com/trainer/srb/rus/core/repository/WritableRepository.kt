@@ -3,6 +3,7 @@ package com.trainer.srb.rus.core.repository
 import androidx.sqlite.db.SimpleSQLiteQuery
 import com.trainer.srb.rus.core.translation.LearningStatus
 import com.trainer.srb.rus.core.translation.LearningStatusName
+import com.trainer.srb.rus.core.translation.RepeatAgainId
 import com.trainer.srb.rus.core.translation.Translation
 import com.trainer.srb.rus.core.translation.TranslationSourceType
 import com.trainer.srb.rus.core.translation.Word
@@ -26,13 +27,20 @@ class WritableRepository @Inject constructor(
         }
     }
 
+    /**
+     * Exercise "Repeat words again" disabled for admin version.
+     */
+    override val repeatAgainTranslationIds: Flow<List<RepeatAgainId>> = emptyFlow()
+
+    /**
+     * Exercise "Repeat words again" disabled for admin version.
+     */
+    override val repeatAgainTranslationCount: Flow<Int> = emptyFlow()
+
     // has no meaning for admin version
     override val predefinedStatuses: Flow<List<Pair<Long, LearningStatus>>> = emptyFlow()
 
     override val totalTranslationsCount = predefinedRepositoryDao.getTotalTranslationsCount()
-
-    // has no meaning for admin version
-//    override val userTranslationCount: Flow<Int> = emptyFlow()
 
     override val learningTranslationsCount: Flow<Int> = predefinedRepositoryDao.getLearningTranslationsCount()
 
@@ -60,11 +68,23 @@ class WritableRepository @Inject constructor(
         }
     }
 
+    /**
+     * Exercise "Repeat words again" disabled for admin version.
+     */
+    override suspend fun addToRepeatAgain(translation: Translation<Word.Serbian, Word.Russian>) {
+    }
+
     override suspend fun remove(translation: Translation<Word.Serbian, Word.Russian>) {
         withContext(Dispatchers.IO) {
             predefinedRepositoryDao.remove(translation.source.latinId)
             makeCheckpoint()
         }
+    }
+
+    /**
+     * Exercise "Repeat words again" disabled for admin version.
+     */
+    override suspend fun removeFromRepeatAgain(translation: Translation<Word.Serbian, Word.Russian>) {
     }
 
     override suspend fun update(translation: Translation<Word.Serbian, Word.Russian>) {

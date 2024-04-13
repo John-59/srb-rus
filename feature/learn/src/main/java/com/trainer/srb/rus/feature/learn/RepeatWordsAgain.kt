@@ -16,7 +16,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ShapeDefaults
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -25,13 +24,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import com.trainer.srb.rus.core.design.MainTheme
 import com.trainer.srb.rus.core.design.SrIcons
 
 @Composable
-fun RepeatWords(
+fun RepeatWordsAgain(
     exercisesCount: Int,
     openExercise: () -> Unit,
     initialHelpVisibility: Boolean = false
@@ -69,12 +66,12 @@ fun RepeatWords(
                             modifier = Modifier.fillMaxSize()
                         ) {
                             Icon(
-                                imageVector = SrIcons.Repeat,
+                                imageVector = SrIcons.RepeatAgain,
                                 contentDescription = null
                             )
                             Spacer(Modifier.height(10.dp))
                             Text(
-                                text = "Повторение слов",
+                                text = "Повторить еще раз",
                                 style = MaterialTheme.typography.displayMedium
                             )
                             Row(
@@ -96,47 +93,7 @@ fun RepeatWords(
         if (showHelp) {
             Spacer(modifier = Modifier.height(5.dp))
             Text(
-                text = "Повторение слов, которые вы уже учили. Каждая карточка содержит по семь слов, которые вам надо повторить сегодня.",
-            )
-        }
-    }
-}
-
-@PreviewLightDark
-@Composable
-private fun RepeatWordsPreview() {
-    MainTheme(dynamicColor = false) {
-        Surface {
-            RepeatWords(
-                exercisesCount = 2,
-                openExercise = {}
-            )
-        }
-    }
-}
-
-@PreviewLightDark
-@Composable
-private fun RepeatWordsDisabledPreview() {
-    MainTheme(dynamicColor = false) {
-        Surface {
-            RepeatWords(
-                exercisesCount = 0,
-                openExercise = {}
-            )
-        }
-    }
-}
-
-@PreviewLightDark
-@Composable
-private fun RepeatWordsWithHelpPreview() {
-    MainTheme(dynamicColor = false) {
-        Surface {
-            RepeatWords(
-                exercisesCount = 1,
-                openExercise = {},
-                initialHelpVisibility = true
+                text = "Слова, которые вы выбрали для повторения еще раз (этот выбор можно сделать в конце каждого упражнения). Каждая карточка содержит по семь слов.",
             )
         }
     }

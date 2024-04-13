@@ -2,6 +2,9 @@ package com.trainer.srb.rus.core.translation
 
 import java.util.UUID
 
+/**
+ * Translation of a word from one language to another.
+ */
 class Translation<T, U>(
     val source: T,
     val translations: List<U>,

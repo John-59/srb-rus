@@ -51,6 +51,8 @@ private fun ExerciseSelectionBody(
     val isUnknownWords by viewModel.isUnknownWords.collectAsState()
     val repeatExercisesCount by viewModel.repeatExercisesCount.collectAsState()
 
+    val repeatAgainExercisesCount by viewModel.repeatAgainExercisesCount.collectAsState()
+
     val spacerModifier = Modifier
         .width(10.dp)
         .height(10.dp)
@@ -82,9 +84,16 @@ private fun ExerciseSelectionBody(
         )
         Spacer(spacerModifier)
         RepeatWords(
-            repeatExercisesCount = repeatExercisesCount,
+            exercisesCount = repeatExercisesCount,
             openExercise = {
                 openExercise(ExerciseType.REPEAT)
+            }
+        )
+        Spacer(spacerModifier)
+        RepeatWordsAgain(
+            exercisesCount = repeatAgainExercisesCount,
+            openExercise = {
+                openExercise(ExerciseType.REPEAT_AGAIN)
             }
         )
     }

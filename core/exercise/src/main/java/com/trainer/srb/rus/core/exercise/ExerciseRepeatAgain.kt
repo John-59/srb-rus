@@ -5,7 +5,7 @@ import com.trainer.srb.rus.core.translation.Translation
 import com.trainer.srb.rus.core.translation.Word
 import kotlinx.coroutines.flow.firstOrNull
 
-class ExerciseRepeat(private val dictionary: IDictionary): Exercise() {
+class ExerciseRepeatAgain(private val dictionary: IDictionary): Exercise() {
 
     companion object {
         const val WORDS_IN_EXERCISE = 7
@@ -18,20 +18,18 @@ class ExerciseRepeat(private val dictionary: IDictionary): Exercise() {
 
     private val exerciseStepTypes = listOf(
         ExerciseStepType.ChoosingFromSerbianVariants(variantsCount = 4),
-//        LearningStep.ChoosingFromRussianVariants(variantsCount = 4),
-//        LearningStep.WriteInSerbianFromPredefinedLetters,
         ExerciseStepType.WriteInSerbian
     )
 
     override suspend fun next(): ExerciseStep {
         if (wordToExerciseStepTypes.isEmpty()) {
-            val translationsForRepeat = dictionary.translationsForRepeat.firstOrNull()
-            translationsForRepeat?.shuffled()?.take(WORDS_IN_EXERCISE)?.forEach {
+            val translationsForRepeat = dictionary.translationsForRepeatAgain.firstOrNull()
+            translationsForRepeat?.shuffled()?.take(ExerciseRepeat.WORDS_IN_EXERCISE)?.forEach {
                 translations.add(it)
                 wordToExerciseStepTypes[it] = ArrayDeque(exerciseStepTypes)
                 wordToCompletedSteps[it] = mutableListOf()
             }
-            totalStepsCount = wordToExerciseStepTypes.count().coerceAtMost(WORDS_IN_EXERCISE) * exerciseStepTypes.count()
+            totalStepsCount = wordToExerciseStepTypes.count().coerceAtMost(ExerciseRepeat.WORDS_IN_EXERCISE) * exerciseStepTypes.count()
         }
         return getNextWord().let {
             val (word, stepQueue) = it ?: (null to null)

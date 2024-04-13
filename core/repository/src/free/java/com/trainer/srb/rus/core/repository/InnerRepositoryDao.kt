@@ -175,4 +175,39 @@ abstract class InnerRepositoryDao {
 
     @Query("SELECT COUNT(id) FROM srb_lat WHERE status = '${WordStatus.AlreadyKnow.name}'")
     abstract fun getLearnedTranslationsCount(): Flow<Int>
+
+    /**
+     * Return table with information about words that user marked as "Repeat again".
+     */
+    @Query("SELECT * FROM repeat_again")
+    abstract fun getRepeatAgain(): Flow<List<RepeatAgain>>
+
+    /**
+     * Return a quantity of words that the user marked as "Repeat again".
+     */
+    @Query("SELECT COUNT(id) FROM repeat_again")
+    abstract fun getRepeatAgainCount(): Flow<Int>
+
+    /**
+     * Add item to "Repeat again" table.
+     */
+    @Insert
+    abstract suspend fun addRepeatAgain(repeatAgain: RepeatAgain)
+
+    /**
+     * Remove item from "Repeat again" table.
+     */
+    suspend fun removeRepeatAgain(repeatAgain: RepeatAgain) {
+        if (repeatAgain.isPredefined) {
+            removePredefinedRepeatAgain(repeatAgain.latId)
+        } else {
+            removeUserRepeatAgain(repeatAgain.latId)
+        }
+    }
+
+    @Query("DELETE FROM repeat_again WHERE latId = :latId AND NOT isPredefined")
+    protected abstract suspend fun removeUserRepeatAgain(latId: Long)
+
+    @Query("DELETE FROM repeat_again WHERE latId = :latId AND isPredefined")
+    protected abstract suspend fun removePredefinedRepeatAgain(latId: Long)
 }

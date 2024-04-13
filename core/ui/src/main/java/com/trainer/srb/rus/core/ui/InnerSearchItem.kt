@@ -59,7 +59,9 @@ fun InnerSearchItem(
             style = MaterialTheme.typography.displaySmall
         )
         LinearProgressIndicator(
-            progress = translation.getProgress(),
+            progress = {
+                translation.getProgress()
+            },
             color = MaterialTheme.colorScheme.inverseSurface,
             modifier = Modifier.fillMaxWidth()
         )

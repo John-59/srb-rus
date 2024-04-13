@@ -12,6 +12,7 @@ import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Done
 import androidx.compose.material.icons.outlined.LocalLibrary
+import androidx.compose.material.icons.outlined.Replay
 import androidx.compose.material.icons.outlined.SaveAlt
 import androidx.compose.material.icons.outlined.School
 import androidx.compose.material.icons.outlined.Search
@@ -33,7 +34,8 @@ object SrIcons {
     val Random = Icons.Outlined.Shuffle
     val New = Icons.Outlined.AutoAwesome
     val Unknown = Icons.AutoMirrored.Outlined.PlaylistAdd
-    val Repeat = Icons.Outlined.Autorenew
+    val Repeat = Icons.Outlined.Replay
+    val RepeatAgain = Icons.Outlined.Autorenew
 
     val Close = Icons.Outlined.Close
 

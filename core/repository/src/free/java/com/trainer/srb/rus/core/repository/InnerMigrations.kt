@@ -11,6 +11,22 @@ fun <T: RoomDatabase> RoomDatabase.Builder<T>.applyInnerMigrations(): RoomDataba
         .addMigrations(MIGRATION_ASSETS_3_4)
         .addMigrations(MIGRATION_ASSETS_4_5)
         .addMigrations(MIGRATION_ASSETS_5_6)
+        .addMigrations(MIGRATION_ASSETS_6_7)
+}
+
+private val MIGRATION_ASSETS_6_7 = object : Migration(6, 7) {
+    override fun migrate(db: SupportSQLiteDatabase) {
+        with (db) {
+            execSQL(
+                "CREATE TABLE repeat_again " +
+                        "(id INTEGER NOT NULL, " +
+                        "latId INTEGER NOT NULL, " +
+                        "isPredefined INTEGER NOT NULL, " +
+                        "PRIMARY KEY(`id`))"
+            )
+        }
+    }
+
 }
 
 private val MIGRATION_ASSETS_5_6 = object : Migration(5, 6) {

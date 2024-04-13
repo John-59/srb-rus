@@ -4,6 +4,7 @@ import com.trainer.srb.rus.core.translation.LearningStatus
 import com.trainer.srb.rus.core.translation.LearningStatusName
 import com.trainer.srb.rus.core.repository.IPredefinedRepository
 import com.trainer.srb.rus.core.repository.IWritableRepository
+import com.trainer.srb.rus.core.translation.SerbianLatinWordId
 import com.trainer.srb.rus.core.translation.Translation
 import com.trainer.srb.rus.core.translation.TranslationSourceType
 import com.trainer.srb.rus.core.translation.Word
@@ -69,6 +70,21 @@ class Dictionary @Inject constructor(
         }
     }
 
+    /**
+     * The list of words for exercise "Repeat again".
+     */
+    override val translationsForRepeatAgain: Flow<List<Translation<Word.Serbian, Word.Russian>>> =
+        writableRepository.repeatAgainTranslationIds.map { ids ->
+            ids.mapNotNull { serbianLatinWordId ->
+                when (serbianLatinWordId) {
+                    is SerbianLatinWordId.Predefined -> predefinedRepository.get(serbianLatinWordId.id)
+                    is SerbianLatinWordId.User -> writableRepository.get(serbianLatinWordId.id)
+                }
+            }
+        }
+
+    override val translationsForRepeatAgainCount: Flow<Int> = writableRepository.repeatAgainTranslationCount
+
     override val isWordsForRepeat: Flow<Boolean> = translationsForRepeat.map {
         it.isNotEmpty()
     }
@@ -86,6 +102,14 @@ class Dictionary @Inject constructor(
 
     override suspend fun add(translation: Translation<Word.Serbian, Word.Russian>) {
         writableRepository.add(translation)
+    }
+
+    /**
+     * Add the translation to special part of the dictionary where store words for
+     * the exercise "Repeat again".
+     */
+    override suspend fun addToRepeatAgain(translation: Translation<Word.Serbian, Word.Russian>) {
+        writableRepository.addToRepeatAgain(translation)
     }
 
     override suspend fun edit(translation: Translation<Word.Serbian, Word.Russian>) {
@@ -137,6 +161,14 @@ class Dictionary @Inject constructor(
                 // not implemented yet
             }
         }
+    }
+
+    /**
+     * Remove the translation from special part of the dictionary where store words for
+     * the exercise "Repeat again".
+     */
+    override suspend fun removeFromRepeatAgain(translation: Translation<Word.Serbian, Word.Russian>) {
+        writableRepository.removeFromRepeatAgain(translation)
     }
 
     override suspend fun getRandom(

@@ -8,24 +8,16 @@ import com.trainer.srb.rus.core.translation.Word
 class ExerciseRandom(
     private val dictionary: IDictionary,
     private val learningStatuses: Array<LearningStatusName>
-): Exercise {
+): Exercise() {
 
     companion object {
         const val WORDS_IN_EXERCISE = 7
     }
 
-    private var totalStepsCount: Int = 0
-    private var _progress: Float = 0f
-    override val progress: Float
-        get() = _progress
-
     /**
      * All words from exercise.
      */
     private val translations: MutableList<Translation<Word.Serbian, Word.Russian>> = mutableListOf()
-
-    override val completedSteps: Map<Translation<Word.Serbian, Word.Russian>, List<ExerciseStep>>
-        get() = wordToCompletedSteps
 
     private val exerciseStepTypes = listOf(
         ExerciseStepType.ShowTranslation,
@@ -35,20 +27,16 @@ class ExerciseRandom(
         ExerciseStepType.WriteInSerbian
     )
 
-    private val wordToExerciseStepType = mutableMapOf<Translation<Word.Serbian, Word.Russian>, ArrayDeque<ExerciseStepType>>()
-
-    private val wordToCompletedSteps = mutableMapOf<Translation<Word.Serbian, Word.Russian>, MutableList<ExerciseStep>>()
-
     private var needInit = true
 
     override suspend fun next(): ExerciseStep {
         if (needInit) {
             dictionary.getRandom(WORDS_IN_EXERCISE, *learningStatuses).forEach {
                 translations.add(it)
-                wordToExerciseStepType[it] = ArrayDeque(exerciseStepTypes)
+                wordToExerciseStepTypes[it] = ArrayDeque(exerciseStepTypes)
                 wordToCompletedSteps[it] = mutableListOf()
             }
-            totalStepsCount = wordToExerciseStepType.count().coerceAtMost(WORDS_IN_EXERCISE) * exerciseStepTypes.count()
+            totalStepsCount = wordToExerciseStepTypes.count().coerceAtMost(WORDS_IN_EXERCISE) * exerciseStepTypes.count()
             needInit = false
         }
         return getNextWord().let {
@@ -60,12 +48,6 @@ class ExerciseRandom(
                 updateProgress()
             }
         }
-    }
-
-    override fun remove(translation: Translation<Word.Serbian, Word.Russian>) {
-        wordToExerciseStepType.remove(translation)
-        wordToCompletedSteps.remove(translation)
-        updateProgress()
     }
 
     private suspend fun step(
@@ -109,29 +91,6 @@ class ExerciseRandom(
                     ExerciseStep.Finished(translations)
                 }
             }
-        }
-    }
-
-    private fun getNextWord(): Pair<Translation<Word.Serbian, Word.Russian>, ArrayDeque<ExerciseStepType>>? {
-        val randomWord = wordToExerciseStepType.filter {
-            !it.value.isEmpty()
-        }.keys.randomOrNull()
-        if (randomWord == null) {
-            return null
-        } else {
-            val learningStepQueue = wordToExerciseStepType[randomWord] ?: return null
-            return randomWord to learningStepQueue
-        }
-    }
-
-    private fun updateProgress() {
-        val remainingStepsCount = wordToExerciseStepType.map {
-            it.value.count()
-        }.sum()
-        _progress = if (totalStepsCount == 0) {
-            1f
-        } else {
-            1 - remainingStepsCount.toFloat() / totalStepsCount
         }
     }
 }

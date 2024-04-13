@@ -5,5 +5,6 @@ enum class ExerciseType {
     RANDOM,
     NEW,
     REPEAT,
+    REPEAT_AGAIN,
     UNKNOWN
 }

@@ -41,6 +41,13 @@ class DictionaryMock: IDictionary {
 
     override val translationsForRepeat: Flow<List<Translation<Word.Serbian, Word.Russian>>> = emptyFlow()
 
+    override val translationsForRepeatAgain: Flow<List<Translation<Word.Serbian, Word.Russian>>>
+        get() = emptyFlow()
+
+    override val translationsForRepeatAgainCount: Flow<Int> = flow {
+        emit(0)
+    }
+
     override val isWordsForRepeat: Flow<Boolean> = emptyFlow()
 
     override suspend fun get(serbianLatinId: Long): Translation<Word.Serbian, Word.Russian>? {
@@ -56,6 +63,9 @@ class DictionaryMock: IDictionary {
     override suspend fun add(translation: Translation<Word.Serbian, Word.Russian>) {
     }
 
+    override suspend fun addToRepeatAgain(translation: Translation<Word.Serbian, Word.Russian>) {
+    }
+
     override suspend fun edit(translation: Translation<Word.Serbian, Word.Russian>) {
     }
 
@@ -63,6 +73,9 @@ class DictionaryMock: IDictionary {
     }
 
     override suspend fun remove(translation: Translation<Word.Serbian, Word.Russian>) {
+    }
+
+    override suspend fun removeFromRepeatAgain(translation: Translation<Word.Serbian, Word.Russian>) {
     }
 
     override suspend fun getRandom(

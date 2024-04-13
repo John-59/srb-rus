@@ -5,20 +5,12 @@ import com.trainer.srb.rus.core.translation.LearningStatusName
 import com.trainer.srb.rus.core.translation.Translation
 import com.trainer.srb.rus.core.translation.Word
 
-class ExerciseNew(private val dictionary: IDictionary): Exercise {
-
-    private var totalStepsCount: Int = 0
-    private var _progress: Float = 0f
-    override val progress: Float
-        get() = _progress
+class ExerciseNew(private val dictionary: IDictionary): Exercise() {
 
     /**
      * All words from exercise.
      */
     private val translations: MutableList<Translation<Word.Serbian, Word.Russian>> = mutableListOf()
-
-    override val completedSteps: Map<Translation<Word.Serbian, Word.Russian>, List<ExerciseStep>>
-        get() = wordToCompletedSteps
 
     private val learningWordsCount = 7
 
@@ -29,10 +21,6 @@ class ExerciseNew(private val dictionary: IDictionary): Exercise {
 //        LearningStep.WriteInSerbianFromPredefinedLetters,
         ExerciseStepType.WriteInSerbian
     )
-
-    private val wordToExerciseStepTypes = mutableMapOf<Translation<Word.Serbian, Word.Russian>, ArrayDeque<ExerciseStepType>>()
-
-    private val wordToCompletedSteps = mutableMapOf<Translation<Word.Serbian, Word.Russian>, MutableList<ExerciseStep>>()
 
     private var needInit = true
 
@@ -55,12 +43,6 @@ class ExerciseNew(private val dictionary: IDictionary): Exercise {
                 updateProgress()
             }
         }
-    }
-
-    override fun remove(translation: Translation<Word.Serbian, Word.Russian>) {
-        wordToExerciseStepTypes.remove(translation)
-        wordToCompletedSteps.remove(translation)
-        updateProgress()
     }
 
     private suspend fun step(
@@ -104,29 +86,6 @@ class ExerciseNew(private val dictionary: IDictionary): Exercise {
                     ExerciseStep.Finished(translations)
                 }
             }
-        }
-    }
-
-    private fun getNextWord(): Pair<Translation<Word.Serbian, Word.Russian>, ArrayDeque<ExerciseStepType>>? {
-        val randomWord = wordToExerciseStepTypes.filter {
-            !it.value.isEmpty()
-        }.keys.randomOrNull()
-        if (randomWord == null) {
-            return null
-        } else {
-            val learningStepQueue = wordToExerciseStepTypes[randomWord] ?: return null
-            return randomWord to learningStepQueue
-        }
-    }
-
-    private fun updateProgress() {
-        val remainingStepsCount = wordToExerciseStepTypes.map {
-            it.value.count()
-        }.sum()
-        _progress = if (totalStepsCount == 0) {
-            1f
-        } else {
-            1 - remainingStepsCount.toFloat() / totalStepsCount
         }
     }
 }

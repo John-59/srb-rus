@@ -4,6 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import com.trainer.srb.rus.core.dictionary.IDictionary
 import com.trainer.srb.rus.core.exercise.ExerciseStep
 import com.trainer.srb.rus.core.translation.Translation
 import com.trainer.srb.rus.core.translation.Word
@@ -12,6 +13,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
+import java.util.UUID
 
 /**
  * UI-state of exercise step.
@@ -24,6 +27,7 @@ sealed class ExerciseStepState {
          */
         fun create(
             step: ExerciseStep,
+            dictionary: IDictionary,
             coroutineScope: CoroutineScope
         ): ExerciseStepState {
             return when (step) {
@@ -31,7 +35,7 @@ sealed class ExerciseStepState {
                     Error(step)
                 }
                 is ExerciseStep.Finished -> {
-                    Finished(step, coroutineScope)
+                    Finished(step, dictionary, coroutineScope)
                 }
                 ExerciseStep.Initialize -> {
                     Initialize
@@ -76,48 +80,71 @@ sealed class ExerciseStepState {
      */
     class Finished(
         step: ExerciseStep.Finished,
-        coroutineScope: CoroutineScope
+        private val dictionary: IDictionary,
+        private val coroutineScope: CoroutineScope
     ): ExerciseStepState() {
 
-        private val _learnedWords = MutableStateFlow(step.translations)
+        sealed class Item(val uuid: UUID) {
+            data class Header(val text: String): Item(UUID.randomUUID())
+            data class Description(val text: String): Item(UUID.randomUUID())
+            data class WordsFromExercise(
+                val translation: Translation<Word.Serbian, Word.Russian>
+            ): Item(translation.uuid)
+            data class WordsForRepeat(
+                val translation: Translation<Word.Serbian, Word.Russian>
+            ): Item(translation.uuid)
+        }
 
-        /**
-         * Words that were learned in the exercise.
-         */
-        val learnedWords = _learnedWords.stateIn(
-            scope = coroutineScope,
-            initialValue = step.translations,
-            started = SharingStarted.WhileSubscribed()
-        )
-
-        private val _repeatAgainWords =
-            MutableStateFlow<List<Translation<Word.Serbian, Word.Russian>>>(
-                emptyList()
-            )
-
-        /**
-         * Words selected by the user to repeat again.
-         */
-        val repeatAgainWords = _repeatAgainWords.stateIn(
+        private val _notRepeatAgainWords = step.translations.toMutableList()
+        private val _repeatAgainWords = mutableListOf<Translation<Word.Serbian, Word.Russian>>()
+        private val _items = MutableStateFlow(createItems())
+        val items = _items.stateIn(
             scope = coroutineScope,
             initialValue = emptyList(),
             started = SharingStarted.WhileSubscribed()
         )
 
+        private fun createItems(): List<Item> {
+            return mutableListOf<Item>().apply {
+                if (_notRepeatAgainWords.isNotEmpty()) {
+                    add(Item.Header("Слова, которые вы учили:"))
+                    add(Item.Description("Смахните слово вправо, если хотите повторить его еще раз."))
+                    _notRepeatAgainWords.forEach {
+                        add(Item.WordsFromExercise(it))
+                    }
+                }
+                if (_repeatAgainWords.isNotEmpty()) {
+                    add(Item.Header("Слова, которые вы хотите повторить еще раз:"))
+                    add(Item.Description("Смахните слово влево, чтобы удалить его из этого списка."))
+                    _repeatAgainWords.forEach {
+                        add(Item.WordsForRepeat(it))
+                    }
+                }
+            }
+        }
+
         /**
          * Add the translation to exercise "Repeat again".
          */
         fun repeatAgain(translation: Translation<Word.Serbian, Word.Russian>) {
-            _learnedWords.value -= translation
-            _repeatAgainWords.value += translation
+            coroutineScope.launch {
+                dictionary.addToRepeatAgain(translation)
+            }
+            _notRepeatAgainWords -= translation
+            _repeatAgainWords += translation
+            _items.value = createItems()
         }
 
         /**
          * Remove the translation from the list of words that the user wants to repeat again.
          */
         fun notRepeatAgain(translation: Translation<Word.Serbian, Word.Russian>) {
-            _learnedWords.value += translation
-            _repeatAgainWords.value -= translation
+            coroutineScope.launch {
+                dictionary.removeFromRepeatAgain(translation)
+            }
+            _notRepeatAgainWords += translation
+            _repeatAgainWords -= translation
+            _items.value = createItems()
         }
     }
 

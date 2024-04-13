@@ -12,6 +12,7 @@ import com.trainer.srb.rus.core.exercise.Exercise
 import com.trainer.srb.rus.core.exercise.ExerciseNew
 import com.trainer.srb.rus.core.exercise.ExerciseRandom
 import com.trainer.srb.rus.core.exercise.ExerciseRepeat
+import com.trainer.srb.rus.core.exercise.ExerciseRepeatAgain
 import com.trainer.srb.rus.core.exercise.ExerciseStep
 import com.trainer.srb.rus.core.exercise.ExerciseUndefined
 import com.trainer.srb.rus.core.translation.LearningStatus
@@ -58,7 +59,6 @@ class ExerciseViewModel @Inject constructor(
     fun next() {
         viewModelScope.launch {
             exercise.next().also {
-                _state.value = ExerciseStepState.create(it, viewModelScope)
                 showTopBar = it != ExerciseStep.Initialize
                     && it !is ExerciseStep.Finished
                     && it !is ExerciseStep.Error
@@ -66,6 +66,7 @@ class ExerciseViewModel @Inject constructor(
                 if (it is ExerciseStep.Finished) {
                     updateLearningStatuses()
                 }
+                _state.value = ExerciseStepState.create(it, dictionary, viewModelScope)
             }
         }
     }
@@ -118,6 +119,11 @@ class ExerciseViewModel @Inject constructor(
                 }
             }
             ExerciseUndefined -> {}
+            is ExerciseRepeatAgain -> {
+                exercise.completedSteps.forEach { ( translation, _) ->
+                    dictionary.removeFromRepeatAgain(translation)
+                }
+            }
         }
     }
 
