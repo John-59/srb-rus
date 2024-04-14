@@ -3,7 +3,7 @@ package com.trainer.srb.rus.core.repository
 import androidx.sqlite.db.SimpleSQLiteQuery
 import com.trainer.srb.rus.core.translation.LearningStatus
 import com.trainer.srb.rus.core.translation.LearningStatusName
-import com.trainer.srb.rus.core.translation.RepeatAgainId
+import com.trainer.srb.rus.core.translation.SerbianLatinWordId
 import com.trainer.srb.rus.core.translation.Translation
 import com.trainer.srb.rus.core.translation.TranslationSourceType
 import com.trainer.srb.rus.core.translation.Word
@@ -30,7 +30,7 @@ class WritableRepository @Inject constructor(
     /**
      * Exercise "Repeat words again" disabled for admin version.
      */
-    override val repeatAgainTranslationIds: Flow<List<RepeatAgainId>> = emptyFlow()
+    override val repeatAgainTranslationIds: Flow<List<SerbianLatinWordId>> = emptyFlow()
 
     /**
      * Exercise "Repeat words again" disabled for admin version.

@@ -50,7 +50,6 @@ private fun ExerciseSelectionBody(
     val isNewWords by viewModel.isNewWords.collectAsState()
     val isUnknownWords by viewModel.isUnknownWords.collectAsState()
     val repeatExercisesCount by viewModel.repeatExercisesCount.collectAsState()
-
     val repeatAgainExercisesCount by viewModel.repeatAgainExercisesCount.collectAsState()
 
     val spacerModifier = Modifier
@@ -63,12 +62,13 @@ private fun ExerciseSelectionBody(
         ),
         verticalArrangement = Arrangement.Center,
     ) {
-        RandomWords(
-            openExercise = {
-                openExercise(ExerciseType.RANDOM)
-            }
-        )
-        Spacer(spacerModifier)
+        // Disable "Random words" exercise.
+//        RandomWords(
+//            openExercise = {
+//                openExercise(ExerciseType.RANDOM)
+//            }
+//        )
+//        Spacer(spacerModifier)
         UnknownWords(
             enabled = isUnknownWords,
             openExercise = {

@@ -16,8 +16,8 @@ android {
         applicationId = "com.trainer.srb.rus"
         minSdk = 24
         targetSdk = 34
-        versionCode = 722
-        versionName = "0.7.22"
+        versionCode = 822
+        versionName = "0.8.22"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
