@@ -70,4 +70,18 @@ class DictionaryViewModel @Inject constructor(
             text = ""
         )
     }
+
+    fun internetSearchRusToSrb(russianWord: String) {
+        val t = remoteDictionary.searchRusToSrb(russianWord)
+//        remoteDictionary.search(
+//            Word.Russian(value = russianWord)
+//        )
+    }
+
+    fun internetSearchSrbToRus(serbianWord: String) {
+        val t = remoteDictionary.searchSrbToRus(serbianWord)
+//        remoteDictionary.search(
+//            Word.Serbian(value = serbianWord)
+//        )
+    }
 }

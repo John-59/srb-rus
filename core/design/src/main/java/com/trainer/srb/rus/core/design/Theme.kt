@@ -49,6 +49,7 @@ private val LightColorScheme = lightColorScheme(
 
 //    surfaceTint = Colors.White
 
+    primaryContainer = Colors.LightBlue,
     secondaryContainer = Colors.LightBlue
 
     /* Other default colors to override
