@@ -2,7 +2,6 @@ package com.trainer.srb.rus.core.dictionary
 
 import retrofit2.http.Body
 import retrofit2.http.POST
-import retrofit2.http.Query
 
 interface IGoogleTranslateApi {
 
