@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.trainer.srb.rus.core.dictionary.IDictionary
 import com.trainer.srb.rus.core.dictionary.IRemoteDictionary
+import com.trainer.srb.rus.core.dictionary.RemoteTranslatorType
 import com.trainer.srb.rus.core.translation.LearningStatus
 import com.trainer.srb.rus.core.translation.Translation
 import com.trainer.srb.rus.core.translation.Word
@@ -40,18 +41,24 @@ class DictionaryViewModel @Inject constructor(
         started = SharingStarted.WhileSubscribed()
     )
 
-    private var _foundRemoteWords = MutableStateFlow(
-        emptyList<Translation<Word.Serbian, Word.Russian>>()
-    )
-    val internetWords = _foundRemoteWords.stateIn(
+    private var _yandexSearchState: MutableStateFlow<InternetSearchState> = MutableStateFlow(InternetSearchState.Disabled)
+    val yandexSearchState = _yandexSearchState.stateIn(
         scope = viewModelScope,
-        initialValue = emptyList(),
+        initialValue = InternetSearchState.Disabled,
+        started = SharingStarted.WhileSubscribed()
+    )
+
+    private var _googleSearchState: MutableStateFlow<InternetSearchState> = MutableStateFlow(InternetSearchState.Disabled)
+    val googleSearchState = _googleSearchState.stateIn(
+        scope = viewModelScope,
+        initialValue = InternetSearchState.Disabled,
         started = SharingStarted.WhileSubscribed()
     )
 
     fun searchingWordChange(value: TextFieldValue) {
         searchingWord.value = value
-        _foundRemoteWords.value = emptyList()
+        _yandexSearchState.value = InternetSearchState.Disabled
+        _googleSearchState.value = InternetSearchState.Disabled
     }
 
     fun removeTranslation(translation: Translation<Word.Serbian, Word.Russian>) {
@@ -77,18 +84,53 @@ class DictionaryViewModel @Inject constructor(
         searchingWord.value = searchingWord.value.copy(
             text = ""
         )
-        _foundRemoteWords.value = emptyList()
+        _yandexSearchState.value = InternetSearchState.Disabled
+        _googleSearchState.value = InternetSearchState.Disabled
     }
 
     fun internetSearchRusToSrb(russianWord: String) {
+        _yandexSearchState.value = InternetSearchState.Loading
+        _googleSearchState.value = InternetSearchState.Loading
         viewModelScope.launch {
-            _foundRemoteWords.value = remoteDictionary.searchRusToSrb(russianWord)
+            remoteDictionary.searchRusToSrb(russianWord, RemoteTranslatorType.YANDEX)
+                .onFailure {
+                    _yandexSearchState.value = InternetSearchState.Error("Не удалось получить перевод от сервера.")
+                }
+                .onSuccess {
+                    _yandexSearchState.value = InternetSearchState.Loaded(it)
+                }
+        }
+        viewModelScope.launch {
+            remoteDictionary.searchRusToSrb(russianWord, RemoteTranslatorType.GOOGLE)
+                .onFailure {
+                    _googleSearchState.value = InternetSearchState.Error("Не удалось получить перевод от сервера.")
+                }
+                .onSuccess {
+                    _googleSearchState.value = InternetSearchState.Loaded(it)
+                }
         }
     }
 
     fun internetSearchSrbToRus(serbianWord: String) {
+        _yandexSearchState.value = InternetSearchState.Loading
+        _googleSearchState.value = InternetSearchState.Loading
         viewModelScope.launch {
-            _foundRemoteWords.value = remoteDictionary.searchSrbToRus(serbianWord)
+            remoteDictionary.searchSrbToRus(serbianWord, RemoteTranslatorType.YANDEX)
+                .onFailure {
+                    _yandexSearchState.value = InternetSearchState.Error("Не удалось получить перевод от сервера.")
+                }
+                .onSuccess {
+                    _yandexSearchState.value = InternetSearchState.Loaded(it)
+                }
+        }
+        viewModelScope.launch {
+            remoteDictionary.searchSrbToRus(serbianWord, RemoteTranslatorType.GOOGLE)
+                .onFailure {
+                    _googleSearchState.value = InternetSearchState.Error("Не удалось получить перевод от сервера.")
+                }
+                .onSuccess {
+                    _googleSearchState.value = InternetSearchState.Loaded(it)
+                }
         }
     }
 }

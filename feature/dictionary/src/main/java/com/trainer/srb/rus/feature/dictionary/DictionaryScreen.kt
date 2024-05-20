@@ -38,10 +38,12 @@ fun DictionaryScreen(
 ) {
     val visibleWords by viewModel.visibleWords.collectAsState()
     val searchingWord by viewModel.searchingWord.collectAsState()
-    val internetWords by viewModel.internetWords.collectAsState()
+    val yandexSearchState by viewModel.yandexSearchState.collectAsState()
+    val googleSearchState by viewModel.googleSearchState.collectAsState()
 
     DictionaryBody(
-        internetWords = internetWords,
+        yandexSearchState = yandexSearchState,
+        googleSearchState = googleSearchState,
         visibleWords = visibleWords,
         searchingWord = searchingWord,
         navigateToAddWord = navigateToAddWord,
@@ -59,7 +61,8 @@ fun DictionaryScreen(
 
 @Composable
 private fun DictionaryBody(
-    internetWords: List<Translation<Word.Serbian, Word.Russian>>,
+    yandexSearchState: InternetSearchState,
+    googleSearchState: InternetSearchState,
     visibleWords: List<Translation<Word.Serbian, Word.Russian>>,
     searchingWord: TextFieldValue,
     navigateToAddWord: (Word) -> Unit,
@@ -120,14 +123,13 @@ private fun DictionaryBody(
                 onAddClicked = navigateToAddWord,
                 onResetSearch = resetSearch
             )
-            if (internetWords.isNotEmpty()) {
-                InternetSearchResult(
-                    translations = internetWords,
-                    modifier = Modifier
-                        .padding(horizontal = 20.dp)
-                        .fillMaxWidth()
-                )
-            }
+            InternetSearchResult(
+                yandexSearchState = yandexSearchState,
+                googleSearchState = googleSearchState,
+                modifier = Modifier
+                    .padding(horizontal = 20.dp)
+                    .fillMaxWidth()
+            )
             SearchResult(
                 innerWords = visibleWords,
                 onRemoveTranslation = removeTranslation,
@@ -153,7 +155,8 @@ private fun SearchBodyPreview() {
         dynamicColor = false
     ) {
         DictionaryBody(
-            internetWords = emptyList(),
+            yandexSearchState = InternetSearchState.Disabled,
+            googleSearchState = InternetSearchState.Disabled,
             visibleWords = translationsExample,
             searchingWord = TextFieldValue(""),
             navigateToAddWord = {},
@@ -176,7 +179,8 @@ private fun SearchBodyNightPreview() {
         dynamicColor = false
     ) {
         DictionaryBody(
-            internetWords = emptyList(),
+            yandexSearchState = InternetSearchState.Disabled,
+            googleSearchState = InternetSearchState.Disabled,
             visibleWords = translationsExample,
             searchingWord = TextFieldValue(""),
             navigateToAddWord = {},
