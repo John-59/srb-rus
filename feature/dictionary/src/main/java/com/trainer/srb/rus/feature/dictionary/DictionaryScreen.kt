@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,6 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.trainer.srb.rus.core.design.MainTheme
+import com.trainer.srb.rus.core.design.SrIcons
 import com.trainer.srb.rus.core.mocks.translationsExample
 import com.trainer.srb.rus.core.translation.Translation
 import com.trainer.srb.rus.core.translation.Word
@@ -85,23 +87,39 @@ private fun DictionaryBody(
             ) {
                 FloatingActionButton(
                     onClick = {
-                        internetSearchRusToSrb(searchingWord.text)
-                    }
+                        internetSearchSrbToRus(searchingWord.text)
+                    },
+
                 ) {
-                    Column {
-                        Text(text = "rus")
-                        Text("srb")
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.padding(10.dp)
+                    ) {
+                        Icon(imageVector = SrIcons.Web, contentDescription = null)
+                        Spacer(modifier = Modifier.width(5.dp))
+                        Column {
+                            Text(text = "srb")
+                            Text("rus")
+                        }
                     }
+
                 }
                 Spacer(modifier = Modifier.width(10.dp))
                 FloatingActionButton(
                     onClick = {
-                        internetSearchSrbToRus(searchingWord.text)
+                        internetSearchRusToSrb(searchingWord.text)
                     }
                 ) {
-                    Column {
-                        Text(text = "srb")
-                        Text("rus")
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.padding(10.dp)
+                    ) {
+                        Icon(imageVector = SrIcons.Web, contentDescription = null)
+                        Spacer(modifier = Modifier.width(5.dp))
+                        Column {
+                            Text(text = "rus")
+                            Text("srb")
+                        }
                     }
                 }
             }
