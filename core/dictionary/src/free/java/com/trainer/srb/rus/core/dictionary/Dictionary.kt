@@ -117,6 +117,7 @@ class Dictionary @Inject constructor(
             TranslationSourceType.PREDEFINED -> {
                 val status = translation.learningStatus
                 translation.learningStatus = LearningStatus.Unused()
+                predefinedRepository.update(translation)
                 writableRepository.addLinkToPredefinedTranslation(translation)
 
                 translation.type = TranslationSourceType.USER
