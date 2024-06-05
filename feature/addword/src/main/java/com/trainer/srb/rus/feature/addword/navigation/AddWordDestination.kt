@@ -9,7 +9,7 @@ object AddWordDestination {
     const val routeWithArgs = route +
             "?{${AddWordArgs.srbLatValueArgName}}" +
             "?{${AddWordArgs.srbCyrValueArgName}}" +
-            "?{${AddWordArgs.rusValueArgName}}"
+            "?{${AddWordArgs.rusValuesArgName}}"
     val arguments = listOf(
         navArgument(AddWordArgs.srbLatValueArgName) {
             type = NavType.StringType
@@ -19,7 +19,7 @@ object AddWordDestination {
             type = NavType.StringType
             defaultValue = ""
         },
-        navArgument(AddWordArgs.rusValueArgName) {
+        navArgument(AddWordArgs.rusValuesArgName) {
             type = NavType.StringType
             defaultValue = ""
         }

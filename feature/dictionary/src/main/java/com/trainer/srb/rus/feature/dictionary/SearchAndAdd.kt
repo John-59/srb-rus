@@ -12,13 +12,12 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.trainer.srb.rus.core.design.MainTheme
 import com.trainer.srb.rus.core.design.SrIcons
-import com.trainer.srb.rus.core.translation.Word
 
 @Composable
 fun SearchAndAdd(
     value: TextFieldValue,
     onValueChange: (TextFieldValue) -> Unit,
-    onAddClicked: (Word) -> Unit,
+    onAddClicked: () -> Unit,
     onResetSearch: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -46,9 +45,7 @@ fun SearchAndAdd(
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.clickable {
-                        if (value.text.isNotBlank()) {
-                            onAddClicked(Word.Serbian(latinValue = value.text, cyrillicValue = ""))
-                        }
+                        onAddClicked()
                     }
                 )
             }

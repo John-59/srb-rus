@@ -25,7 +25,13 @@ class AddWordViewModel @Inject constructor(
     private val args = AddWordArgs(savedStateHandle)
 
     val rusWords = mutableStateListOf(
-        Word.Russian(value = args.rusValue),
+        *(args.rusValues.split(AddWordArgs.rusValuesSeparator).mapNotNull {
+            if (it.isBlank()) {
+                null
+            } else {
+                Word.Russian(value = it)
+            }
+        }.toTypedArray()),
         Word.Russian()
     )
 

@@ -58,11 +58,12 @@ kapt {
 
 dependencies {
 
-    implementation(project(":core:ui"))
     implementation(project(":core:design"))
     implementation(project(":core:dictionary"))
-    implementation(project(":core:translation"))
     implementation(project(":core:mocks"))
+    implementation(project(":core:translation"))
+    implementation(project(":core:ui"))
+    implementation(project(":core:utils"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.hilt.navigation.compose)

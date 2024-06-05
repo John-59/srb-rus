@@ -35,7 +35,7 @@ import com.trainer.srb.rus.core.translation.Word
 
 @Composable
 fun DictionaryScreen(
-    navigateToAddWord: (Word) -> Unit,
+    navigateToAddWord: (Translation<Word.Serbian, Word.Russian>) -> Unit,
     navigateToEditWord: (Translation<Word.Serbian, Word.Russian>) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: DictionaryViewModel = hiltViewModel(),
@@ -50,7 +50,12 @@ fun DictionaryScreen(
         googleSearchState = googleSearchState,
         visibleWords = visibleWords,
         searchingWord = searchingWord,
-        navigateToAddWord = navigateToAddWord,
+        navigateToAddWord = {
+            val translation = viewModel.getAddingTranslation()
+            if (translation != null) {
+                navigateToAddWord(translation)
+            }
+        },
         navigateToEditWord = navigateToEditWord,
         searchingWordChange = viewModel::searchingWordChange,
         resetSearch = viewModel::resetSearch,
@@ -69,7 +74,7 @@ private fun DictionaryBody(
     googleSearchState: InternetSearchState,
     visibleWords: List<Translation<Word.Serbian, Word.Russian>>,
     searchingWord: TextFieldValue,
-    navigateToAddWord: (Word) -> Unit,
+    navigateToAddWord: () -> Unit,
     navigateToEditWord: (Translation<Word.Serbian, Word.Russian>) -> Unit,
     searchingWordChange: (TextFieldValue) -> Unit,
     resetSearch: () -> Unit,

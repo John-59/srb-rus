@@ -11,17 +11,17 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.trainer.srb.rus.core.exercise.ExerciseType
 import com.trainer.srb.rus.core.translation.Translation
 import com.trainer.srb.rus.core.translation.Word
 import com.trainer.srb.rus.feature.about.navigation.navigateToAbout
 import com.trainer.srb.rus.feature.dictionary.navigation.navigateToSearch
-import com.trainer.srb.rus.core.exercise.ExerciseType
 import com.trainer.srb.rus.feature.learn.navigation.navigateToLearn
 
 @Composable
 fun MainScreen(
     navigateToExercise: (ExerciseType) -> Unit,
-    navigateToAddWord: (Word) -> Unit,
+    navigateToAddWord: (Translation<Word.Serbian, Word.Russian>) -> Unit,
     navigateToEditWord: (Translation<Word.Serbian, Word.Russian>) -> Unit,
     viewModel: MainScreenViewModel = hiltViewModel()
 ) {
