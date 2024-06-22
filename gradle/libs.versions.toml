@@ -29,6 +29,8 @@ protobufPlugin = "0.9.4"
 
 squareupMoshiKotlin = "1.13.0"
 squareupRetrofit = "2.9.0"
+appcompat = "1.6.1"
+material = "1.10.0"
 
 [libraries]
 
@@ -68,6 +70,8 @@ protobuf-javalite = { group = "com.google.protobuf", name = "protobuf-javalite",
 squareup-moshi-kotlin = { group = "com.squareup.moshi", name = "moshi-kotlin", version.ref = "squareupMoshiKotlin" }
 squareup-retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "squareupRetrofit" }
 squareup-retrofit-converter-moshi = { group = "com.squareup.retrofit2", name = "converter-moshi", version.ref = "squareupRetrofit" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
 [plugins]
 
