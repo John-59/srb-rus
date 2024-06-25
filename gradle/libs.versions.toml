@@ -1,5 +1,6 @@
 [versions]
 
+accompanistCoil = "0.15.0"
 androidxComposeBom = "2024.06.00"
 androidxCoreKtx = "1.13.1"
 androidxCoreSplashscreen = "1.0.1"
@@ -9,6 +10,9 @@ androidxHiltNavigationCompose = "1.2.0"
 androidxRoom = "2.6.1"
 androidxTestEspressoCore = "3.5.1"
 androidxTestExtJunit = "1.1.5"
+atlassianCommonmark = "0.15.2"
+
+chrisbanesAccompanistCoil = "0.2.0"
 
 daggerHiltAndroid = "2.51.1"
 
@@ -32,6 +36,8 @@ squareupRetrofit = "2.9.0"
 
 [libraries]
 
+accompanist-coil = { group = "com.google.accompanist", name = "accompanist-coil", version.ref = "accompanistCoil" }
+
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "androidxComposeBom" }
 androidx-compose-material = { group = "androidx.compose.material", name = "material"}
 androidx-compose-material-icons-core = { group = "androidx.compose.material", name = "material-icons-core" }
@@ -50,6 +56,10 @@ androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = 
 androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "androidxRoom" }
 androidx-test-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "androidxTestEspressoCore" }
 androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidxTestExtJunit" }
+
+atlassian-commonmark = { group = "com.atlassian.commonmark", name = "commonmark", version.ref = "atlassianCommonmark" }
+
+chrisbanes-accompanist-coil = { group = "dev.chrisbanes.accompanist", name ="accompanist-coil", version.ref = "chrisbanesAccompanistCoil" }
 
 dagger-hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "daggerHiltAndroid" }
 dagger-hilt-android-compliler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "daggerHiltAndroid" }
