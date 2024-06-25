@@ -21,6 +21,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -58,41 +59,55 @@ fun AboutScreen(
             )
             Text(
                 text = "Тренажер сербских слов",
-                style = MaterialTheme.typography.titleLarge
+                style = MaterialTheme.typography.titleLarge,
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Center
             )
             Text(
-                text = "Версия приложения: ${viewModel.appVersion}"
+                text = "Версия приложения: ${viewModel.appVersion}",
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Center
             )
             Spacer(modifier = Modifier.height(10.dp))
             Text(
-                text = "Всего слов в словаре: $totalCount"
+                text = "Всего слов в словаре: $totalCount",
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Center
             )
             Text(
-                text = "Слов добавленных пользователем: $userCount"
+                text = "Слов добавленных пользователем: $userCount",
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Center
             )
             Text(
-                text = "Слов в процессе изучения: $learningCount"
+                text = "Слов в процессе изучения: $learningCount",
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Center
             )
             Text(
-                text = "Выучено слов: $learnedCount"
+                text = "Выучено слов: $learnedCount",
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Center
             )
             Spacer(modifier = Modifier.height(50.dp))
             Text(
                 text = "Как устроено запоминание слов в приложении?",
                 color = MaterialTheme.colorScheme.outline,
                 textDecoration = TextDecoration.Underline,
-                modifier = Modifier.clickable {
+                modifier = Modifier.fillMaxWidth().clickable {
                     viewModel.showLearningCurveManual()
-                }
+                },
+                textAlign = TextAlign.Center
             )
             Spacer(modifier = Modifier.height(20.dp))
             Text(
                 text = "Как работать со словарем?",
                 color = MaterialTheme.colorScheme.outline,
                 textDecoration = TextDecoration.Underline,
-                modifier = Modifier.clickable {
+                modifier = Modifier.fillMaxWidth().clickable {
                     viewModel.showDictionaryManual()
-                }
+                },
+                textAlign = TextAlign.Center
             )
         }
     }
