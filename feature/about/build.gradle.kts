@@ -62,6 +62,7 @@ dependencies {
     implementation(project(":core:utils"))
     implementation(project(":core:dictionary"))
     implementation(project(":core:mocks"))
+    implementation(project(":feature:docs"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.hilt.navigation.compose)
