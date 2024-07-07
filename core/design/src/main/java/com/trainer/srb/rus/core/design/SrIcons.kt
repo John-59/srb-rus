@@ -11,6 +11,7 @@ import androidx.compose.material.icons.outlined.Autorenew
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Done
+import androidx.compose.material.icons.outlined.Language
 import androidx.compose.material.icons.outlined.LocalLibrary
 import androidx.compose.material.icons.outlined.Replay
 import androidx.compose.material.icons.outlined.SaveAlt
@@ -50,4 +51,6 @@ object SrIcons {
     val DeleteWord = Icons.Outlined.Delete
 
     val Help = Icons.AutoMirrored.Outlined.HelpOutline
+
+    val Web = Icons.Outlined.Language
 }

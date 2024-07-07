@@ -9,7 +9,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.trainer.srb.rus.core.design.MainTheme
 import com.trainer.srb.rus.core.design.SrIcons
 import com.trainer.srb.rus.core.translation.Word
@@ -66,7 +66,7 @@ fun SearchAndAdd(
     )
 }
 
-@Preview(apiLevel = 33)
+@PreviewLightDark
 @Composable
 fun SearchAndAddEmptyPreview() {
     MainTheme(
@@ -82,7 +82,7 @@ fun SearchAndAddEmptyPreview() {
     }
 }
 
-@Preview(apiLevel = 33)
+@PreviewLightDark
 @Composable
 fun SearchAndAddPreview() {
     MainTheme(

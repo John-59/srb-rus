@@ -1,9 +1,9 @@
 package com.trainer.srb.rus.core.dictionary
 
-import com.trainer.srb.rus.core.translation.LearningStatus
-import com.trainer.srb.rus.core.translation.LearningStatusName
 import com.trainer.srb.rus.core.repository.IPredefinedRepository
 import com.trainer.srb.rus.core.repository.IWritableRepository
+import com.trainer.srb.rus.core.translation.LearningStatus
+import com.trainer.srb.rus.core.translation.LearningStatusName
 import com.trainer.srb.rus.core.translation.SerbianLatinWordId
 import com.trainer.srb.rus.core.translation.Translation
 import com.trainer.srb.rus.core.translation.TranslationSourceType
@@ -126,8 +126,12 @@ class Dictionary @Inject constructor(
             TranslationSourceType.USER -> {
                 update(translation)
             }
-            TranslationSourceType.INTERNET -> {
-                // not implemented yet
+            TranslationSourceType.YANDEX -> {
+                // do nothing
+            }
+
+            TranslationSourceType.GOOGLE -> {
+                // do nothing
             }
         }
     }
@@ -141,8 +145,12 @@ class Dictionary @Inject constructor(
             TranslationSourceType.USER -> {
                 writableRepository.update(translation)
             }
-            TranslationSourceType.INTERNET -> {
-                // not implemented yet
+            TranslationSourceType.YANDEX -> {
+                // do nothing
+            }
+
+            TranslationSourceType.GOOGLE -> {
+                // do nothing
             }
         }
     }
@@ -157,8 +165,12 @@ class Dictionary @Inject constructor(
             TranslationSourceType.USER -> {
                 writableRepository.remove(translation)
             }
-            TranslationSourceType.INTERNET -> {
-                // not implemented yet
+            TranslationSourceType.YANDEX -> {
+                // do nothing
+            }
+
+            TranslationSourceType.GOOGLE -> {
+                // do nothing
             }
         }
     }

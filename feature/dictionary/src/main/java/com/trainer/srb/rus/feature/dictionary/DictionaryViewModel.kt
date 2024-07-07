@@ -40,10 +40,18 @@ class DictionaryViewModel @Inject constructor(
         started = SharingStarted.WhileSubscribed()
     )
 
-    private var _foundRemoteWords: List<Translation<Word.Serbian, Word.Russian>> = emptyList()
+    private var _foundRemoteWords = MutableStateFlow(
+        emptyList<Translation<Word.Serbian, Word.Russian>>()
+    )
+    val internetWords = _foundRemoteWords.stateIn(
+        scope = viewModelScope,
+        initialValue = emptyList(),
+        started = SharingStarted.WhileSubscribed()
+    )
 
     fun searchingWordChange(value: TextFieldValue) {
         searchingWord.value = value
+        _foundRemoteWords.value = emptyList()
     }
 
     fun removeTranslation(translation: Translation<Word.Serbian, Word.Russian>) {
@@ -69,19 +77,18 @@ class DictionaryViewModel @Inject constructor(
         searchingWord.value = searchingWord.value.copy(
             text = ""
         )
+        _foundRemoteWords.value = emptyList()
     }
 
     fun internetSearchRusToSrb(russianWord: String) {
-        val t = remoteDictionary.searchRusToSrb(russianWord)
-//        remoteDictionary.search(
-//            Word.Russian(value = russianWord)
-//        )
+        viewModelScope.launch {
+            _foundRemoteWords.value = remoteDictionary.searchRusToSrb(russianWord)
+        }
     }
 
     fun internetSearchSrbToRus(serbianWord: String) {
-        val t = remoteDictionary.searchSrbToRus(serbianWord)
-//        remoteDictionary.search(
-//            Word.Serbian(value = serbianWord)
-//        )
+        viewModelScope.launch {
+            _foundRemoteWords.value = remoteDictionary.searchSrbToRus(serbianWord)
+        }
     }
 }

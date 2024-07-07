@@ -2,7 +2,7 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.dagger.hilt.android)
     alias(libs.plugins.kotlin.android)
-    kotlin("kapt")
+    alias(libs.plugins.kotlin.kapt)
 }
 
 android {
@@ -57,8 +57,12 @@ dependencies {
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.dagger.hilt.android)
-    kapt(libs.dagger.hilt.android.compliler)
     implementation(libs.kotlinx.datetime)
+    implementation(libs.squareup.moshi.kotlin)
+    implementation(libs.squareup.retrofit)
+    implementation(libs.squareup.retrofit.converter.moshi)
+
+    kapt(libs.dagger.hilt.android.compliler)
 
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.androidx.test.espresso.core)

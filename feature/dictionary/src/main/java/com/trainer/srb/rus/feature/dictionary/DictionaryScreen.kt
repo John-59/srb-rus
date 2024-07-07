@@ -38,8 +38,10 @@ fun DictionaryScreen(
 ) {
     val visibleWords by viewModel.visibleWords.collectAsState()
     val searchingWord by viewModel.searchingWord.collectAsState()
+    val internetWords by viewModel.internetWords.collectAsState()
 
     DictionaryBody(
+        internetWords = internetWords,
         visibleWords = visibleWords,
         searchingWord = searchingWord,
         navigateToAddWord = navigateToAddWord,
@@ -57,6 +59,7 @@ fun DictionaryScreen(
 
 @Composable
 private fun DictionaryBody(
+    internetWords: List<Translation<Word.Serbian, Word.Russian>>,
     visibleWords: List<Translation<Word.Serbian, Word.Russian>>,
     searchingWord: TextFieldValue,
     navigateToAddWord: (Word) -> Unit,
@@ -117,6 +120,14 @@ private fun DictionaryBody(
                 onAddClicked = navigateToAddWord,
                 onResetSearch = resetSearch
             )
+            if (internetWords.isNotEmpty()) {
+                InternetSearchResult(
+                    translations = internetWords,
+                    modifier = Modifier
+                        .padding(horizontal = 20.dp)
+                        .fillMaxWidth()
+                )
+            }
             SearchResult(
                 innerWords = visibleWords,
                 onRemoveTranslation = removeTranslation,
@@ -124,7 +135,7 @@ private fun DictionaryBody(
                 onEdit = navigateToEditWord,
                 modifier = Modifier
                     .padding(horizontal = 20.dp)
-
+                    .fillMaxWidth()
             )
         }
     }
@@ -142,6 +153,7 @@ private fun SearchBodyPreview() {
         dynamicColor = false
     ) {
         DictionaryBody(
+            internetWords = emptyList(),
             visibleWords = translationsExample,
             searchingWord = TextFieldValue(""),
             navigateToAddWord = {},
@@ -164,6 +176,7 @@ private fun SearchBodyNightPreview() {
         dynamicColor = false
     ) {
         DictionaryBody(
+            internetWords = emptyList(),
             visibleWords = translationsExample,
             searchingWord = TextFieldValue(""),
             navigateToAddWord = {},
