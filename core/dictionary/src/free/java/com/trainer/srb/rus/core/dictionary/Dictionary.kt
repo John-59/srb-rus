@@ -126,7 +126,11 @@ class Dictionary @Inject constructor(
             TranslationSourceType.USER -> {
                 update(translation)
             }
-            TranslationSourceType.INTERNET -> {
+            TranslationSourceType.YANDEX -> {
+                // do nothing
+            }
+
+            TranslationSourceType.GOOGLE -> {
                 // do nothing
             }
         }
@@ -141,7 +145,11 @@ class Dictionary @Inject constructor(
             TranslationSourceType.USER -> {
                 writableRepository.update(translation)
             }
-            TranslationSourceType.INTERNET -> {
+            TranslationSourceType.YANDEX -> {
+                // do nothing
+            }
+
+            TranslationSourceType.GOOGLE -> {
                 // do nothing
             }
         }
@@ -157,7 +165,11 @@ class Dictionary @Inject constructor(
             TranslationSourceType.USER -> {
                 writableRepository.remove(translation)
             }
-            TranslationSourceType.INTERNET -> {
+            TranslationSourceType.YANDEX -> {
+                // do nothing
+            }
+
+            TranslationSourceType.GOOGLE -> {
                 // do nothing
             }
         }

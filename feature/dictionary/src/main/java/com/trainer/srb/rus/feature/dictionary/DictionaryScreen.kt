@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,7 +25,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.trainer.srb.rus.core.design.MainTheme
-import com.trainer.srb.rus.core.design.SrIcons
 import com.trainer.srb.rus.core.mocks.translationsExample
 import com.trainer.srb.rus.core.translation.Translation
 import com.trainer.srb.rus.core.translation.Word
@@ -40,12 +38,10 @@ fun DictionaryScreen(
 ) {
     val visibleWords by viewModel.visibleWords.collectAsState()
     val searchingWord by viewModel.searchingWord.collectAsState()
-    val yandexSearchState by viewModel.yandexSearchState.collectAsState()
-    val googleSearchState by viewModel.googleSearchState.collectAsState()
+    val internetWords by viewModel.internetWords.collectAsState()
 
     DictionaryBody(
-        yandexSearchState = yandexSearchState,
-        googleSearchState = googleSearchState,
+        internetWords = internetWords,
         visibleWords = visibleWords,
         searchingWord = searchingWord,
         navigateToAddWord = navigateToAddWord,
@@ -63,8 +59,7 @@ fun DictionaryScreen(
 
 @Composable
 private fun DictionaryBody(
-    yandexSearchState: InternetSearchState,
-    googleSearchState: InternetSearchState,
+    internetWords: List<Translation<Word.Serbian, Word.Russian>>,
     visibleWords: List<Translation<Word.Serbian, Word.Russian>>,
     searchingWord: TextFieldValue,
     navigateToAddWord: (Word) -> Unit,
@@ -87,39 +82,23 @@ private fun DictionaryBody(
             ) {
                 FloatingActionButton(
                     onClick = {
-                        internetSearchSrbToRus(searchingWord.text)
-                    },
-
-                ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.padding(10.dp)
-                    ) {
-                        Icon(imageVector = SrIcons.Web, contentDescription = null)
-                        Spacer(modifier = Modifier.width(5.dp))
-                        Column {
-                            Text(text = "srb")
-                            Text("rus")
-                        }
+                        internetSearchRusToSrb(searchingWord.text)
                     }
-
+                ) {
+                    Column {
+                        Text(text = "rus")
+                        Text("srb")
+                    }
                 }
                 Spacer(modifier = Modifier.width(10.dp))
                 FloatingActionButton(
                     onClick = {
-                        internetSearchRusToSrb(searchingWord.text)
+                        internetSearchSrbToRus(searchingWord.text)
                     }
                 ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.padding(10.dp)
-                    ) {
-                        Icon(imageVector = SrIcons.Web, contentDescription = null)
-                        Spacer(modifier = Modifier.width(5.dp))
-                        Column {
-                            Text(text = "rus")
-                            Text("srb")
-                        }
+                    Column {
+                        Text(text = "srb")
+                        Text("rus")
                     }
                 }
             }
@@ -141,13 +120,14 @@ private fun DictionaryBody(
                 onAddClicked = navigateToAddWord,
                 onResetSearch = resetSearch
             )
-            InternetSearchResult(
-                yandexSearchState = yandexSearchState,
-                googleSearchState = googleSearchState,
-                modifier = Modifier
-                    .padding(horizontal = 20.dp)
-                    .fillMaxWidth()
-            )
+            if (internetWords.isNotEmpty()) {
+                InternetSearchResult(
+                    translations = internetWords,
+                    modifier = Modifier
+                        .padding(horizontal = 20.dp)
+                        .fillMaxWidth()
+                )
+            }
             SearchResult(
                 innerWords = visibleWords,
                 onRemoveTranslation = removeTranslation,
@@ -173,8 +153,7 @@ private fun SearchBodyPreview() {
         dynamicColor = false
     ) {
         DictionaryBody(
-            yandexSearchState = InternetSearchState.Disabled,
-            googleSearchState = InternetSearchState.Disabled,
+            internetWords = emptyList(),
             visibleWords = translationsExample,
             searchingWord = TextFieldValue(""),
             navigateToAddWord = {},
@@ -197,8 +176,7 @@ private fun SearchBodyNightPreview() {
         dynamicColor = false
     ) {
         DictionaryBody(
-            yandexSearchState = InternetSearchState.Disabled,
-            googleSearchState = InternetSearchState.Disabled,
+            internetWords = emptyList(),
             visibleWords = translationsExample,
             searchingWord = TextFieldValue(""),
             navigateToAddWord = {},
