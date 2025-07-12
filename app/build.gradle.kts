@@ -10,12 +10,12 @@ plugins {
 
 android {
     namespace = "com.trainer.srb.rus"
-    compileSdk = 34
+    compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
         applicationId = "com.trainer.srb.rus"
-        minSdk = 24
-        targetSdk = 34
+        minSdk = libs.versions.android.minSdk.get().toInt()
+        targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1431
         versionName = "0.14.31"
 

@@ -1,5 +1,9 @@
 [versions]
 
+android-compileSdk = "35"
+android-minSdk = "24"
+android-targetSdk = "35"
+
 accompanistCoil = "0.15.0"
 androidxComposeBom = "2024.06.00"
 androidxCoreKtx = "1.13.1"

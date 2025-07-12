@@ -21,7 +21,7 @@ class AppVersionProvider(
                     context.packageName,
                     0
                 )
-            }.versionName
+            }.versionName ?: ""
         }
 
     override val predefinedDatabaseVersion: Int
