@@ -1,15 +1,15 @@
 [versions]
 
-android-compileSdk = "35"
+android-compileSdk = "36"
 android-minSdk = "24"
-android-targetSdk = "35"
+android-targetSdk = "36"
 
 accompanistCoil = "0.15.0"
 androidxComposeBom = "2024.06.00"
 androidxCoreKtx = "1.13.1"
 androidxCoreSplashscreen = "1.0.1"
 androidxDatastore = "1.1.1"
-androidGradlePlugin = "8.10.1"
+androidGradlePlugin = "8.13.2"
 androidxHiltNavigationCompose = "1.2.0"
 androidxRoom = "2.6.1"
 androidxTestEspressoCore = "3.6.0"
